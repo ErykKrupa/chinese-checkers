@@ -8,24 +8,40 @@ public class Field extends Circle
 //    current pawn standing on the field
 //    1-6 mean player's 1-6 pawn
 //    0 means no pawn on this field
-//    -1 means there is not that field in the game
     private int pawn;
+
 //    represents which player started the game on this field
 //    1-6 mean player's 1-6 base
 //    0 means no base on this field, it is neutral, central part of the board
-//    -1 means there is not that field in the game
     private final int base;
 
-    Field(int playerNumber) {
-        setRadius(22);
-        base = playerNumber;
-        if(base == -1) {
-            setStrokeWidth(0);
-        } else {
-            setStrokeWidth(6);
-        }
-        setStroke(getColor(playerNumber));
+//    position x and y on the board
+    private int x, y;
+
+    Field(int playerNumber, int x, int y) {
+        setX(x);
+        setY(y);
         setPawn(playerNumber);
+        base = playerNumber;
+        setRadius(22);
+        setStrokeWidth(6);
+        setStroke(getColor(playerNumber));
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public int getPawn() {
@@ -36,6 +52,11 @@ public class Field extends Circle
     void setPawn(int pawn) {
         this.pawn = pawn;
         setFill(getColor(pawn));
+        if (pawn == 0) {
+            setOnMouseClicked(t -> Controller.handleFieldWithoutPawnClick(this));
+        } else {
+            setOnMouseClicked(t -> Controller.handleFieldWithPawnClick(this));
+        }
     }
 
     public int getBase() {
@@ -43,8 +64,9 @@ public class Field extends Circle
     }
 
 //    return color basing on given number,
-//    each player has own color, grey represents neutral fields, and transparent- no field
-    private Color getColor(int colorNumber) {
+//    each player has own color, grey represents neutral fields
+//    given number must be in range 0-6, else throws IllegalArgumentException
+    private Color getColor(int colorNumber) throws IllegalArgumentException {
         switch(colorNumber)
         {
             case 0:
@@ -62,7 +84,7 @@ public class Field extends Circle
             case 6:
                 return Color.web("#000000"); //black
             default:
-                return Color.web("#ffffff00"); //transparent
+                throw new IllegalArgumentException("Player number must be in range 0-6");
         }
     }
 

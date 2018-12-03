@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <Label layoutX="172.0" layoutY="14.0" prefHeight="35.0" prefWidth="256.0" text="CHINESE CHECKERS GAME">
          <font>
@@ -18,18 +17,21 @@
       </Label>
       <Separator layoutX="15.0" layoutY="54.0" prefHeight="0.0" prefWidth="580.0" />
       <Separator layoutX="292.0" layoutY="56.0" orientation="VERTICAL" prefHeight="339.0" prefWidth="8.0" />
-      <Label layoutX="88.0" layoutY="71.0" prefHeight="35.0" prefWidth="118.0" text="GAME SETINGS">
+      <Label layoutX="119.0" layoutY="54.0" prefHeight="35.0" prefWidth="48.0" text="MENU">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Button id="newGameBtn" layoutX="88.0" layoutY="118.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" text="New game" />
-      <Button id="joinGameBtn" layoutX="88.0" layoutY="167.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" text="Join game" />
-      <Button id="exitBtn" layoutX="88.0" layoutY="219.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" text="Exit" />
+      <Button id="newGameBtn" layoutX="87.0" layoutY="126.0" mnemonicParsing="false" onMouseClicked="#newMultiplayerGameBtnClick" prefHeight="25.0" prefWidth="109.0" text="New game" />
+      <Button id="joinGameBtn" layoutX="87.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#joinGameBtnClick" prefHeight="25.0" prefWidth="109.0" text="Join game" />
+      <Button id="exitBtn" layoutX="89.0" layoutY="325.0" mnemonicParsing="false" onMouseClicked="#exitBtnClick" prefHeight="25.0" prefWidth="109.0" text="Exit" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="346.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/trylmajpg.jpg" />
          </image>
       </ImageView>
+      <Button layoutX="87.0" layoutY="226.0" mnemonicParsing="false" onMouseClicked="#startSinglePlayerGameBtnClick" prefHeight="25.0" prefWidth="109.0" text="Start game" />
+      <Label layoutX="87.0" layoutY="101.0" prefHeight="25.0" prefWidth="109.0" text="Multiplayer" />
+      <Label layoutX="87.0" layoutY="200.0" prefHeight="25.0" prefWidth="109.0" text="Singleplayer" />
    </children>
 </Pane>

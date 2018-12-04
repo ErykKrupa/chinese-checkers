@@ -8,11 +8,11 @@ public class Server {
 
         int playerNumber = 1;
         int playerTurn;
-        System.out.println("Chinese checkers server is running");
 
         //Try-with-resources statement, so in the reason of that
         // we don't have to close listener
         try (ServerSocket listener = new ServerSocket(9090)) {
+            System.out.println("Chinese checkers server is running");
             while (true) {
                 Player player1 = new Player(listener.accept(), 1);
                 Player player2 = new Player(listener.accept(), 2);

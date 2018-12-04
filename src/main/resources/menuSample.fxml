@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MenuController">
    <children>
       <Label layoutX="172.0" layoutY="14.0" prefHeight="35.0" prefWidth="256.0" text="CHINESE CHECKERS GAME">
          <font>
@@ -22,7 +22,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Button id="newGameBtn" layoutX="87.0" layoutY="126.0" mnemonicParsing="false" onMouseClicked="#newMultiplayerGameBtnClick" prefHeight="25.0" prefWidth="109.0" text="New game" />
+      <Button id="newGameBtn" layoutX="87.0" layoutY="126.0" mnemonicParsing="false" onMouseClicked="#newMultiPlayerGameBtnClick" prefHeight="25.0" prefWidth="109.0" text="New game" />
       <Button id="joinGameBtn" layoutX="87.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#joinGameBtnClick" prefHeight="25.0" prefWidth="109.0" text="Join game" />
       <Button id="exitBtn" layoutX="89.0" layoutY="325.0" mnemonicParsing="false" onMouseClicked="#exitBtnClick" prefHeight="25.0" prefWidth="109.0" text="Exit" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="346.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">

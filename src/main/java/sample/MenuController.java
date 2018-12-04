@@ -7,14 +7,15 @@ import javafx.stage.Stage;
 
 import static java.lang.System.exit;
 
-public class Controller {
+public class MenuController {
+    static Stage newGamePopupStage = new Stage();
 
-    public void newMultiplayerGameBtnClick() throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/newGamePopup.fxml"));
-        Stage newGamePopupStage = new Stage();
+    public void newMultiPlayerGameBtnClick() throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("/newGamePopupSample.fxml"));
         newGamePopupStage.setTitle("Game settings");
         newGamePopupStage.setScene(new Scene(root, 300, 400));
         newGamePopupStage.show();
+        Main.menuStage.hide();
     }
 
     public void joinGameBtnClick(){

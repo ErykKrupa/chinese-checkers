@@ -8,12 +8,14 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/Sample.fxml"));
-        primaryStage.setTitle("Chinese checkers - board game");
-        primaryStage.setScene(new Scene(root, 600, 400));
-        primaryStage.show();
+    static Stage menuStage = new Stage();
+
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/menuSample.fxml"));
+        menuStage.setScene(new Scene(root, 600, 400));
+        menuStage.setTitle("Chinese Checkers - Menu");
+        menuStage.setResizable(false);
+        menuStage.show();
     }
 
     public static void main(String[] args) {

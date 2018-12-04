@@ -3,7 +3,7 @@ package sample;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class Field extends Circle
+class Field extends Circle
 {
 //    current pawn standing on the field
 //    1-6 mean player's 1-6 pawn
@@ -16,50 +16,42 @@ public class Field extends Circle
     private final int base;
 
 //    position x and y on the board
-    private int x, y;
+    private final int x, y;
 
     Field(int playerNumber, int x, int y) {
-        setX(x);
-        setY(y);
+        this.x = x;
+        this.y = y;
         setPawn(playerNumber);
         base = playerNumber;
-        setRadius(22);
-        setStrokeWidth(6);
+        setRadius(23);
+        setStrokeWidth(4);
         setStroke(getColor(playerNumber));
     }
 
-    public int getX() {
+    int getX() {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
+    int getY() {
         return y;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getPawn() {
+    int getPawn() {
         return pawn;
     }
 
-//    sets Pawn on this field, changes field's color
+//    sets Pawn on this field, changes field's color, set activity for mouse click
     void setPawn(int pawn) {
         this.pawn = pawn;
         setFill(getColor(pawn));
         if (pawn == 0) {
-            setOnMouseClicked(t -> Controller.handleFieldWithoutPawnClick(this));
+            setOnMouseClicked(t -> FieldController.getInstance().handleFieldWithoutPawnClick(this));
         } else {
-            setOnMouseClicked(t -> Controller.handleFieldWithPawnClick(this));
+            setOnMouseClicked(t -> FieldController.getInstance().handleFieldWithPawnClick(this));
         }
     }
 
-    public int getBase() {
+    int getBase() {
         return base;
     }
 

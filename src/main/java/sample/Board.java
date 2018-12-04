@@ -6,7 +6,9 @@ import javafx.scene.layout.RowConstraints;
 
 class Board extends GridPane
 {
+//    for Singleton Pattern
     private static Board board = null;
+
     private Field[][] fields = new Field[25][17];
 
     private Board() {
@@ -63,8 +65,14 @@ class Board extends GridPane
         return board;
     }
 
+//    get object of field at given position
     Field getField(int x, int y) {
         return fields[x][y];
+    }
+
+//    for tests, it's necessary to run all tests with fresh Board
+    void destroyInstance() {
+        board = null;
     }
 
 }

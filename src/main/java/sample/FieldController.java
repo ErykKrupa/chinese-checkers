@@ -1,28 +1,44 @@
 package sample;
 
-public class Controller {
-    private static Field currentField = null;
-    private static Field targetField = null;
-    private static boolean jumped = false;
-    private static int playerTurn = 1;
+public class FieldController {
 
-    static void handleFieldWithoutPawnClick(Field field) {
+//	  store player's field which is currently clicked
+    private Field currentField = null;
+
+//    store neutral field which is target for player's pawn
+    private Field targetField = null;
+
+//    true, if pawn has already jumped in this turn
+    private boolean jumped = false;
+
+    private int playerTurn = 1;
+
+//    for Singleton Pattern
+    private static FieldController fieldController = null;
+
+//    for Singleton Pattern
+    private FieldController() {}
+
+//    method on mouse click for field without pawn
+    void handleFieldWithoutPawnClick(Field field) {
         targetField = field;
+//        if player hasn't chosen his pawn yet
         if (currentField == null) {
 			System.out.println("Didn't choose");
 			return;
 		}
+//		check if pawn can go on this field
 		if ((Math.abs(currentField.getX() - targetField.getX()) == 1 &&
 				Math.abs(currentField.getY() - targetField.getY()) == 1 ||
 				Math.abs(currentField.getX() - targetField.getX()) == 2 &&
 					currentField.getY() - targetField.getY() == 0) && !jumped) {
 			targetField.setPawn(currentField.getPawn());
 			currentField.setPawn(0);
-			currentField = targetField;
 			System.out.println("I'm going " + targetField.getPawn());
 			endTurn();
-
-		} else if (isAbleToJump()) {
+		}
+//			check if pawn can jump on this field
+		else if (isAbleToJump()) {
 			targetField.setPawn(currentField.getPawn());
 			currentField.setPawn(0);
 			currentField = targetField;
@@ -33,7 +49,9 @@ public class Controller {
 		}
     }
 
-    static void handleFieldWithPawnClick(Field field) {
+//    method on mouse click for field with pawn
+    void handleFieldWithPawnClick(Field field) {
+//    	player can choose only his pawn
     	if (field.getPawn() == playerTurn) {
 			currentField = field;
 			System.out.println("Chose " + currentField.getPawn());
@@ -43,7 +61,8 @@ public class Controller {
 		}
 	}
 
-	private static boolean isAbleToJump () {
+//	long condition to check the jumping ability
+	private boolean isAbleToJump () {
 		int deltaX = targetField.getX() - currentField.getX();
 		int deltaY = targetField.getY() - currentField.getY();
 		if (deltaY == -2 && (deltaX == 2 || deltaX == -2) ||
@@ -55,7 +74,8 @@ public class Controller {
 		return false;
 	}
 
-	private static void endTurn() {
+//	end turn for this player
+	private void endTurn() {
 		if (playerTurn == 6) {
 			playerTurn = 1;
 		} else {
@@ -63,7 +83,21 @@ public class Controller {
 		}
 		jumped = false;
 		currentField = null;
+		targetField = null;
 		System.out.println("End turn");
+	}
+
+//	Singleton Pattern
+	static FieldController getInstance() {
+    	if (fieldController == null) {
+			fieldController = new FieldController();
+    	}
+    	return fieldController;
+	}
+
+//    for tests, it's necessary to run all tests with fresh FieldController
+	void destroyInstance() {
+		fieldController = null;
 	}
 
 

@@ -1,4 +1,4 @@
-package sample;
+package dochniak_krupa.client;
 
 import javafx.scene.paint.Color;
 import org.junit.jupiter.api.Test;

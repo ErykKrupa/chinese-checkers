@@ -1,4 +1,4 @@
-package sample;
+package dochniak_krupa.client;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

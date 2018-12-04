@@ -1,4 +1,4 @@
-package sample;
+package dochniak_krupa.client;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

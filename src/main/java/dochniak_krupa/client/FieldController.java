@@ -1,4 +1,4 @@
-package sample;
+package dochniak_krupa.client;
 
 public class FieldController {
 

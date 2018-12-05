@@ -16,6 +16,8 @@ public class Client extends Application {
     Socket socket;
     BufferedReader in;
     PrintWriter out;
+    //    for Singleton Pattern
+    private static Client client = null;
 
 
     static Stage menuStage = new Stage();
@@ -41,22 +43,23 @@ public class Client extends Application {
         }
     }
 
+    //    Singleton Pattern
+    private static void setInstance() {
+        client = new Client();
+    }
+
+    static Client getInstance() {
+        return client;
+    }
+
     public static void main(String[] args) throws InterruptedException{
-        Client client = new Client();
+        Client.setInstance();
         try{
             client.connectToServer();
         }catch (IOException e){
             System.out.println("Unable to connect with server!");
             Thread.sleep(3000);
             exit(0);
-        }finally {
-            try{
-                client.in.close();
-                client.out.close();
-                client.socket.close();
-            }catch(IOException e){
-                System.out.println("Unable to close streams and socket");
-            }
         }
         //Launching client first window
         launch(args);

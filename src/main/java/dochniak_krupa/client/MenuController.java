@@ -16,7 +16,7 @@ public class MenuController {
         newGamePopupStage.setTitle("Game settings");
         newGamePopupStage.setScene(new Scene(root, 300, 400));
         newGamePopupStage.show();
-        Main.menuStage.hide();
+        Client.menuStage.hide();
     }
 
     public void joinGameBtnClick(){

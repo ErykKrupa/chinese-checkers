@@ -85,6 +85,10 @@ public class FieldController {
 		currentField = null;
 		targetField = null;
 		System.out.println("End turn");
+//		if player isn't in game- end turn once again
+		if (!(Board.getInstance().isPlayerInGame(playerTurn))) {
+			endTurn();
+		}
 	}
 
 //	Singleton Pattern

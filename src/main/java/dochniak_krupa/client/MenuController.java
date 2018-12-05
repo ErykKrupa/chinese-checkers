@@ -10,6 +10,7 @@ import static java.lang.System.exit;
 public class MenuController {
     static Stage newGamePopupStage = new Stage();
 
+//    sets and shows window for selection number of players
     public void newMultiPlayerGameBtnClick() throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/newGamePopupSample.fxml"));
         newGamePopupStage.setTitle("Game settings");

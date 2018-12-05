@@ -1,10 +1,16 @@
 package dochniak_krupa.client;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
+
+    @BeforeEach
+    void createNewBoardInstance() {
+        Board.setInstance(6);
+    }
 
     @Test
     void shouldGetTheSameInstance() {
@@ -31,7 +37,7 @@ class BoardTest {
         FieldController.getInstance().handleFieldWithoutPawnClick(Board.getInstance().getField(8, 4));
         assertEquals(0, Board.getInstance().getField(10, 2).getPawn());
         assertEquals(1, Board.getInstance().getField(8, 4).getPawn());
-        Board.getInstance().destroyInstance();
+        Board.setInstance(6);
         assertEquals(1, Board.getInstance().getField(10, 2).getPawn());
         assertEquals(0, Board.getInstance().getField(8, 4).getPawn());}
 }

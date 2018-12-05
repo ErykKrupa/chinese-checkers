@@ -8,11 +8,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class FieldControllerTest {
 
 	@BeforeEach
-	void destroyInstanceToHaveAppropriateConditionsForAllTest () {
+	void createNewInstancesToHaveAppropriateConditionsForAllTest () {
 		FieldController.getInstance().destroyInstance();
-		Board.getInstance().destroyInstance();
+		Board.setInstance(6);
 	}
-
 	@Test
 	void shouldGetNewInstanceOfFieldController() {
 		FieldController.getInstance().handleFieldWithPawnClick(Board.getInstance().getField(10, 2));

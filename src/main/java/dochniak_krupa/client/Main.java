@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     static Stage menuStage = new Stage();
-
+//    sets and shows menu window
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/menuSample.fxml"));
         menuStage.setScene(new Scene(root, 600, 400));

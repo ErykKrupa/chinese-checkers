@@ -11,7 +11,29 @@ class Board extends GridPane
 
     private Field[][] fields = new Field[25][17];
 
-    private Board() {
+//    true if given player is in the game actually
+    private boolean[] players = new boolean[6];
+
+    private Board(int playersNumber) {
+//        sets players according to playersNumber
+        players[0] = true;
+        if (playersNumber == 2) {
+            players[3] = true;
+        } else if (playersNumber == 3) {
+            players[2] = true;
+            players[4] = true;
+        }  else if (playersNumber == 4) {
+            players[1] = true;
+            players[3] = true;
+            players[4] = true;
+        } else if (playersNumber == 6) {
+            for (int i = 1; i <= 5; i++) {
+                players[i] = true;
+            }
+        } else {
+            throw new IllegalArgumentException("Players number must equals to 2, 3, 4 or 6.");
+        }
+
 //        getConstraints make suitable free space between fields
         for (int i = 0; i < 17; i++) {
             this.getRowConstraints().add(new RowConstraints(46));
@@ -19,6 +41,7 @@ class Board extends GridPane
         for (int i = 0; i < 25; i++) {
             this.getColumnConstraints().add(new ColumnConstraints(28));
         }
+
 //        TL;DR: this algorithm creates fields on the boards
 //        don't waste time for analyse it
         for (int i = 0; i < 25; i++) {
@@ -27,23 +50,27 @@ class Board extends GridPane
                     if (j <= 3 && 12 - j <= i && i <= 12 + j) {
                         fields[i][j] = new Field(1, i, j);
                     } else if (4 <= j && j <= 8 && -4 + j <= i && i <= 28 - j) {
-                        if (i - j >= 14) {
+                        if (i - j >= 14 && players[1]) {
                             fields[i][j] = new Field(2, i, j);
-                        } else if (i + j <= 10) {
+                        } else if (i + j <= 10  && players[5]) {
                             fields[i][j] = new Field(6, i, j);
                         } else {
                             fields[i][j] = new Field(0, i, j);
                         }
                     } else if (9 <= j && j <= 12 && 12 - j <= i && i <= 12 + j) {
-                        if (i + j >= 30) {
+                        if (i + j >= 30 && players[2]) {
                             fields[i][j] = new Field(3, i, j);
-                        } else if (j - i >= 6) {
+                        } else if (j - i >= 6 && players[4]) {
                             fields[i][j] = new Field(5, i, j);
                         } else {
                             fields[i][j] = new Field(0, i, j);
                         }
                     } else if (13 <= j && -4 + j <= i && i <= 28 - j) {
-                        fields[i][j] = new Field(4, i, j);
+                        if (players[3]) {
+                            fields[i][j] = new Field(4, i, j);
+                        } else {
+                            fields[i][j] = new Field(0, i, j);
+                        }
                     } else {
                         continue;
                     }
@@ -58,10 +85,11 @@ class Board extends GridPane
     }
 
 //    Singleton Pattern
+    static void setInstance(int playerNumber) {
+        board = new Board(playerNumber);
+    }
+
     static Board getInstance() {
-        if (board == null) {
-            board = new Board();
-        }
         return board;
     }
 
@@ -70,9 +98,8 @@ class Board extends GridPane
         return fields[x][y];
     }
 
-//    for tests, it's necessary to run all tests with fresh Board
-    void destroyInstance() {
-        board = null;
+//    return true if is this player in game
+    boolean isPlayerInGame(int playerNumber) {
+        return players[playerNumber - 1];
     }
-
 }

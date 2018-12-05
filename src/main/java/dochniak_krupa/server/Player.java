@@ -22,6 +22,11 @@ public class Player extends Thread {
             input = new BufferedReader(
                     new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
+
+            //Sending initial message to the client
+            output.println("Welcome to the Chinese Checkers server!");
+            output.println("You are the player number: " + number);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

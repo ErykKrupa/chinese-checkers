@@ -14,18 +14,24 @@ public class Server {
         try (ServerSocket listener = new ServerSocket(9090)) {
             System.out.println("Chinese checkers server is running");
             while (true) {
-                System.out.println("sth");
+                System.out.println("Waiting for the first player connection");
                 Player player1 = new Player(listener.accept(), 1);
-                System.out.println("sth");
+                player1.start();
+                System.out.println("Waiting for the second player connection");
                 Player player2 = new Player(listener.accept(), 2);
-                System.out.println("sth");
+                player2.start();
+                System.out.println("Waiting for the third player connection");
                 Player player3 = new Player(listener.accept(), 3);
-                System.out.println("sth");
+                player3.start();
+                System.out.println("Waiting for the fourth player connection");
                 Player player4 = new Player(listener.accept(), 4);
-                System.out.println("sth");
+                player4.start();
+                System.out.println("Waiting for the fifth player connection");
                 Player player5 = new Player(listener.accept(), 5);
-                System.out.println("sth");
+                player5.start();
+                System.out.println("Waiting for the sixth player connection");
                 Player player6 = new Player(listener.accept(), 6);
+                player6.start();
             }
         } catch (IOException e) {
             System.out.println("Unable to connect players");

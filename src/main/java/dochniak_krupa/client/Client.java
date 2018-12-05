@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.Buffer;
 
 import static java.lang.System.exit;
 
@@ -59,6 +58,7 @@ public class Client extends Application {
                 System.out.println("Unable to close streams and socket");
             }
         }
+        //Launching client first window
         launch(args);
     }
 }

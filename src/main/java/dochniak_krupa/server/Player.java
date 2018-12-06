@@ -1,5 +1,7 @@
 package dochniak_krupa.server;
 
+import dochniak_krupa.client.Client;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,6 +28,8 @@ public class Player extends Thread {
             //Sending initial message to the client
             output.println("Welcome to the Chinese Checkers server!");
             output.println("You are the player number: " + number);
+            //Sending client number
+            output.println(number);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -34,11 +38,48 @@ public class Player extends Thread {
         try{
             while(true){
                 String command = input.readLine();
-                /*
-                -TODO responding for specific server commands in switch statement
                 switch (command){
-
-                }*/
+                    case "CREATE MULTIPLAYER 2": {
+                        if(Game.getInstance()==null){
+                            Game.setInstance(2);
+                            //Client.getInstance().isHost=true;
+                        }else{
+                            output.println("Nie można stworzyć gry. Lobby już istnieje!");
+                        }
+                    } break;
+                    case "CREATE MULTIPLAYER 3": {
+                        if(Game.getInstance()==null){
+                            Game.setInstance(3);
+                            //Client.getInstance().isHost=true;
+                        }else{
+                            output.println("Nie można stworzyć gry. Lobby już istnieje!");
+                        }
+                    } break;
+                    case "CREATE MULTIPLAYER 4": {
+                        if(Game.getInstance()==null){
+                            Game.setInstance(4);
+                            //Client.getInstance().isHost=true;
+                        }else{
+                            output.println("Nie można stworzyć gry. Lobby już istnieje!");
+                        }
+                    } break;
+                    case "CREATE MULTIPLAYER 6": {
+                        if(Game.getInstance()==null){
+                            Game.setInstance(6);
+                            //Client.getInstance().isHost=true;
+                        }else{
+                            output.println("Nie można stworzyć gry. Lobby już istnieje!");
+                        }
+                    } break;
+                    case "JOIN GAME":{
+                        if(Game.getInstance()!=null && Game.getInstance().currNumOfPlayers<Game.getInstance().declaredNumberOfPlayersInGame){
+                            Game.getInstance().currNumOfPlayers++;
+                            //Client.getInstance().isAbleToJoinGame=true;
+                        }else{
+                            output.println("Cannot join game!");
+                        }
+                    }break;
+                }
             }
         }catch (IOException e){
             System.out.println("Unable to read line!");

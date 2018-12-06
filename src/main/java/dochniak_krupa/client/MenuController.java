@@ -1,8 +1,10 @@
 package dochniak_krupa.client;
 
+import dochniak_krupa.server.Game;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import static java.lang.System.exit;
@@ -20,7 +22,15 @@ public class MenuController {
     }
 
     public void joinGameBtnClick(){
-        //TODO send join existing game request to server
+        Client.getInstance().out.println("JOIN GAME");
+        Stage boardStage = new Stage();
+        Board.setInstance(2);
+        Scene scene = new Scene(Board.getInstance(), 800, 800);
+        scene.setFill(Color.web("#99ffff7f"));
+        boardStage.setScene(scene);
+        boardStage.setTitle("Chinese Checkers - Menu");
+        boardStage.setResizable(false);
+        boardStage.show();
     }
 
     public void startSinglePlayerGameBtnClick(){

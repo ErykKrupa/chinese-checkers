@@ -18,6 +18,13 @@ public class Client extends Application {
     PrintWriter out;
     //    for Singleton Pattern
     private static Client client = null;
+    String clientNumber;
+
+    public boolean isAbleToJoinGame;
+    public boolean isHost = false;
+
+
+
 
 
     static Stage menuStage = new Stage();
@@ -32,7 +39,7 @@ public class Client extends Application {
 
     //Handling server connection and setting input and output buffers
     private void connectToServer() throws IOException{
-        socket = new Socket("",9090);
+        socket = new Socket("",9091);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(),true);
 
@@ -41,6 +48,8 @@ public class Client extends Application {
             String initialMessage = in.readLine();
             System.out.println(initialMessage);
         }
+
+        clientNumber = in.readLine();
     }
 
     //    Singleton Pattern
@@ -48,7 +57,7 @@ public class Client extends Application {
         client = new Client();
     }
 
-    static Client getInstance() {
+    public static Client getInstance() {
         return client;
     }
 

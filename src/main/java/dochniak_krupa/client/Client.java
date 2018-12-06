@@ -23,10 +23,6 @@ public class Client extends Application {
     public boolean isAbleToJoinGame;
     public boolean isHost = false;
 
-
-
-
-
     static Stage menuStage = new Stage();
 //    sets and shows menu window
     public void start(Stage primaryStage) throws Exception {

@@ -7,7 +7,7 @@ public class Game {
     //Singleton
     static Game game;
 
-    Game(int numberOfPlayersInGame){
+    private Game(int numberOfPlayersInGame){
         this.declaredNumberOfPlayersInGame=numberOfPlayersInGame;
     }
 

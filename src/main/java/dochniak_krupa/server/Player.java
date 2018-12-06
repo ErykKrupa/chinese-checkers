@@ -40,9 +40,11 @@ public class Player extends Thread {
                 String command = input.readLine();
                 switch (command){
                     case "CREATE MULTIPLAYER 2": {
+
                         if(Game.getInstance()==null){
                             Game.setInstance(2);
-                            //Client.getInstance().isHost=true;
+                            Game.getInstance().currNumOfPlayers++;
+                            output.println("CREATE GAME PRIVILEGE");
                         }else{
                             output.println("Nie można stworzyć gry. Lobby już istnieje!");
                         }
@@ -50,7 +52,8 @@ public class Player extends Thread {
                     case "CREATE MULTIPLAYER 3": {
                         if(Game.getInstance()==null){
                             Game.setInstance(3);
-                            //Client.getInstance().isHost=true;
+                            Game.getInstance().currNumOfPlayers++;
+                            output.println("CREATE GAME PRIVILEGE");
                         }else{
                             output.println("Nie można stworzyć gry. Lobby już istnieje!");
                         }
@@ -58,7 +61,8 @@ public class Player extends Thread {
                     case "CREATE MULTIPLAYER 4": {
                         if(Game.getInstance()==null){
                             Game.setInstance(4);
-                            //Client.getInstance().isHost=true;
+                            Game.getInstance().currNumOfPlayers++;
+                            output.println("CREATE GAME PRIVILEGE");
                         }else{
                             output.println("Nie można stworzyć gry. Lobby już istnieje!");
                         }
@@ -66,7 +70,8 @@ public class Player extends Thread {
                     case "CREATE MULTIPLAYER 6": {
                         if(Game.getInstance()==null){
                             Game.setInstance(6);
-                            //Client.getInstance().isHost=true;
+                            Game.getInstance().currNumOfPlayers++;
+                            output.println("CREATE GAME PRIVILEGE");
                         }else{
                             output.println("Nie można stworzyć gry. Lobby już istnieje!");
                         }
@@ -74,7 +79,7 @@ public class Player extends Thread {
                     case "JOIN GAME":{
                         if(Game.getInstance()!=null && Game.getInstance().currNumOfPlayers<Game.getInstance().declaredNumberOfPlayersInGame){
                             Game.getInstance().currNumOfPlayers++;
-                            //Client.getInstance().isAbleToJoinGame=true;
+                            output.println("JOIN GAME PRIVILEGE");
                         }else{
                             output.println("Cannot join game!");
                         }

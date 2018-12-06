@@ -6,6 +6,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class NewGamePopupController {
 
 	@FXML private RadioButton players2RadioButton;
@@ -29,7 +31,14 @@ public class NewGamePopupController {
 			Client.getInstance().out.println("CREATE MULTIPLAYER 6");
 		}
 
-		//if (Client.getInstance().isHost){
+		String s = "";
+		try{
+			s = Client.getInstance().in.readLine();
+		}catch (IOException e){
+			System.out.println("Błąd");
+		}
+
+		if (s.equals("CREATE GAME PRIVILEGE")){
 			Stage boardStage = new Stage();
 			Scene scene = new Scene(Board.getInstance(), 800, 800);
 			scene.setFill(Color.web("#99ffff7f"));
@@ -38,6 +47,6 @@ public class NewGamePopupController {
 			boardStage.setResizable(false);
 			boardStage.show();
 			MenuController.newGamePopupStage.hide();
-		//}
+		}
 	}
 }

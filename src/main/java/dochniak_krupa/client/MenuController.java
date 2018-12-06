@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 import static java.lang.System.exit;
 
 public class MenuController {
@@ -23,14 +25,24 @@ public class MenuController {
 
     public void joinGameBtnClick(){
         Client.getInstance().out.println("JOIN GAME");
-        Stage boardStage = new Stage();
-        Board.setInstance(2);
-        Scene scene = new Scene(Board.getInstance(), 800, 800);
-        scene.setFill(Color.web("#99ffff7f"));
-        boardStage.setScene(scene);
-        boardStage.setTitle("Chinese Checkers - Menu");
-        boardStage.setResizable(false);
-        boardStage.show();
+
+        String s = "";
+        try{
+            s = Client.getInstance().in.readLine();
+        }catch (IOException e){
+            System.out.println("Błąd");
+        }
+
+        if(s.equals("JOIN GAME PRIVILEGE")) {
+            Stage boardStage = new Stage();
+            Board.setInstance(2);
+            Scene scene = new Scene(Board.getInstance(), 800, 800);
+            scene.setFill(Color.web("#99ffff7f"));
+            boardStage.setScene(scene);
+            boardStage.setTitle("Chinese Checkers - Menu");
+            boardStage.setResizable(false);
+            boardStage.show();
+        }
     }
 
     public void startSinglePlayerGameBtnClick(){

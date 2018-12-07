@@ -1,6 +1,5 @@
 package dochniak_krupa.client;
 
-import dochniak_krupa.server.Game;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,18 +23,45 @@ public class MenuController {
     }
 
     public void joinGameBtnClick(){
-        Client.getInstance().out.println("JOIN GAME");
 
-        String s = "";
+        //Sending performed action command to server
+        try
+        {
+            Client.getInstance().out.writeObject("JOIN GAME");
+
+        }catch (IOException e){
+            System.out.println("Unable to send command");
+        }
+
+        //Receiving server response
+        String privilege = "";
         try{
-            s = Client.getInstance().in.readLine();
+            privilege = Client.getInstance().in.readLine();
         }catch (IOException e){
             System.out.println("Błąd");
         }
 
-        if(s.equals("JOIN GAME PRIVILEGE")) {
+        //Receiving info about current game type to set proper board instance
+        //If game is not started the typeOfGame equals 0 and board instance is not initialized
+        String typeOfGameStr;
+        int typeOfGame = 0;
+        try{
+            typeOfGameStr = Client.getInstance().in.readLine();
+            if(!typeOfGameStr.equals("0"))
+            typeOfGame = Integer.parseInt(typeOfGameStr);
+        }catch (IOException e){
+            System.out.println("Unable to read line");
+        }catch(IllegalArgumentException ex){
+            System.out.println("Illegal agrument exception");
+        }
+
+        //Setting proper board instance
+        if(typeOfGame!=0) Board.setInstance(typeOfGame);
+        else System.out.println("Unable to join game");
+
+        //Initializing board window after checking privileges for that
+        if(privilege.equals("JOIN GAME PRIVILEGE GRANTED") && typeOfGame!=0) {
             Stage boardStage = new Stage();
-            Board.setInstance(2);
             Scene scene = new Scene(Board.getInstance(), 800, 800);
             scene.setFill(Color.web("#99ffff7f"));
             boardStage.setScene(scene);

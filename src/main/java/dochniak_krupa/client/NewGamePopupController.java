@@ -16,29 +16,52 @@ public class NewGamePopupController {
 	@FXML private RadioButton players6RadioButton;
 
 	@FXML public void newMultiPlayerGameBtnClick() {
-//		create appropriate board and fields for players numbers
+		//Creating proper board instance and sending create game response
+		// with specific number of players to server
 		if (players2RadioButton.isSelected()) {
 			Board.setInstance(2);
-			Client.getInstance().out.println("CREATE MULTIPLAYER 2");
+			try
+			{
+				Client.getInstance().out.writeObject("CREATE MULTIPLAYER 2");
+			}catch (IOException e){
+				System.out.println("Unable to send command");
+			}
 		} else if (players3RadioButton.isSelected()) {
 			Board.setInstance(3);
-			Client.getInstance().out.println("CREATE MULTIPLAYER 3");
+			try
+			{
+				Client.getInstance().out.writeObject("CREATE MULTIPLAYER 3");
+			}catch (IOException e){
+				System.out.println("Unable to send command");
+			}
 		} else if (players4RadioButton.isSelected()) {
 			Board.setInstance(4);
-			Client.getInstance().out.println("CREATE MULTIPLAYER 4");
+			try
+			{
+				Client.getInstance().out.writeObject("CREATE MULTIPLAYER 4");
+			}catch (IOException e){
+				System.out.println("Unable to send command");
+			}
 		} else {
 			Board.setInstance(6);
-			Client.getInstance().out.println("CREATE MULTIPLAYER 6");
+			try
+			{
+				Client.getInstance().out.writeObject("CREATE MULTIPLAYER 6");
+			}catch (IOException e){
+				System.out.println("Unable to send command");
+			}
 		}
 
-		String s = "";
+		//Reading response message form server
+		String privilege = "";
 		try{
-			s = Client.getInstance().in.readLine();
+			privilege = Client.getInstance().in.readLine();
 		}catch (IOException e){
-			System.out.println("Błąd");
+			System.out.println("Unable to read line");
 		}
 
-		if (s.equals("CREATE GAME PRIVILEGE")){
+		//Initializing board window after checking privileges for that
+		if (privilege.equals("CREATE GAME PRIVILEGE GRANTED")){
 			Stage boardStage = new Stage();
 			Scene scene = new Scene(Board.getInstance(), 800, 800);
 			scene.setFill(Color.web("#99ffff7f"));

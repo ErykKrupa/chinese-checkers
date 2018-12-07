@@ -1,5 +1,7 @@
 package dochniak_krupa.client;
 
+import java.io.IOException;
+
 public class FieldController {
 
 //	  store player's field which is currently clicked
@@ -22,13 +24,33 @@ public class FieldController {
 //    method on mouse click for field without pawn
     void handleFieldWithoutPawnClick(Field field) {
         targetField = field;
-//        if player hasn't chosen his pawn yet
-        if (currentField == null) {
+
+        //Sending action command to server
+        try{
+			Client.getInstance().out.writeObject("DO MOVE");
+		}catch (IOException e){
+        	System.out.println("Unable to write object");
+		}
+
+        //Sending field object to server
+		try{
+			Client.getInstance().out.writeObject(field);
+		}catch (IOException e){
+			e.printStackTrace();
+		}
+
+		/*	Temporary commented, just in order to test communication with server
+		*	first if statement was moved on the server side
+		*	the rest is in progress*/
+
+
+//       // if player hasn't chosen his pawn yet
+        /*if (currentField == null) {
 			System.out.println("Didn't choose");
 			return;
-		}
+		}*/
 //		check if pawn can go on this field
-		if ((Math.abs(currentField.getX() - targetField.getX()) == 1 &&
+/*		if ((Math.abs(currentField.getX() - targetField.getX()) == 1 &&
 				Math.abs(currentField.getY() - targetField.getY()) == 1 ||
 				Math.abs(currentField.getX() - targetField.getX()) == 2 &&
 					currentField.getY() - targetField.getY() == 0) && !jumped) {
@@ -46,7 +68,7 @@ public class FieldController {
 			jumped = true;
 		} else {
 			System.out.println("I can't go there");
-		}
+		}*/
     }
 
 //    method on mouse click for field with pawn
@@ -103,6 +125,4 @@ public class FieldController {
 	void destroyInstance() {
 		fieldController = null;
 	}
-
-
 }

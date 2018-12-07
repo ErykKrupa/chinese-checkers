@@ -13,12 +13,18 @@ import static java.lang.System.exit;
 
 public class Client extends Application {
 
+    //Setting ObjectOutputStream instead of regular PrintWriter
+    //to let us send clicked field reference to server
     Socket socket;
     BufferedReader in;
-    PrintWriter out;
-    //    for Singleton Pattern
+    //PrintWriter out;
+    ObjectOutputStream out;
+
+    //Singleton
     private static Client client = null;
-    String clientNumber;
+
+    //Stores a number of client received from server
+    private String clientNumber;
 
     public boolean isAbleToJoinGame;
     public boolean isHost = false;
@@ -37,7 +43,8 @@ public class Client extends Application {
     private void connectToServer() throws IOException{
         socket = new Socket("",9091);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream(),true);
+        //out = new PrintWriter(socket.getOutputStream(),true);
+        out = new ObjectOutputStream(socket.getOutputStream());
 
         //Printing server initial message
         for(int i=0; i<2; i++){
@@ -48,7 +55,7 @@ public class Client extends Application {
         clientNumber = in.readLine();
     }
 
-    //    Singleton Pattern
+    //    Singleton
     private static void setInstance() {
         client = new Client();
     }

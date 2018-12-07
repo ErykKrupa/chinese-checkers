@@ -4,8 +4,9 @@ public class Game {
 
     int declaredNumberOfPlayersInGame;
     int currNumOfPlayers=0;
+
     //Singleton
-    static Game game;
+    private static Game game;
 
     private Game(int numberOfPlayersInGame){
         this.declaredNumberOfPlayersInGame=numberOfPlayersInGame;

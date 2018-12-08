@@ -33,8 +33,8 @@ class BoardTest {
     void shouldGetNewInstanceOfBoard() {
         assertEquals(1, Board.getInstance().getField(10, 2).getPawn());
         assertEquals(0, Board.getInstance().getField(8, 4).getPawn());
-        FieldController.getInstance().handleFieldWithPawnClick(Board.getInstance().getField(10, 2));
-        FieldController.getInstance().handleFieldWithoutPawnClick(Board.getInstance().getField(8, 4));
+        GameController.getInstance().handleFieldWithPawnClick(Board.getInstance().getField(10, 2));
+        GameController.getInstance().handleFieldWithoutPawnClick(Board.getInstance().getField(8, 4));
         assertEquals(0, Board.getInstance().getField(10, 2).getPawn());
         assertEquals(1, Board.getInstance().getField(8, 4).getPawn());
         Board.setInstance(6);

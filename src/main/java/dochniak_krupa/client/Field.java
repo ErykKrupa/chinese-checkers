@@ -21,7 +21,7 @@ class Field extends Circle
     Field(int playerNumber, int x, int y) {
         this.x = x;
         this.y = y;
-        setPawn(playerNumber);
+        setPawn(0);
         base = playerNumber;
         setRadius(23);
         setStrokeWidth(4);
@@ -45,9 +45,9 @@ class Field extends Circle
         this.pawn = pawn;
         setFill(getColor(pawn));
         if (pawn == 0) {
-            setOnMouseClicked(t -> FieldController.getInstance().handleFieldWithoutPawnClick(this));
+            setOnMouseClicked(t -> GameController.getInstance().handleFieldWithoutPawnClick(this));
         } else {
-            setOnMouseClicked(t -> FieldController.getInstance().handleFieldWithPawnClick(this));
+            setOnMouseClicked(t -> GameController.getInstance().handleFieldWithPawnClick(this));
         }
     }
 
@@ -66,13 +66,13 @@ class Field extends Circle
             case 1:
                 return Color.web("#ff0000"); //red
             case 2:
-                return Color.web("#cc00cc"); //purple
-            case 3:
                 return Color.web("#ff9933"); //orange
-            case 4:
-                return Color.web("#0000ff"); //blue
-            case 5:
+            case 3:
                 return Color.web("#00ff00"); //green
+            case 4:
+                return Color.web("#cc00cc"); //purple
+            case 5:
+                return Color.web("#0000ff"); //blue
             case 6:
                 return Color.web("#000000"); //black
             default:

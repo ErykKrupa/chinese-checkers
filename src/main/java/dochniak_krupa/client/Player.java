@@ -1,6 +1,6 @@
 package dochniak_krupa.client;
 
-public class Player {
+class Player {
 	private static Player[] players = new Player[6];
 	private static int playersInGame = 0;
 	private boolean inGame = false;
@@ -16,6 +16,12 @@ public class Player {
 			players[playerNumber - 1] = new Player(playerNumber);
 		}
 		return players[playerNumber -1];
+	}
+
+	static void flushPlayers() {
+		for (Player player : players) {
+			player = null;
+		}
 	}
 
 	boolean isInGame() {

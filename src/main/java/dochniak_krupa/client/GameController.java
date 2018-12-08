@@ -1,6 +1,6 @@
 package dochniak_krupa.client;
 
-public class GameController {
+class GameController {
 
 //	  starting position of pawn
 	private Field startingField = null;

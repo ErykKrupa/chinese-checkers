@@ -1,6 +1,7 @@
 package dochniak_krupa.client;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.paint.Color;
@@ -21,14 +22,18 @@ public class NewGamePopupController {
 			Board.setInstance(3);
 		} else if (players4RadioButton.isSelected()) {
 			Board.setInstance(4);
-		} else {
+		} else if (players6RadioButton.isSelected()) {
 			Board.setInstance(6);
 		}
+		Board.getInstance().setAlignment(Pos.CENTER);
+		Scene scene = new Scene(Board.getInstance(), 750, 800);
+
+//		why doesn't it work?
+		scene.setFill(Color.web("#99ffff7f")); //translucent light blue
+
 		Stage boardStage = new Stage();
-		Scene scene = new Scene(Board.getInstance(), 800, 800);
-        scene.setFill(Color.web("#99ffff7f"));
-        boardStage.setScene(scene);
-		boardStage.setTitle("Chinese Checkers - Menu");
+		boardStage.setScene(scene);
+		boardStage.setTitle("Chinese Checkers");
 		boardStage.setResizable(false);
 		boardStage.show();
 		MenuController.newGamePopupStage.hide();

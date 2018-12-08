@@ -19,7 +19,7 @@ public class MenuController {
         Client.menuStage.hide();
     }
 
-    public void joinGameBtnClick(){
+    public void joinGameBtnClick() {
         //TODO send join existing game request to server
     }
 

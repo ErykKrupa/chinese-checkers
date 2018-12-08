@@ -11,6 +11,7 @@ class FieldControllerTest {
 	void createNewInstancesToHaveAppropriateConditionsForAllTest () {
 		GameController.getInstance().destroyInstance();
 		Board.setInstance(6);
+		Player.flushPlayers();
 	}
 	@Test
 	void shouldGetNewInstanceOfFieldController() {
@@ -25,8 +26,9 @@ class FieldControllerTest {
 	}
 
 	@Test
-	void shouldChangePositionOfPlayersPawnIfIsHeTurn () {
-		Field field1 = new Field(1, 4, 6);
+	void shouldChangePositionOfPlayersPawnIfIsHisTurn () {
+		Field field1 = new Field(2, 4, 6);
+		field1.setPawn(1);
 		Field field2 = new Field(0, 6, 6);
 		GameController.getInstance().handleFieldWithPawnClick(field1);
 		GameController.getInstance().handleFieldWithoutPawnClick(field2);
@@ -37,6 +39,7 @@ class FieldControllerTest {
 	@Test
 	void shouldNotChangePositionOfPlayersPawnIfIsNotHeTurn () {
 		Field field1 = new Field(6, 4, 6);
+		field1.setPawn(6);
 		Field field2 = new Field(0, 6, 6);
 		GameController.getInstance().handleFieldWithPawnClick(field1);
 		GameController.getInstance().handleFieldWithoutPawnClick(field2);
@@ -47,6 +50,7 @@ class FieldControllerTest {
 	@Test
 	void shouldNotChangePositionOfPlayersPawnIfTargetFieldIsIncorrect () {
 		Field field1 = new Field(1, 4, 6);
+		field1.setPawn(1);
 		Field field2 = new Field(0, 8, 6);
 		GameController.getInstance().handleFieldWithPawnClick(field1);
 		GameController.getInstance().handleFieldWithoutPawnClick(field2);
@@ -57,6 +61,7 @@ class FieldControllerTest {
 	@Test
 	void shouldNotChangePositionOfPlayersOnePawnIfNeutralFieldWasChosenFirst () {
 		Field field1 = new Field(1, 4, 6);
+		field1.setPawn(1);
 		Field field2 = new Field(0, 8, 6);
 		GameController.getInstance().handleFieldWithoutPawnClick(field2);
 		GameController.getInstance().handleFieldWithPawnClick(field1);
@@ -67,17 +72,15 @@ class FieldControllerTest {
 	@Test
 	void shouldChangePositionOfTwoPlayersPawnIfIsAppropriateTurn () {
 		Field field0 = new Field(0, 4, 6);
-		Field field1 = new Field(1, 6, 6);
-		Field field2 = new Field(2, 8, 6);
-		System.out.println("" + field0.getPawn() + field1.getPawn() + field2.getPawn());
+		Field field1 = new Field(0, 6, 6);
+		field1.setPawn(1);
+		Field field2 = new Field(0, 8, 6);
+		field2.setPawn(2);
 		GameController.getInstance().handleFieldWithPawnClick(field1);
-		System.out.println("" + field0.getPawn() + field1.getPawn() + field2.getPawn());
 		GameController.getInstance().handleFieldWithoutPawnClick(field0);
-		System.out.println("" + field0.getPawn() + field1.getPawn() + field2.getPawn());
+		GameController.getInstance().endTurn();
 		GameController.getInstance().handleFieldWithPawnClick(field2);
-		System.out.println("" + field0.getPawn() + field1.getPawn() + field2.getPawn());
 		GameController.getInstance().handleFieldWithoutPawnClick(field1);
-		System.out.println("" + field0.getPawn() + field1.getPawn() + field2.getPawn());
 		assertEquals(1, field0.getPawn());
 		assertEquals(2, field1.getPawn());
 		assertEquals(0, field2.getPawn());

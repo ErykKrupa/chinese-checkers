@@ -1,5 +1,6 @@
 package dochniak_krupa.client;
 
+import javafx.embed.swing.JFXPanel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +10,7 @@ class BoardTest {
 
     @BeforeEach
     void createNewBoardInstance() {
+		JFXPanel fxPanel = new JFXPanel();
         Board.setInstance(6);
     }
 
@@ -21,12 +23,11 @@ class BoardTest {
 
     @Test
     void shouldGetCorrectField() {
-        Field expectedField = new Field(4, 12, 14);
         Field actualField = Board.getInstance().getField(12, 14);
-        assertEquals(expectedField.getPawn(), actualField.getPawn());
-        assertEquals(expectedField.getBase(), actualField.getBase());
-        assertEquals(expectedField.getX(), actualField.getX());
-        assertEquals(expectedField.getY(), actualField.getY());
+        assertEquals(4, actualField.getPawn());
+        assertEquals(1, actualField.getBase());
+        assertEquals(12, actualField.getX());
+        assertEquals(14, actualField.getY());
     }
 
     @Test

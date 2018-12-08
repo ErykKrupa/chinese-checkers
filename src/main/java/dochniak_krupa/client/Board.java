@@ -36,7 +36,7 @@ class Board extends GridPane
         for (int i = 0; i < 17; i++) {
             this.getRowConstraints().add(new RowConstraints(46));
         }
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 26; i++) {
             this.getColumnConstraints().add(new ColumnConstraints(28));
         }
 
@@ -89,7 +89,6 @@ class Board extends GridPane
 //        this.getRowConstraints().add(new RowConstraints(100));
         GridPane.setConstraints(endTurnBtn, 19, 15);
         this.getChildren().add(endTurnBtn);
-
     }
 
 //    Singleton Pattern

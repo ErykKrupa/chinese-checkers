@@ -14,18 +14,20 @@ class Board extends GridPane
 
     private Board(int playersNumber) {
 //        sets players according to playersNumber
-        Player.getPlayer(1).setInGame(true);
         if (playersNumber == 2) {
+            Player.getPlayer(1).setInGame(true);
             Player.getPlayer(4).setInGame(true);
         } else if (playersNumber == 3) {
+            Player.getPlayer(1).setInGame(true);
             Player.getPlayer(3).setInGame(true);
             Player.getPlayer(5).setInGame(true);
         }  else if (playersNumber == 4) {
             Player.getPlayer(2).setInGame(true);
-            Player.getPlayer(4).setInGame(true);
+            Player.getPlayer(3).setInGame(true);
             Player.getPlayer(5).setInGame(true);
+            Player.getPlayer(6).setInGame(true);
         } else if (playersNumber == 6) {
-            for (int i = 2; i <= 6; i++) {
+            for (int i = 1; i <= 6; i++) {
                 Player.getPlayer(i).setInGame(true);
             }
         } else {
@@ -86,7 +88,6 @@ class Board extends GridPane
         Button endTurnBtn = new Button("End Turn");
         endTurnBtn.setMinSize(90, 40);
         endTurnBtn.setOnAction(t -> GameController.getInstance().endTurn());
-//        this.getRowConstraints().add(new RowConstraints(100));
         GridPane.setConstraints(endTurnBtn, 19, 15);
         this.getChildren().add(endTurnBtn);
     }

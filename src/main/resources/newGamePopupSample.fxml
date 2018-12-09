@@ -4,26 +4,45 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.ToggleGroup?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dochniak_krupa.client.NewGamePopupController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dochniak_krupa.client.NewGamePopupController">
    <children>
-      <Label contentDisplay="CENTER" layoutX="68.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="161.0" text="GAME SETTINGS">
+      <Label contentDisplay="CENTER" layoutX="69.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="161.0" text="GAME SETTINGS">
          <font>
             <Font size="21.0" />
          </font>
       </Label>
       <Separator layoutX="14.0" layoutY="74.0" prefHeight="0.0" prefWidth="270.0" />
-      <Button layoutX="121.0" layoutY="337.0" mnemonicParsing="false" text="START" onMouseClicked="#newMultiPlayerGameBtnClick"/>
-      <RadioButton fx:id="players2RadioButton" selected="true" layoutX="84.0" layoutY="84.0" mnemonicParsing="false" text="2 Players">
+      <Button layoutX="109.0" layoutY="319.0" mnemonicParsing="false" onMouseClicked="#newMultiPlayerGameBtnClick" prefHeight="43.0" prefWidth="80.0" text="START">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <RadioButton fx:id="players2RadioButton" layoutX="96.0" layoutY="97.0" mnemonicParsing="false" selected="true" text="2 Players">
         <toggleGroup>
           <ToggleGroup fx:id="playersNumberToggleGroup" />
         </toggleGroup>
+         <font>
+            <Font size="14.0" />
+         </font>
       </RadioButton>
-      <RadioButton fx:id="players3RadioButton" layoutX="84.0" layoutY="114.0" mnemonicParsing="false" text="3 Players" toggleGroup="$playersNumberToggleGroup"/>
-      <RadioButton fx:id="players4RadioButton" layoutX="84.0" layoutY="144.0" mnemonicParsing="false" text="4 Players" toggleGroup="$playersNumberToggleGroup"/>
-      <RadioButton fx:id="players6RadioButton" layoutX="84.0" layoutY="174.0" mnemonicParsing="false" text="6 Players" toggleGroup="$playersNumberToggleGroup"/>
+      <RadioButton fx:id="players3RadioButton" layoutX="96.0" layoutY="137.0" mnemonicParsing="false" text="3 Players" toggleGroup="$playersNumberToggleGroup">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </RadioButton>
+      <RadioButton fx:id="players4RadioButton" layoutX="96.0" layoutY="177.0" mnemonicParsing="false" text="4 Players" toggleGroup="$playersNumberToggleGroup">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </RadioButton>
+      <RadioButton fx:id="players6RadioButton" layoutX="96.0" layoutY="217.0" mnemonicParsing="false" text="6 Players" toggleGroup="$playersNumberToggleGroup">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </RadioButton>
    </children>
 </AnchorPane>

@@ -18,7 +18,7 @@ class GameController {
 	private boolean jumped = false;
 
 //	  player turn counter
-    private int playerTurn = 1;
+    private int playerTurn = (int) (Math.random() * 6 + 1);
 
 //    for Singleton Pattern
     private static GameController gameController = null;

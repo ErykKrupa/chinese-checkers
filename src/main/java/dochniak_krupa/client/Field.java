@@ -69,8 +69,8 @@ class Field extends Circle
                 return Color.web("#ff9933"); //orange
             case 3:
                 return Color.web("#00ff00"); //green
-            case 4:
-                return Color.web("#cc00cc"); //purple
+			case 4:
+				return Color.web("#40d0e0"); //teal
             case 5:
                 return Color.web("#0000ff"); //blue
             case 6:

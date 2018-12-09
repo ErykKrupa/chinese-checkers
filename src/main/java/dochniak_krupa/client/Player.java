@@ -1,11 +1,14 @@
 package dochniak_krupa.client;
 
+import javafx.scene.control.Alert;
+
 class Player {
 	private static Player[] players = new Player[6];
 	private static int playersInGame = 0;
 	private boolean inGame = false;
 	private int reachedTargets = 0;
 	private int playerNumber;
+	private static int iterator = 1;
 
 	private Player(int playerNumber) {
 		this.playerNumber = playerNumber;
@@ -43,11 +46,16 @@ class Player {
 		System.out.println("Reached targets: " + reachedTargets);
 		if (reachedTargets == 10) {
 			setInGame(false);
-			System.out.println("PLAYER " + getPlayerNumber() + " WIN!!!!");
-			// TODO Window for winning player
+			Alert alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setTitle(iterator++ + ". Place!");
+			alert.setHeaderText(null);
+			alert.setContentText("Player " + getPlayerNumber() + " has reached his targets!");
+			alert.showAndWait();
 			if (playersInGame == 1) {
-				System.out.println("Only one player left, game over!");
-				// TODO Only one player left, window and end game
+				alert.setTitle("Game over!");
+				alert.setContentText("Only one player left...");
+				alert.showAndWait();
+				System.exit(0);
 			}
 		}
 	}

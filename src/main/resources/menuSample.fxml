@@ -8,30 +8,42 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dochniak_krupa.client.MenuController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dochniak_krupa.client.MenuController">
    <children>
-      <Label layoutX="172.0" layoutY="14.0" prefHeight="35.0" prefWidth="256.0" text="CHINESE CHECKERS GAME">
+      <Label layoutX="167.0" layoutY="20.0" prefHeight="35.0" prefWidth="256.0" text="CHINESE CHECKERS GAME">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Separator layoutX="15.0" layoutY="54.0" prefHeight="0.0" prefWidth="580.0" />
-      <Separator layoutX="292.0" layoutY="56.0" orientation="VERTICAL" prefHeight="339.0" prefWidth="8.0" />
-      <Label layoutX="119.0" layoutY="54.0" prefHeight="35.0" prefWidth="48.0" text="MENU">
+      <Separator layoutX="10.0" layoutY="65.0" prefHeight="0.0" prefWidth="580.0" />
+      <Separator layoutX="292.0" layoutY="66.0" orientation="VERTICAL" prefHeight="329.0" prefWidth="6.0" />
+      <Label layoutX="113.0" layoutY="82.0" prefHeight="35.0" prefWidth="62.0" text="MENU">
          <font>
-            <Font size="16.0" />
+            <Font size="18.0" />
          </font>
       </Label>
-      <Button id="newGameBtn" layoutX="87.0" layoutY="126.0" mnemonicParsing="false" onMouseClicked="#newMultiPlayerGameBtnClick" prefHeight="25.0" prefWidth="109.0" text="New game" />
-      <Button id="joinGameBtn" layoutX="87.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#joinGameBtnClick" prefHeight="25.0" prefWidth="109.0" text="Join game" />
-      <Button id="exitBtn" layoutX="89.0" layoutY="325.0" mnemonicParsing="false" onMouseClicked="#exitBtnClick" prefHeight="25.0" prefWidth="109.0" text="Exit" />
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="346.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
+      <Button id="newGameBtn" layoutX="87.0" layoutY="132.0" mnemonicParsing="false" onMouseClicked="#newMultiPlayerGameBtnClick" prefHeight="25.0" prefWidth="109.0" text="New game">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button id="joinGameBtn" layoutX="87.0" layoutY="167.0" mnemonicParsing="false" onMouseClicked="#joinGameBtnClick" prefHeight="25.0" prefWidth="109.0" text="Join game">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button id="exitBtn" layoutX="89.0" layoutY="325.0" mnemonicParsing="false" onMouseClicked="#exitBtnClick" prefHeight="25.0" prefWidth="109.0" text="Exit">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="177.0" fitWidth="223.0" layoutX="334.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/trylmajpg.jpg" />
          </image>
       </ImageView>
-      <Button layoutX="87.0" layoutY="226.0" mnemonicParsing="false" onMouseClicked="#startSinglePlayerGameBtnClick" prefHeight="25.0" prefWidth="109.0" text="Start game" />
-      <Label layoutX="87.0" layoutY="101.0" prefHeight="25.0" prefWidth="109.0" text="Multiplayer" />
-      <Label layoutX="87.0" layoutY="200.0" prefHeight="25.0" prefWidth="109.0" text="Singleplayer" />
+      <!--<Button layoutX="87.0" layoutY="226.0" mnemonicParsing="false" onMouseClicked="#startSinglePlayerGameBtnClick" prefHeight="25.0" prefWidth="109.0" text="Start game" />-->
+      <!--<Label layoutX="87.0" layoutY="101.0" prefHeight="25.0" prefWidth="109.0" text="Multiplayer" />-->
+      <!--<Label layoutX="87.0" layoutY="200.0" prefHeight="25.0" prefWidth="109.0" text="Singleplayer" />-->
    </children>
 </Pane>

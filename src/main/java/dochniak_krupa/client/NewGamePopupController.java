@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -25,6 +27,7 @@ public class NewGamePopupController {
 		} else if (players6RadioButton.isSelected()) {
 			Board.setInstance(6);
 		}
+		GameController.getInstance().endTurn();
 		Board.getInstance().setAlignment(Pos.CENTER);
 		Scene scene = new Scene(Board.getInstance(), 750, 800);
 
@@ -37,5 +40,9 @@ public class NewGamePopupController {
 		boardStage.setResizable(false);
 		boardStage.show();
 		MenuController.newGamePopupStage.hide();
+
+//		set end turn under space key
+		scene.getAccelerators().put(new KeyCodeCombination(KeyCode.SPACE),
+				()-> GameController.getInstance().endTurn());
 	}
 }

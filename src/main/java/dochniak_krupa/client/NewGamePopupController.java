@@ -20,36 +20,20 @@ public class NewGamePopupController {
 		// with specific number of players to server
 		if (players2RadioButton.isSelected()) {
 			Board.setInstance(2);
-			try
-			{
-				Client.getInstance().out.writeObject("CREATE MULTIPLAYER 2");
-			}catch (IOException e){
-				System.out.println("Unable to send command");
-			}
+			//Sending action message to server
+			Client.getInstance().out.println("CREATE MULTIPLAYER 2");
 		} else if (players3RadioButton.isSelected()) {
 			Board.setInstance(3);
-			try
-			{
-				Client.getInstance().out.writeObject("CREATE MULTIPLAYER 3");
-			}catch (IOException e){
-				System.out.println("Unable to send command");
-			}
+			//Sending action message to server
+			Client.getInstance().out.println("CREATE MULTIPLAYER 3");
 		} else if (players4RadioButton.isSelected()) {
 			Board.setInstance(4);
-			try
-			{
-				Client.getInstance().out.writeObject("CREATE MULTIPLAYER 4");
-			}catch (IOException e){
-				System.out.println("Unable to send command");
-			}
+			//Sending action message to server
+			Client.getInstance().out.println("CREATE MULTIPLAYER 4");
 		} else {
 			Board.setInstance(6);
-			try
-			{
-				Client.getInstance().out.writeObject("CREATE MULTIPLAYER 6");
-			}catch (IOException e){
-				System.out.println("Unable to send command");
-			}
+			//Sending action message to server
+			Client.getInstance().out.println("CREATE MULTIPLAYER 6");
 		}
 
 		//Reading response message form server

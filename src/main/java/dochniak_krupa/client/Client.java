@@ -13,12 +13,9 @@ import static java.lang.System.exit;
 
 public class Client extends Application {
 
-    //Setting ObjectOutputStream instead of regular PrintWriter
-    //to let us send clicked field reference to server
     Socket socket;
     BufferedReader in;
-    //PrintWriter out;
-    ObjectOutputStream out;
+    PrintWriter out;
 
     //Singleton
     private static Client client = null;
@@ -43,8 +40,7 @@ public class Client extends Application {
     private void connectToServer() throws IOException{
         socket = new Socket("",9091);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        //out = new PrintWriter(socket.getOutputStream(),true);
-        out = new ObjectOutputStream(socket.getOutputStream());
+        out = new PrintWriter(socket.getOutputStream(),true);
 
         //Printing server initial message
         for(int i=0; i<2; i++){

@@ -1,23 +1,13 @@
 package dochniak_krupa.server;
 
-import dochniak_krupa.client.Board;
-import dochniak_krupa.client.Field;
-
 import java.io.*;
 import java.net.Socket;
 
 public class Player extends Thread {
     Socket socket;
-    //BufferedReader input;
+    BufferedReader input;
     PrintWriter output;
-    ObjectInputStream input;
     int number;
-
-    //Fields for  movement handling
-    private Field currentField = null;
-    private Field targetField = null;
-
-    private Field field = null;
 
     Player(Socket socket, int number) {
         this.socket = socket;
@@ -26,10 +16,10 @@ public class Player extends Thread {
 
     public void run() {
         try {
-            /*input = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream()));*/
+            input = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
-            input = new ObjectInputStream(socket.getInputStream());
+
 
             //Sending initial message to the client
             output.println("Welcome to the Chinese Checkers server!");
@@ -45,11 +35,8 @@ public class Player extends Thread {
         try {
             while (true) {
                 String command = "";
-                try {
-                    command = (String) input.readObject();
-                } catch (ClassNotFoundException e) {
-                    System.out.println("Unable to read object");
-                }
+                command = input.readLine();
+
                 switch (command) {
                     case "CREATE MULTIPLAYER 2": {
 
@@ -58,7 +45,7 @@ public class Player extends Thread {
                             Game.getInstance().currNumOfPlayers++;
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
-                            output.println("Nie można stworzyć gry. Lobby już istnieje!");
+                            output.println("CREATE GAME PRIVILEGE REVOKED");
                         }
                     }
                     break;
@@ -68,7 +55,7 @@ public class Player extends Thread {
                             Game.getInstance().currNumOfPlayers++;
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
-                            output.println("Nie można stworzyć gry. Lobby już istnieje!");
+                            output.println("CREATE GAME PRIVILEGE REVOKED");
                         }
                     }
                     break;
@@ -78,7 +65,7 @@ public class Player extends Thread {
                             Game.getInstance().currNumOfPlayers++;
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
-                            output.println("Nie można stworzyć gry. Lobby już istnieje!");
+                            output.println("CREATE GAME PRIVILEGE REVOKED");
                         }
                     }
                     break;
@@ -88,7 +75,7 @@ public class Player extends Thread {
                             Game.getInstance().currNumOfPlayers++;
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
-                            //output.println("Nie można stworzyć gry. Lobby już istnieje!");
+                            output.println("CREATE GAME PRIVILEGE REVOKED");
                         }
                     }
                     break;
@@ -106,13 +93,8 @@ public class Player extends Thread {
                     }
                     break;
                     case "DO MOVE": {
-                        try {
-                            field = (Field) input.readObject();
 
-                            playerMoveHandler();
-                        } catch (ClassNotFoundException e) {
-                            System.out.println("Unable to read field object");
-                        }
+                        playerMoveHandler();
                     }
                     break;
                 }
@@ -129,13 +111,7 @@ public class Player extends Thread {
 
     }
 
-    //For now just writing message on a server side
     private void playerMoveHandler() {
-
-        //if player hasn't chosen his pawn yet
-        if (currentField == null) {
-            System.out.println("Didn't choose");
-            return;
-        }
+        //TODO
     }
 }

@@ -5,9 +5,7 @@ import javafx.scene.shape.Circle;
 
 import java.io.Serializable;
 
-//implementing Serializable interface is necessary to
-//let ObjectInputStream recognize that class
-public class Field extends Circle implements Serializable
+public class Field extends Circle
 {
 //    current pawn standing on the field
 //    1-6 mean player's 1-6 pawn

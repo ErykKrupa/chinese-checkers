@@ -25,13 +25,7 @@ public class MenuController {
     public void joinGameBtnClick(){
 
         //Sending performed action command to server
-        try
-        {
-            Client.getInstance().out.writeObject("JOIN GAME");
-
-        }catch (IOException e){
-            System.out.println("Unable to send command");
-        }
+        Client.getInstance().out.println("JOIN GAME");
 
         //Receiving server response
         String privilege = "";

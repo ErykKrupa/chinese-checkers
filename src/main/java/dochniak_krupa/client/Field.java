@@ -3,7 +3,9 @@ package dochniak_krupa.client;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-class Field extends Circle
+import java.io.Serializable;
+
+public class Field extends Circle
 {
 //    current pawn standing on the field
 //    1-6 mean player's 1-6 pawn
@@ -18,7 +20,7 @@ class Field extends Circle
 //    position x and y on the board
     private final int x, y;
 
-    Field(int playerNumber, int x, int y) {
+    public Field(int playerNumber, int x, int y) {
         this.x = x;
         this.y = y;
         setPawn(0);
@@ -29,15 +31,15 @@ class Field extends Circle
         setOnMouseClicked(t -> GameController.getInstance().handleFieldClick(this));
     }
 
-    int getX() {
+    public int getX() {
         return x;
     }
 
-    int getY() {
+    public int getY() {
         return y;
     }
 
-    int getPawn() {
+    public int getPawn() {
         return pawn;
     }
 

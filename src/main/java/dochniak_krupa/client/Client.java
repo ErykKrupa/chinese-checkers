@@ -18,6 +18,14 @@ public class Client extends Application {
     BufferedReader in;
     PrintWriter out;
 
+    //Singleton
+    private static Client client = null;
+
+    //Stores a number of client received from server
+    private String clientNumber;
+
+    public boolean isAbleToJoinGame;
+    public boolean isHost = false;
 
     static Stage menuStage = new Stage();
 //    sets and shows menu window
@@ -32,7 +40,7 @@ public class Client extends Application {
 
     //Handling server connection and setting input and output buffers
     private void connectToServer() throws IOException{
-        socket = new Socket("",9090);
+        socket = new Socket("",9091);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(),true);
 
@@ -41,24 +49,27 @@ public class Client extends Application {
             String initialMessage = in.readLine();
             System.out.println(initialMessage);
         }
+
+        clientNumber = in.readLine();
+    }
+
+    //    Singleton
+    private static void setInstance() {
+        client = new Client();
+    }
+
+    public static Client getInstance() {
+        return client;
     }
 
     public static void main(String[] args) throws InterruptedException{
-        Client client = new Client();
+        Client.setInstance();
         try{
             client.connectToServer();
         }catch (IOException e){
             System.out.println("Unable to connect with server!");
             Thread.sleep(3000);
             exit(0);
-        }finally {
-            try{
-                client.in.close();
-                client.out.close();
-                client.socket.close();
-            }catch(IOException e){
-                System.out.println("Unable to close streams and socket");
-            }
         }
         //Launching client first window
         launch(args);

@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.net.ServerSocket;
 
 public class Server {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
 
         int playerNumber = 1;
         int playerTurn;
 
         //Try-with-resources statement, so in the reason of that
         // we don't have to close listener
-        try (ServerSocket listener = new ServerSocket(9090)) {
+        try (ServerSocket listener = new ServerSocket(9091)) {
             System.out.println("Chinese checkers server is running");
             while (true) {
                 System.out.println("Waiting for the first player connection");

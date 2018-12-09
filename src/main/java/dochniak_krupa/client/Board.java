@@ -5,7 +5,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
-class Board extends GridPane
+public class Board extends GridPane
 {
 //    for Singleton Pattern
     private static Board board = null;
@@ -98,12 +98,17 @@ class Board extends GridPane
         board = new Board(playerNumber);
     }
 
-    static Board getInstance() {
+    public static Board getInstance() {
         return board;
     }
 
 //    get object of field at given position
-    Field getField(int x, int y) {
+    public Field getField(int x, int y) {
         return fields[x][y];
+    }
+
+//    return true if is this player in game
+    public boolean isPlayerInGame(int playerNumber) {
+        return players[playerNumber - 1];
     }
 }

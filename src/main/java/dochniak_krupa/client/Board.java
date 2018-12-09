@@ -106,9 +106,4 @@ public class Board extends GridPane
     public Field getField(int x, int y) {
         return fields[x][y];
     }
-
-//    return true if is this player in game
-    public boolean isPlayerInGame(int playerNumber) {
-        return players[playerNumber - 1];
-    }
 }

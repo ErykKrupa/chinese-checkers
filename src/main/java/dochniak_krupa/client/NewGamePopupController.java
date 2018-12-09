@@ -54,32 +54,24 @@ public class NewGamePopupController {
 
 		//Initializing board window after checking privileges for that
 		if (privilege.equals("CREATE GAME PRIVILEGE GRANTED")){
+			//		end turn for confidence that first player who will get turn is in the game
+			GameController.getInstance().endTurn();
+			Board.getInstance().setAlignment(Pos.CENTER);
+			Scene scene = new Scene(Board.getInstance(), 750, 800);
+
+//		why doesn't it work?
+			scene.setFill(Color.web("#99ffff7f")); //translucent light blue
+
 			Stage boardStage = new Stage();
-			Scene scene = new Scene(Board.getInstance(), 800, 800);
-			scene.setFill(Color.web("#99ffff7f"));
 			boardStage.setScene(scene);
-			boardStage.setTitle("Chinese Checkers - Menu");
+			boardStage.setTitle("Chinese Checkers");
 			boardStage.setResizable(false);
 			boardStage.show();
 			MenuController.newGamePopupStage.hide();
-		}
-//		end turn for confidence that first player who will get turn is in the game
-		GameController.getInstance().endTurn();
-		Board.getInstance().setAlignment(Pos.CENTER);
-		Scene scene = new Scene(Board.getInstance(), 750, 800);
-
-//		why doesn't it work?
-		scene.setFill(Color.web("#99ffff7f")); //translucent light blue
-
-		Stage boardStage = new Stage();
-		boardStage.setScene(scene);
-		boardStage.setTitle("Chinese Checkers");
-		boardStage.setResizable(false);
-		boardStage.show();
-		MenuController.newGamePopupStage.hide();
 
 //		set end turn under space key
-		scene.getAccelerators().put(new KeyCodeCombination(KeyCode.SPACE),
-				()-> GameController.getInstance().endTurn());
+			scene.getAccelerators().put(new KeyCodeCombination(KeyCode.SPACE),
+					()-> GameController.getInstance().endTurn());
+		}
 	}
 }

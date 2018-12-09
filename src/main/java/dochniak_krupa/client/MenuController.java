@@ -65,10 +65,6 @@ public class MenuController {
         }
     }
 
-    public void startSinglePlayerGameBtnClick(){
-        //TODO
-    }
-
     public void exitBtnClick(){
         exit(0);
     }

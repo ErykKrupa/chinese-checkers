@@ -1,5 +1,6 @@
 package dochniak_krupa.client;
 
+import javafx.embed.swing.JFXPanel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +10,12 @@ class BoardTest {
 
     @BeforeEach
     void createNewBoardInstance() {
+//        for running tests with JavaFX components and controls
+		JFXPanel fxPanel = new JFXPanel();
         Board.setInstance(6);
+        while (GameController.getInstance().playerTurn != 1) {
+            GameController.getInstance().endTurn();
+        }
     }
 
     @Test
@@ -21,20 +27,19 @@ class BoardTest {
 
     @Test
     void shouldGetCorrectField() {
-        Field expectedField = new Field(4, 12, 14);
         Field actualField = Board.getInstance().getField(12, 14);
-        assertEquals(expectedField.getPawn(), actualField.getPawn());
-        assertEquals(expectedField.getBase(), actualField.getBase());
-        assertEquals(expectedField.getX(), actualField.getX());
-        assertEquals(expectedField.getY(), actualField.getY());
+        assertEquals(4, actualField.getPawn());
+        assertEquals(1, actualField.getBase());
+        assertEquals(12, actualField.getX());
+        assertEquals(14, actualField.getY());
     }
 
     @Test
     void shouldGetNewInstanceOfBoard() {
         assertEquals(1, Board.getInstance().getField(10, 2).getPawn());
         assertEquals(0, Board.getInstance().getField(8, 4).getPawn());
-        FieldController.getInstance().handleFieldWithPawnClick(Board.getInstance().getField(10, 2));
-        FieldController.getInstance().handleFieldWithoutPawnClick(Board.getInstance().getField(8, 4));
+        GameController.getInstance().handleFieldClick(Board.getInstance().getField(10, 2));
+        GameController.getInstance().handleFieldClick(Board.getInstance().getField(8, 4));
         assertEquals(0, Board.getInstance().getField(10, 2).getPawn());
         assertEquals(1, Board.getInstance().getField(8, 4).getPawn());
         Board.setInstance(6);

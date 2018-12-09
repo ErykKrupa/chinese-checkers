@@ -10,7 +10,7 @@ class Field extends Circle
 //    0 means no pawn on this field
     private int pawn;
 
-//    represents which player started the game on this field
+//    represents which player has to reach this field for win the game
 //    1-6 mean player's 1-6 base
 //    0 means no base on this field, it is neutral, central part of the board
     private final int base;
@@ -21,11 +21,12 @@ class Field extends Circle
     Field(int playerNumber, int x, int y) {
         this.x = x;
         this.y = y;
-        setPawn(playerNumber);
+        setPawn(0);
         base = playerNumber;
         setRadius(23);
         setStrokeWidth(4);
         setStroke(getColor(playerNumber));
+        setOnMouseClicked(t -> GameController.getInstance().handleFieldClick(this));
     }
 
     int getX() {
@@ -44,11 +45,6 @@ class Field extends Circle
     void setPawn(int pawn) {
         this.pawn = pawn;
         setFill(getColor(pawn));
-        if (pawn == 0) {
-            setOnMouseClicked(t -> FieldController.getInstance().handleFieldWithoutPawnClick(this));
-        } else {
-            setOnMouseClicked(t -> FieldController.getInstance().handleFieldWithPawnClick(this));
-        }
     }
 
     int getBase() {
@@ -66,13 +62,13 @@ class Field extends Circle
             case 1:
                 return Color.web("#ff0000"); //red
             case 2:
-                return Color.web("#cc00cc"); //purple
-            case 3:
                 return Color.web("#ff9933"); //orange
-            case 4:
-                return Color.web("#0000ff"); //blue
-            case 5:
+            case 3:
                 return Color.web("#00ff00"); //green
+			case 4:
+				return Color.web("#40d0e0"); //teal
+            case 5:
+                return Color.web("#0000ff"); //blue
             case 6:
                 return Color.web("#000000"); //black
             default:

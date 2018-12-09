@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -22,7 +23,8 @@ public class Client extends Application {
 //    sets and shows menu window
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/menuSample.fxml"));
-        menuStage.setScene(new Scene(root, 600, 400));
+//        color doesn't work
+        menuStage.setScene(new Scene(root, 600, 400, Color.WHITE));
         menuStage.setTitle("Chinese Checkers - Menu");
         menuStage.setResizable(false);
         menuStage.show();

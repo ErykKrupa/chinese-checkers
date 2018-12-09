@@ -28,17 +28,18 @@ class FieldTest {
         Field field = new Field(1, 0, 0);
         assertEquals(23, field.getRadius());
         assertEquals(4, field.getStrokeWidth());
-        assertEquals(1, field.getPawn());
+        assertEquals(0, field.getPawn());
         assertEquals(1, field.getBase());
         assertEquals(0, field.getX());
         assertEquals(0, field.getY());
         assertEquals(Color.web("#ff0000"), field.getStroke());
-        assertEquals(Color.web("#ff0000"), field.getFill());
+        assertEquals(Color.web("#c0c0c0"), field.getFill());
     }
 
     @Test
     void shouldChangePositionOfPawn() {
         Field field1 = new Field(3, 4, 6);
+        field1.setPawn(3);
         Field field2 = new Field(0, 6, 6);
         field2.setPawn(field1.getPawn());
         field1.setPawn(0);

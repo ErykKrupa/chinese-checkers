@@ -10,8 +10,12 @@ class BoardTest {
 
     @BeforeEach
     void createNewBoardInstance() {
+//        for running tests with JavaFX components and controls
 		JFXPanel fxPanel = new JFXPanel();
         Board.setInstance(6);
+        while (GameController.getInstance().playerTurn != 1) {
+            GameController.getInstance().endTurn();
+        }
     }
 
     @Test
@@ -34,8 +38,8 @@ class BoardTest {
     void shouldGetNewInstanceOfBoard() {
         assertEquals(1, Board.getInstance().getField(10, 2).getPawn());
         assertEquals(0, Board.getInstance().getField(8, 4).getPawn());
-        GameController.getInstance().handleFieldWithPawnClick(Board.getInstance().getField(10, 2));
-        GameController.getInstance().handleFieldWithoutPawnClick(Board.getInstance().getField(8, 4));
+        GameController.getInstance().handleFieldClick(Board.getInstance().getField(10, 2));
+        GameController.getInstance().handleFieldClick(Board.getInstance().getField(8, 4));
         assertEquals(0, Board.getInstance().getField(10, 2).getPawn());
         assertEquals(1, Board.getInstance().getField(8, 4).getPawn());
         Board.setInstance(6);

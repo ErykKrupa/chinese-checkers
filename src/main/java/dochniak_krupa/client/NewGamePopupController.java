@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 
 public class NewGamePopupController {
 
+//	radio buttons created in fxml
 	@FXML private RadioButton players2RadioButton;
 	@FXML private RadioButton players3RadioButton;
 	@FXML private RadioButton players4RadioButton;
@@ -27,6 +28,7 @@ public class NewGamePopupController {
 		} else if (players6RadioButton.isSelected()) {
 			Board.setInstance(6);
 		}
+//		end turn for confidence that first player who will get turn is in the game
 		GameController.getInstance().endTurn();
 		Board.getInstance().setAlignment(Pos.CENTER);
 		Scene scene = new Scene(Board.getInstance(), 750, 800);

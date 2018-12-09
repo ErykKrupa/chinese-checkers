@@ -18,7 +18,7 @@ class GameController {
 	private boolean jumped = false;
 
 //	  player turn counter
-    private int playerTurn = (int) (Math.random() * 6 + 1);
+	int playerTurn = (int) (Math.random() * 6 + 1);
 
 //    for Singleton Pattern
     private static GameController gameController = null;
@@ -26,56 +26,61 @@ class GameController {
 //    for Singleton Pattern
     private GameController() {}
 
-//    method on mouse click for field without pawn
-    void handleFieldWithoutPawnClick(Field field) {
-        targetField = field;
-//        if player hasn't chosen his pawn yet
-        if (currentField == null) {
-			System.out.println("Didn't choose");
-			return;
-		}
-//		check if it is starting field of current pawn
-		if (targetField == startingField) {
-			go();
-			System.out.println("Return");
-			went = false;
-			jumped = false;
-		}
-//		check if pawn try to go outside tha base
-		if (!(currentField.getPawn() == currentField.getBase() && targetField.getBase() == 0)) {
-			//		check if pawn can go on this field
-			if ((Math.abs(currentField.getX() - targetField.getX()) == 1 &&
-					Math.abs(currentField.getY() - targetField.getY()) == 1 ||
-					Math.abs(currentField.getX() - targetField.getX()) == 2 &&
-							currentField.getY() - targetField.getY() == 0) && !jumped && !went) {
-				go();
-				System.out.println("I'm going " + targetField.getPawn());
-				went = true;
+//    method on mouse click for fields
+    void handleFieldClick(Field field) {
+		//    on mouse click for field without pawn
+    	if (field.getPawn() == 0) {
+			targetField = field;
+			//if player hasn't chosen his pawn yet
+			if (currentField == null) {
+				System.out.println("Didn't choose");
+				return;
 			}
-			//		check if pawn can jump on this field
-			else if (isAbleToJump() && ! went) {
+			//check if it is starting field of current pawn
+			if (targetField == startingField) {
 				go();
-				System.out.println("I'm jumping " + targetField.getPawn());
-				jumped = true;
+				System.out.println("Return");
+				went = false;
+				jumped = false;
 			}
-		} else {
-			System.out.println("I can't go there");
+			//check if pawn is in its own base and it tries to go outside
+			if (! (currentField.getPawn() == currentField.getBase() && targetField.getBase() == 0)) {
+				//check if pawn can go on this field
+				if ((Math.abs(currentField.getX() - targetField.getX()) == 1 &&
+						Math.abs(currentField.getY() - targetField.getY()) == 1 ||
+						Math.abs(currentField.getX() - targetField.getX()) == 2 &&
+								currentField.getY() - targetField.getY() == 0) && ! jumped && ! went) {
+					go();
+					System.out.println("I'm going " + targetField.getPawn());
+					went = true;
+				}
+				//check if pawn can jump on this field
+				else if (isAbleToJump() && ! went) {
+					go();
+					System.out.println("I'm jumping " + targetField.getPawn());
+					jumped = true;
+				} else {
+					System.out.println("I can't go there");
+				}
+			} else {
+				System.out.println("I can't go there");
+			}
+		}
+		//on mouse click for field with pawn
+		else {
+			//player can choose only his pawn and only,
+			//when he didn't choose pawn in this turn yet,
+			//or didn't make a move
+			if (field.getPawn() == playerTurn &&
+					(startingField == null || startingField.getPawn() == playerTurn)) {
+				startingField = field;
+				currentField = field;
+				System.out.println("Chose " + currentField.getPawn());
+			} else {
+				System.out.println("I can't choose that");
+			}
 		}
     }
-
-//    method on mouse click for field with pawn
-    void handleFieldWithPawnClick(Field field) {
-//    	player can choose only his pawn and only,
-// 		when he didn't choose pawn in this turn yet,
-// 		or didn't make a move
-    	if (field.getPawn() == playerTurn && (startingField == null || startingField.getPawn() == playerTurn)) {
-    		startingField = field;
-    		currentField = field;
-			System.out.println("Chose " + currentField.getPawn());
-		} else {
-			System.out.println("I can't choose that");
-		}
-	}
 
 //	end turn for this player
 	void endTurn() {

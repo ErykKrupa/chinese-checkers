@@ -42,7 +42,7 @@ class Board extends GridPane
             this.getColumnConstraints().add(new ColumnConstraints(28));
         }
 
-//        TL;DR: this algorithm creates fields on the boards
+//        TL;DR: this algorithm creates fields and pawns on the boards
 //        don't waste time for analyse it
         for (int i = 0; i < 25; i++) {
             for (int j = 0; j < 17; j++) {
@@ -85,6 +85,7 @@ class Board extends GridPane
             }
         }
 
+//        end turn button and action for it
         Button endTurnBtn = new Button("End Turn");
         endTurnBtn.setMinSize(90, 40);
         endTurnBtn.setOnAction(t -> GameController.getInstance().endTurn());

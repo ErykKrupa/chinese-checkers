@@ -21,7 +21,7 @@ class Player {
 //	stores place for which players are playing now
 	private static int podium = 1;
 
-	private Player(int playerNumber) {
+	protected Player(int playerNumber) {
 		this.playerNumber = playerNumber;
 	}
 

@@ -98,12 +98,12 @@ public class Board extends GridPane
         board = new Board(playerNumber);
     }
 
-    public static Board getInstance() {
+    static Board getInstance() {
         return board;
     }
 
 //    get object of field at given position
-    public Field getField(int x, int y) {
+    Field getField(int x, int y) {
         return fields[x][y];
     }
 }

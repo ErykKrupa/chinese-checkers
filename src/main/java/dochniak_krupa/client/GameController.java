@@ -32,17 +32,12 @@ class GameController {
 				System.out.println("Didn't choose pawn");
 			} break;
 			case "GO":{
-				System.out.println("GO COMM EXEC");//
 				String sx1="",sy1="",sx2="",sy2="";
 				try{
 					sx1 = Client.getInstance().in.readLine();
-					System.out.println(sx1);//
 					sy1 = Client.getInstance().in.readLine();
-					System.out.println(sy1);//
 					sx2 = Client.getInstance().in.readLine();
-					System.out.println(sx2);//
 					sy2 = Client.getInstance().in.readLine();
-					System.out.println(sy2);//
 				}catch (IOException e){
 					System.out.println("Unable to read message!");
 				}

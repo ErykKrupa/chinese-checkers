@@ -9,7 +9,6 @@ public class PlayerHandler extends Thread {
     PrintWriter output;
     int number;
 
-    //////////////////////////////////////////////////////
     //	  starting position of pawn
     private Field startingField = null;
 
@@ -28,7 +27,6 @@ public class PlayerHandler extends Thread {
     //	  player turn counter
     //int playerTurn = (int) (Math.random() * 6 + 1);
     int playerTurn = 1;
-    ///////////////////////////////////////////////////////
 
     PlayerHandler(Socket socket, int number) {
         this.socket = socket;
@@ -40,7 +38,6 @@ public class PlayerHandler extends Thread {
             input = new BufferedReader(
                     new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
-
 
             //Sending initial message to the client
             output.println("Welcome to the Chinese Checkers server!");
@@ -172,6 +169,7 @@ public class PlayerHandler extends Thread {
                     System.out.println("Return");
                     went = false;
                     jumped = false;
+                    return;
                 }
                 //check if pawn is in its own base and it tries to go outside
                 if (!(currentField.getPawn() == currentField.getBase() && targetField.getBase() == 0)) {

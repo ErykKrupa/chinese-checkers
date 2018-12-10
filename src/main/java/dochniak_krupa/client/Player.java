@@ -33,7 +33,7 @@ class Player {
 		return players[playerNumber -1];
 	}
 
-//	delete all players, for tests
+//	deletes all players, for tests
 	static void flushPlayers() {
 		for (Player player : players) {
 			player = null;

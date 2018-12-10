@@ -10,6 +10,7 @@ public class Game {
 
     private Game(int numberOfPlayersInGame){
         this.declaredNumberOfPlayersInGame=numberOfPlayersInGame;
+        Board.setInstance(numberOfPlayersInGame);
     }
 
     //    Singleton Pattern

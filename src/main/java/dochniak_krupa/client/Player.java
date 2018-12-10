@@ -54,28 +54,6 @@ class Player {
 		this.inGame = inGame;
 	}
 
-//	player reaches one target
-	void reachTarget() {
-		reachedTargets++;
-		System.out.println("Reached targets: " + reachedTargets);
-//		if reached targets equal to 10, player wins
-		if (reachedTargets == 10) {
-			setInGame(false);
-			Alert alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.setTitle(podium++ + ". Place!");
-			alert.setHeaderText(null);
-			alert.setContentText("Player " + getPlayerNumber() + " has reached his targets!");
-			alert.showAndWait();
-//			if one players left, end the game
-			if (playersInGame == 1) {
-				alert.setTitle("Game over!");
-				alert.setContentText("Only one player left...");
-				alert.showAndWait();
-				System.exit(0);
-			}
-		}
-	}
-
 	int getPlayerNumber() {
 		return playerNumber;
 	}

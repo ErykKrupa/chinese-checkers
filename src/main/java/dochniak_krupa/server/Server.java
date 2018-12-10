@@ -11,26 +11,26 @@ public class Server {
 
         //Try-with-resources statement, so in the reason of that
         // we don't have to close listener
-        try (ServerSocket listener = new ServerSocket(9091)) {
+        try (ServerSocket listener = new ServerSocket(9090)) {
             System.out.println("Chinese checkers server is running");
             while (true) {
                 System.out.println("Waiting for the first player connection");
-                Player player1 = new Player(listener.accept(), 1);
+                PlayerHandler player1 = new PlayerHandler(listener.accept(), 1);
                 player1.start();
                 System.out.println("Waiting for the second player connection");
-                Player player2 = new Player(listener.accept(), 2);
+                PlayerHandler player2 = new PlayerHandler(listener.accept(), 2);
                 player2.start();
                 System.out.println("Waiting for the third player connection");
-                Player player3 = new Player(listener.accept(), 3);
+                PlayerHandler player3 = new PlayerHandler(listener.accept(), 3);
                 player3.start();
                 System.out.println("Waiting for the fourth player connection");
-                Player player4 = new Player(listener.accept(), 4);
+                PlayerHandler player4 = new PlayerHandler(listener.accept(), 4);
                 player4.start();
                 System.out.println("Waiting for the fifth player connection");
-                Player player5 = new Player(listener.accept(), 5);
+                PlayerHandler player5 = new PlayerHandler(listener.accept(), 5);
                 player5.start();
                 System.out.println("Waiting for the sixth player connection");
-                Player player6 = new Player(listener.accept(), 6);
+                PlayerHandler player6 = new PlayerHandler(listener.accept(), 6);
                 player6.start();
             }
         } catch (IOException e) {

@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
 
-    @BeforeEach
+    /*@BeforeEach
     void createNewBoardInstance() {
 //        for running tests with JavaFX components and controls
 		JFXPanel fxPanel = new JFXPanel();
@@ -44,5 +44,5 @@ class BoardTest {
         assertEquals(1, Board.getInstance().getField(8, 4).getPawn());
         Board.setInstance(6);
         assertEquals(1, Board.getInstance().getField(10, 2).getPawn());
-        assertEquals(0, Board.getInstance().getField(8, 4).getPawn());}
+        assertEquals(0, Board.getInstance().getField(8, 4).getPawn());}*/
 }

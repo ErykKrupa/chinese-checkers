@@ -1,13 +1,7 @@
-package dochniak_krupa.client;
+package dochniak_krupa.server;
 
-import javafx.scene.control.Button;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-
-public class Board extends GridPane
-{
-//    for Singleton Pattern
+public class Board {
+    //    for Singleton Pattern
     private static Board board = null;
 
     private Field[][] fields = new Field[25][17];
@@ -32,14 +26,6 @@ public class Board extends GridPane
             }
         } else {
             throw new IllegalArgumentException("Players number must equals to 2, 3, 4 or 6.");
-        }
-
-//        getConstraints make suitable free space between fields
-        for (int i = 0; i < 17; i++) {
-            this.getRowConstraints().add(new RowConstraints(46));
-        }
-        for (int i = 0; i < 26; i++) {
-            this.getColumnConstraints().add(new ColumnConstraints(28));
         }
 
 //        TL;DR: this algorithm creates fields and pawns on the boards
@@ -79,22 +65,11 @@ public class Board extends GridPane
                 } else {
                     continue;
                 }
-//                add prepared fields to pane
-                GridPane.setConstraints(fields[i][j], i, j);
-                this.getChildren().add(fields[i][j]);
-
             }
         }
-
-//        end turn button and action for it
-        Button endTurnBtn = new Button("End Turn");
-        endTurnBtn.setMinSize(90, 40);
-        endTurnBtn.setOnAction(t -> GameController.getInstance().endTurn());
-        GridPane.setConstraints(endTurnBtn, 19, 15);
-        this.getChildren().add(endTurnBtn);
     }
 
-//    Singleton Pattern
+    //    Singleton Pattern
     static void setInstance(int playerNumber) {
         board = new Board(playerNumber);
     }
@@ -103,7 +78,7 @@ public class Board extends GridPane
         return board;
     }
 
-//    get object of field at given position
+    //    get object of field at given position
     public Field getField(int x, int y) {
         return fields[x][y];
     }

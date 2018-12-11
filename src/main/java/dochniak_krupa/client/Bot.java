@@ -2,12 +2,12 @@ package dochniak_krupa.client;
 
 import java.util.ArrayList;
 
-public class Bot {
+class Bot {
 	private final int playerNumber;
 	private Field[] pawns = new Field[10];
 	private Field[] bases = new Field[10];
 	ArrayList<ArrayList<Field>> paths = new ArrayList<>();
-	public Bot (int playerNumber) {
+	Bot (int playerNumber) {
 		this.playerNumber = playerNumber;
 		int pawsIterator = 0;
 		for (int i = 0; i < 25; i++) {
@@ -58,8 +58,15 @@ public class Bot {
 	private void checkNeighbouringFields(Field startingField) {
 		for (int j = -1; j <= 1; j++) {
 			for (int i = -1; i <= 1; i+=2) {
-				Field targetField = Board.getInstance().getField(
-						startingField.getX() + (j == 0 ? 2 * i : i),startingField.getY() + j);
+				if (startingField.getY() + j < 0 || 16 < startingField.getY() + j) {
+					return;
+				}
+				Field targetField = null;
+				if (j == 0 && (0 <= startingField.getX() + (2 * i) && startingField.getX() + (2 * i) <= 24)) {
+					targetField = Board.getInstance().getField(startingField.getX() + (2 * i), startingField.getY() + j);
+				} else if (j != 0 && 0 <= startingField.getX() + i && startingField.getX() + i <= 24) {
+					targetField = Board.getInstance().getField(startingField.getX() + i, startingField.getY() + j);
+				}
 				if (targetField != null && targetField.getPawn() == 0) {
 					ArrayList<Field> path = new ArrayList<>();
 					path.add(startingField);
@@ -71,6 +78,10 @@ public class Bot {
 	}
 
 	private void checkDistantFields(Field field, int deltaX, int deltaY, ArrayList<Field> oldPath) {
+		if (field.getX() + 2 * deltaX < 0 || 24 < field.getX() + 2 * deltaX ||
+				field.getY() + 2 * deltaY < 0 || 16 < field.getY() + 2 * deltaY) {
+			return;
+		}
 		Field obstacleField = Board.getInstance().getField(field.getX() + deltaX, field.getY() + deltaY);
 		Field targetField = Board.getInstance().getField(field.getX() + 2 * deltaX, field.getY() + 2 * deltaY);
 		boolean isTargetOnTheOldPath = false;
@@ -79,8 +90,8 @@ public class Bot {
 				isTargetOnTheOldPath = true;
 			}
 		}
-		if (!isTargetOnTheOldPath && (deltaX == 0 && deltaY == 0) ||
-				(targetField != null && obstacleField.getPawn() != 0 && targetField.getPawn() == 0)) {
+		if (!isTargetOnTheOldPath && ((deltaX == 0 && deltaY == 0) ||
+				(targetField != null && obstacleField.getPawn() != 0 && targetField.getPawn() == 0))) {
 			ArrayList<Field> newPath = new ArrayList<>(oldPath);
 			newPath.add(targetField);
 			paths.add(newPath);
@@ -93,7 +104,7 @@ public class Bot {
 		}
 	}
 
-	private void checkMoves() {
+	private ArrayList<Field> findTheBestMove() {
 		for (int i = 0; i < 10; i ++) {
 			checkNeighbouringFields(pawns[i]);
 			checkDistantFields(pawns[i], 0, 0, new ArrayList<>());
@@ -103,7 +114,7 @@ public class Bot {
 			i++;
 		}
 		int maxProgress = 0;
-		ArrayList<Field> bestPath;
+		ArrayList<Field> bestPath = new ArrayList<>();
 		for (ArrayList<Field> path : paths) {
 			int progress = distance(path.get(0), bases[i]) - distance(path.get(path.size() - 1), bases[i]);
 			if (progress > maxProgress) {
@@ -111,5 +122,25 @@ public class Bot {
 				bestPath = path;
 			}
 		}
+		paths = new ArrayList<>();
+		return bestPath;
+	}
+
+	void executeMovement() {
+		ArrayList<Field> theBestMove = findTheBestMove();
+		for (Field step : theBestMove) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException ignored) {}
+			GameController.getInstance().handleFieldClick(step);
+		}
+		if (theBestMove.size() > 0) {
+			for (int i = 0; i < 10; i++) {
+				if (pawns[i] == theBestMove.get(0)) {
+					pawns[i] = theBestMove.get(theBestMove.size() - 1);
+				}
+			}
+		}
+		GameController.getInstance().endTurn();
 	}
 }

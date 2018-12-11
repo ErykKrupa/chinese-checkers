@@ -53,7 +53,7 @@ public class NewGamePopupController {
 		}
 
 		//Initializing board window after checking privileges for that
-		if (privilege.equals("CREATE GAME PRIVILEGE GRANTED")){
+		if (privilege.equals("CREATE GAME PRIVILEGE GRANTED")) {
 			//		end turn for confidence that first player who will get turn is in the game
 			GameController.getInstance().endTurn();
 			Board.getInstance().setAlignment(Pos.CENTER);

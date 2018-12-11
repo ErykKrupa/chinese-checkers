@@ -1,7 +1,11 @@
 package dochniak_krupa.client;
 
 class GameController {
-
+//	Bot bot1 = new Bot(1);
+//	Bot bot2 = new Bot(2);
+//	Bot bot3 = new Bot(3);
+//	Bot bot4 = new Bot(4);
+//	Bot bot5 = new Bot(5);
 //	  starting position of pawn
 	private Field startingField = null;
 
@@ -102,6 +106,17 @@ class GameController {
 				playerTurn++;
 			}
 		} while (!(Player.getPlayer(playerTurn).isInGame()));
+//		if (playerTurn == 1) {
+//			bot1.executeMovement();
+//		} else if (playerTurn == 2) {
+//			bot2.executeMovement();
+//		}  else if (playerTurn == 3) {
+//			bot3.executeMovement();
+//		}  else if (playerTurn == 4) {
+//			bot4.executeMovement();
+//		}  else if (playerTurn == 5) {
+//			bot5.executeMovement();
+//		}
 	}
 
 //	push pawn on target field

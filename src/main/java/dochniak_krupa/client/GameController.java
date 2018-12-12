@@ -17,9 +17,12 @@ class GameController {
 	private boolean jumped = false;
 
 //	  player turn counter
-	int playerTurn = (int) (Math.random() * 6 + 1);
+	private int playerTurn = (int) (Math.random() * 6 + 1);
 
+//	  bots for each player (implement runnable)
 	private Bot[] bots = new Bot[6];
+
+//	  threads for all bots
 	private Thread[] botThreads = new Thread[6];
 
 //    for Singleton Pattern
@@ -134,6 +137,8 @@ class GameController {
     	return gameController;
 	}
 
+//    creates bots for all players and starts these which were randomly chosen
+// 	  according to number of bots from NewGamePopupController
 	void createBots(int numberOfBots) {
     	for (int i = 0; i < 6; i++) {
 			if (Player.getPlayer(i + 1).isInGame()) {
@@ -148,6 +153,10 @@ class GameController {
 			}
 			botThreads[rand].start();
 		}
+	}
+
+	int getPlayerTurn() {
+    	return playerTurn;
 	}
 //    for tests, it's necessary to run all tests with fresh FieldController
 	void destroyInstance() {

@@ -1,6 +1,5 @@
 package dochniak_krupa.client;
 
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 
 class Player {

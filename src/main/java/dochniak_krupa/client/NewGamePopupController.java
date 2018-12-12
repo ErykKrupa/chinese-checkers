@@ -20,6 +20,7 @@ public class NewGamePopupController {
 	@FXML private RadioButton players4RadioButton;
 	@FXML private RadioButton players6RadioButton;
 
+//	text fields stores amount of bots
 	@FXML private TextField numberOfBots;
 
 	@FXML public void newMultiPlayerGameBtnClick() {
@@ -76,6 +77,7 @@ public class NewGamePopupController {
 		}
 	}
 
+//	increments amount of bots, number od players must be equal to or greater than amount of bots
 	@FXML public void incrementBotsClick() {
 		if (!(players2RadioButton.isSelected() && numberOfBots.getText().equals("2")) &&
 				!(players3RadioButton.isSelected() && numberOfBots.getText().equals("3")) &&
@@ -85,12 +87,14 @@ public class NewGamePopupController {
 		}
 	}
 
+//	decrements amount of bots which must be greater than or equals zero
 	@FXML public void decrementBotsClick() {
 		if (!numberOfBots.getText().equals("0")) {
 			numberOfBots.setText(Integer.parseInt(numberOfBots.getText()) - 1 + "");
 		}
 	}
 
+//  if player has chosen less player than bots, decrease the amount of bots
 	@FXML public void checkNumberOfBots() {
 		if (players2RadioButton.isSelected() && Integer.parseInt(numberOfBots.getText()) > 2) {
 			numberOfBots.setText("2");

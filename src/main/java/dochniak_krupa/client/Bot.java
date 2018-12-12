@@ -5,12 +5,14 @@ import javafx.application.Platform;
 import java.util.ArrayList;
 
 class Bot implements Runnable{
-	private final int playerNumber;
-	private Field[] pawns = new Field[10];
-	private Field[] bases = new Field[10];
-	ArrayList<ArrayList<Field>> paths = new ArrayList<>();
-	int reachedBases = 0;
-	private volatile boolean running = false;
+	private final int playerNumber; // bot needs to know which player represents
+	private Field[] pawns = new Field[10]; // stores info about pawns of bot
+	private Field[] bases = new Field[10]; // stores info about bases of bot
+	private ArrayList<ArrayList<Field>> paths = new ArrayList<>(); // stores all possible paths to movement
+	private int reachedBases = 0; // bot needs to know how many bases reached, because have to finish his works in in a timely manner
+	private volatile boolean running = false; // true if bot is running
+
+	//	gathers info about his pawns and bases
 	Bot (int playerNumber) {
 		this.playerNumber = playerNumber;
 		int pawsIterator = 0;
@@ -49,6 +51,7 @@ class Bot implements Runnable{
 		}
 	}
 
+	//	counts distance in single no-jump movement
 	private int distance(Field currentField, Field targetField) {
 		int distanceX = Math.abs(currentField.getX() - targetField.getX());
 		int distanceY = Math.abs(currentField.getY() - targetField.getY());
@@ -59,6 +62,7 @@ class Bot implements Runnable{
 		}
 	}
 
+	//	checks all paths to neighbouring fields (no need to jump)
 	private void checkNeighbouringFields(Field startingField) {
 		for (int j = -1; j <= 1; j++) {
 			for (int i = -1; i <= 1; i+=2) {
@@ -81,6 +85,7 @@ class Bot implements Runnable{
 		}
 	}
 
+	//	checks all paths to distant fields where there is a need to jump one or more time (by recursion)
 	private void checkDistantFields(Field field, int deltaX, int deltaY, ArrayList<Field> oldPath) {
 		if (field.getX() + 2 * deltaX < 0 || 24 < field.getX() + 2 * deltaX ||
 				field.getY() + 2 * deltaY < 0 || 16 < field.getY() + 2 * deltaY) {
@@ -108,6 +113,7 @@ class Bot implements Runnable{
 		}
 	}
 
+	//	finds the best paths from gathered
 	private ArrayList<Field> findTheBestMove() {
 		for (int i = 0; i < 10; i ++) {
 			boolean pawnOnTarget = false;
@@ -140,11 +146,12 @@ class Bot implements Runnable{
 		return bestPath;
 	}
 
+	//	executes movement
 	private void executeMovement() {
 		ArrayList<Field> theBestMove = findTheBestMove();
 		for (Field step : theBestMove) {
 			try {
-				Thread.sleep(500);
+				Thread.sleep(200);
 			} catch (InterruptedException ignored) {}
 			GameController.getInstance().handleFieldClick(step);
 		}
@@ -160,23 +167,27 @@ class Bot implements Runnable{
 		}
 	}
 
+	//	runs the bot, executes movement and ends turn. Terminate the thread if all bases are reached
 	@Override
 	public void run() {
 		running = true;
 		while (running) {
 			try {
-				Thread.sleep(300);
+				Thread.sleep(250); //less than 5 milliseconds can generate graphic artifact
 			} catch (InterruptedException ignored) {}
-			if (GameController.getInstance().playerTurn == playerNumber) {
+			if (GameController.getInstance().getPlayerTurn() == playerNumber) {
 				executeMovement();
 				if (reachedBases == 10) {
 					terminate();
+					Platform.runLater(() ->	GameController.getInstance().endTurn());
+				} else {
+					GameController.getInstance().endTurn();
 				}
-				Platform.runLater(() ->	GameController.getInstance().endTurn());
 			}
 		}
 	}
 
+	//	terminate thread
 	public void terminate() {
 		running = false;
 	}

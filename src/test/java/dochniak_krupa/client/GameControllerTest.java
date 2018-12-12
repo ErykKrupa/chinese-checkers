@@ -15,7 +15,7 @@ class GameControllerTest {
 		Board.setInstance(6);
 		Player.flushPlayers();
 		GameController.getInstance().destroyInstance();
-		while (GameController.getInstance().playerTurn != 1) {
+		while (GameController.getInstance().getPlayerTurn() != 1) {
 			GameController.getInstance().endTurn();
 		}
 	}
@@ -24,7 +24,7 @@ class GameControllerTest {
 		GameController.getInstance().handleFieldClick(Board.getInstance().getField(10, 2));
 		GameController.getInstance().handleFieldClick(Board.getInstance().getField(8, 4));
 		GameController.getInstance().destroyInstance();
-		while (GameController.getInstance().playerTurn != 1) {
+		while (GameController.getInstance().getPlayerTurn() != 1) {
 			GameController.getInstance().endTurn();
 		}
 		GameController.getInstance().handleFieldClick(Board.getInstance().getField(18, 4));
@@ -39,10 +39,10 @@ class GameControllerTest {
 		Field field1 = new Field(2, 4, 6);
 		field1.setPawn(1);
 		Field field2 = new Field(0, 6, 6);
-		System.out.println((GameController.getInstance().playerTurn));
+		System.out.println((GameController.getInstance().getPlayerTurn()));
 		GameController.getInstance().handleFieldClick(field1);
 		GameController.getInstance().handleFieldClick(field2);
-		System.out.println((GameController.getInstance().playerTurn));
+		System.out.println((GameController.getInstance().getPlayerTurn()));
 		assertEquals(0, field1.getPawn());
 		assertEquals(1, field2.getPawn());
 	}
@@ -87,13 +87,13 @@ class GameControllerTest {
 		field1.setPawn(1);
 		Field field2 = new Field(0, 8, 6);
 		field2.setPawn(2);
-		System.out.println((GameController.getInstance().playerTurn));
+		System.out.println((GameController.getInstance().getPlayerTurn()));
 		GameController.getInstance().handleFieldClick(field1);
 		GameController.getInstance().handleFieldClick(field0);
 		GameController.getInstance().endTurn();
 		GameController.getInstance().handleFieldClick(field2);
 		GameController.getInstance().handleFieldClick(field1);
-		System.out.println((GameController.getInstance().playerTurn));
+		System.out.println((GameController.getInstance().getPlayerTurn()));
 		assertEquals(1, field0.getPawn());
 		assertEquals(2, field1.getPawn());
 		assertEquals(0, field2.getPawn());
@@ -103,10 +103,10 @@ class GameControllerTest {
 	void shouldJumpIfItIsPawnBetweenCurrentAndTargetPosition() {
 		assertEquals(1, Board.getInstance().getField(10, 2).getPawn());
 		assertEquals(0, Board.getInstance().getField(8, 4).getPawn());
-		System.out.println((GameController.getInstance().playerTurn));
+		System.out.println((GameController.getInstance().getPlayerTurn()));
 		GameController.getInstance().handleFieldClick(Board.getInstance().getField(10, 2));
 		GameController.getInstance().handleFieldClick(Board.getInstance().getField(8, 4));
-		System.out.println((GameController.getInstance().playerTurn));
+		System.out.println((GameController.getInstance().getPlayerTurn()));
 		assertEquals(0, Board.getInstance().getField(10, 2).getPawn());
 		assertEquals(1, Board.getInstance().getField(8, 4).getPawn());
 	}

@@ -1,12 +1,16 @@
 package dochniak_krupa.client;
 
+import javafx.application.Platform;
+
 import java.util.ArrayList;
 
-class Bot {
+class Bot implements Runnable{
 	private final int playerNumber;
 	private Field[] pawns = new Field[10];
 	private Field[] bases = new Field[10];
 	ArrayList<ArrayList<Field>> paths = new ArrayList<>();
+	int reachedBases = 0;
+	private volatile boolean isRunning = true;
 	Bot (int playerNumber) {
 		this.playerNumber = playerNumber;
 		int pawsIterator = 0;
@@ -106,19 +110,29 @@ class Bot {
 
 	private ArrayList<Field> findTheBestMove() {
 		for (int i = 0; i < 10; i ++) {
-			checkNeighbouringFields(pawns[i]);
-			checkDistantFields(pawns[i], 0, 0, new ArrayList<>());
+			boolean pawnOnTarget = false;
+			for (int j = 0; j < reachedBases; j++) {
+				if (bases[j] == pawns[i]) {
+					pawnOnTarget = true;
+				}
+			}
+			if (!pawnOnTarget) {
+				checkNeighbouringFields(pawns[i]);
+				checkDistantFields(pawns[i], 0, 0, new ArrayList<>());
+			}
 		}
-		int i = 0;
-		while (bases[i].getBase() == bases[i].getPawn()) {
-			i++;
-		}
-		int maxProgress = 0;
 		ArrayList<Field> bestPath = new ArrayList<>();
+		int maxProgress = 0;
+		int maxDistance = 0;
 		for (ArrayList<Field> path : paths) {
-			int progress = distance(path.get(0), bases[i]) - distance(path.get(path.size() - 1), bases[i]);
+			int distance = distance(path.get(0), bases[reachedBases]);
+			int progress = distance - distance(path.get(path.size() - 1), bases[reachedBases]);
 			if (progress > maxProgress) {
 				maxProgress = progress;
+				maxDistance = distance;
+				bestPath = path;
+			} else if (progress == maxProgress && distance > maxDistance) {
+				maxDistance = distance;
 				bestPath = path;
 			}
 		}
@@ -126,11 +140,11 @@ class Bot {
 		return bestPath;
 	}
 
-	void executeMovement() {
+	private void executeMovement() {
 		ArrayList<Field> theBestMove = findTheBestMove();
 		for (Field step : theBestMove) {
 			try {
-				Thread.sleep(100);
+				Thread.sleep(300);
 			} catch (InterruptedException ignored) {}
 			GameController.getInstance().handleFieldClick(step);
 		}
@@ -141,6 +155,28 @@ class Bot {
 				}
 			}
 		}
-		GameController.getInstance().endTurn();
+		while (reachedBases != 10 && bases[reachedBases].getBase() == bases[reachedBases].getPawn()) {
+			reachedBases++;
+		}
+	}
+
+	@Override
+	public void run() {
+		while (isRunning) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException ignored) {}
+			if (GameController.getInstance().playerTurn == playerNumber) {
+				executeMovement();
+				if (reachedBases == 10) {
+					terminate();
+				}
+				Platform.runLater(() ->	GameController.getInstance().endTurn());
+			}
+		}
+	}
+
+	public void terminate() {
+		isRunning = false;
 	}
 }

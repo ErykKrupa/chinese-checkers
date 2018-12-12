@@ -1,11 +1,6 @@
 package dochniak_krupa.client;
 
 class GameController {
-//	Bot bot1 = new Bot(1);
-//	Bot bot2 = new Bot(2);
-//	Bot bot3 = new Bot(3);
-//	Bot bot4 = new Bot(4);
-//	Bot bot5 = new Bot(5);
 //	  starting position of pawn
 	private Field startingField = null;
 
@@ -23,6 +18,9 @@ class GameController {
 
 //	  player turn counter
 	int playerTurn = (int) (Math.random() * 6 + 1);
+
+	private Bot[] bots = new Bot[6];
+	private Thread[] botThreads = new Thread[6];
 
 //    for Singleton Pattern
     private static GameController gameController = null;
@@ -106,17 +104,6 @@ class GameController {
 				playerTurn++;
 			}
 		} while (!(Player.getPlayer(playerTurn).isInGame()));
-//		if (playerTurn == 1) {
-//			bot1.executeMovement();
-//		} else if (playerTurn == 2) {
-//			bot2.executeMovement();
-//		}  else if (playerTurn == 3) {
-//			bot3.executeMovement();
-//		}  else if (playerTurn == 4) {
-//			bot4.executeMovement();
-//		}  else if (playerTurn == 5) {
-//			bot5.executeMovement();
-//		}
 	}
 
 //	push pawn on target field
@@ -147,6 +134,16 @@ class GameController {
     	return gameController;
 	}
 
+	void createBots() {
+    	for (int i = 0; i < 6; i++) {
+			if (Player.getPlayer(i + 1).isInGame()) {
+				bots[i] = new Bot(i + 1);
+				botThreads[i] = new Thread(bots[i]);
+				botThreads[i].start();
+			}
+		}
+//		bots[0].terminate();
+	}
 //    for tests, it's necessary to run all tests with fresh FieldController
 	void destroyInstance() {
 		gameController = null;

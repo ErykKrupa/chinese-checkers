@@ -44,6 +44,8 @@ public class NewGamePopupController {
 			Client.getInstance().out.println("CREATE MULTIPLAYER 6");
 		}
 
+		GameController.getInstance().createBots();
+
 		//Reading response message form server
 		String privilege = "";
 		try{

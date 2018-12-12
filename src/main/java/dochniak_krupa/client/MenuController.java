@@ -62,6 +62,12 @@ public class MenuController {
             boardStage.setTitle("Chinese Checkers - Menu");
             boardStage.setResizable(false);
             boardStage.show();
+
+            //player was connected successfully
+            Player.getInstance().setReadyForGame(true);
+
+            //tests
+            Player.getInstance().setPlayerTurnNow(false);
         }
     }
 

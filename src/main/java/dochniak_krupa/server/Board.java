@@ -1,8 +1,15 @@
 package dochniak_krupa.server;
 
 public class Board {
+
+    //Those coordinates are necessary for Board update performing.
+    private volatile int targetX, targetY, currentX, currentY;
+
+    //true if client has to update it's Board instance
+    private volatile boolean wasModified = false;
+
     //    for Singleton Pattern
-    private static Board board = null;
+    private static volatile Board board = null;
 
     private Field[][] fields = new Field[25][17];
 
@@ -74,12 +81,52 @@ public class Board {
         board = new Board(playerNumber);
     }
 
-    public static Board getInstance() {
+    public static synchronized Board getInstance() {
         return board;
     }
 
     //    get object of field at given position
     public Field getField(int x, int y) {
         return fields[x][y];
+    }
+
+    public synchronized boolean getWasModified() {
+        return wasModified;
+    }
+
+    public synchronized void setWasModified(boolean wasModified) {
+        this.wasModified = wasModified;
+    }
+
+    public synchronized int getTargetX() {
+        return targetX;
+    }
+
+    public synchronized void setTargetX(int targetX) {
+        this.targetX = targetX;
+    }
+
+    public synchronized int getTargetY() {
+        return targetY;
+    }
+
+    public synchronized void setTargetY(int targetY) {
+        this.targetY = targetY;
+    }
+
+    public synchronized int getCurrentX() {
+        return currentX;
+    }
+
+    public synchronized void setCurrentX(int currentX) {
+        this.currentX = currentX;
+    }
+
+    public synchronized int getCurrentY() {
+        return currentY;
+    }
+
+    public synchronized void setCurrentY(int currentY) {
+        this.currentY = currentY;
     }
 }

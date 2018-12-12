@@ -69,9 +69,14 @@ public class NewGamePopupController {
 			boardStage.show();
 			MenuController.newGamePopupStage.hide();
 
+			//player was connected successfully
+			Player.getInstance().setReadyForGame(true);
+
+			//tests
+			Player.getInstance().setPlayerTurnNow(true);
+
 //		set end turn under space key
-			//scene.getAccelerators().put(new KeyCodeCombination(KeyCode.SPACE),
-			//		()-> GameController.getInstance().endTurn());
+			scene.getAccelerators().put(new KeyCodeCombination(KeyCode.SPACE), ()-> GameController.getInstance().endTurn());
 		}
 	}
 }

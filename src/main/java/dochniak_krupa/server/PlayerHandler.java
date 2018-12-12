@@ -60,6 +60,7 @@ public class PlayerHandler extends Thread {
 
                         if (Game.getInstance() == null) {
                             Game.setInstance(2);
+                            Board.setInstance(2);
                             Game.getInstance().currNumOfPlayers++;
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
@@ -70,6 +71,7 @@ public class PlayerHandler extends Thread {
                     case "CREATE MULTIPLAYER 3": {
                         if (Game.getInstance() == null) {
                             Game.setInstance(3);
+                            Board.setInstance(3);
                             Game.getInstance().currNumOfPlayers++;
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
@@ -80,6 +82,7 @@ public class PlayerHandler extends Thread {
                     case "CREATE MULTIPLAYER 4": {
                         if (Game.getInstance() == null) {
                             Game.setInstance(4);
+                            Board.setInstance(4);
                             Game.getInstance().currNumOfPlayers++;
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
@@ -90,6 +93,7 @@ public class PlayerHandler extends Thread {
                     case "CREATE MULTIPLAYER 6": {
                         if (Game.getInstance() == null) {
                             Game.setInstance(6);
+                            Board.setInstance(6);
                             Game.getInstance().currNumOfPlayers++;
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
@@ -239,6 +243,16 @@ public class PlayerHandler extends Thread {
 
     //	push pawn on target field
     private void go() {
+        //saving coordinates that must be sent to all connected client
+        //except the one which has it's turn now
+        Board b = Board.getInstance();
+        b.setWasModified(true);
+        b.setTargetX(targetField.getX());
+        b.setTargetY(targetField.getY());
+        b.setCurrentX(currentField.getX());
+        b.setCurrentY(currentField.getY());
+
+        //sending communicate to client which has it's turn now
         output.println("GO");
         //sending target field x
         output.println(targetField.getX());
@@ -249,6 +263,7 @@ public class PlayerHandler extends Thread {
         //sending current field y
         output.println(currentField.getY());
 
+        //server-side Board update
         targetField.setPawn(currentField.getPawn());
         currentField.setPawn(0);
         currentField = targetField;

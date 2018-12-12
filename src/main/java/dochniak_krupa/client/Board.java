@@ -99,7 +99,7 @@ public class Board extends GridPane
         board = new Board(playerNumber);
     }
 
-    public static Board getInstance() {
+    static Board getInstance() {
         return board;
     }
 

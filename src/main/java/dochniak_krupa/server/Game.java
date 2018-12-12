@@ -6,11 +6,10 @@ public class Game {
     int currNumOfPlayers=0;
 
     //Singleton
-    private static Game game;
+    private static volatile Game game;
 
     private Game(int numberOfPlayersInGame){
         this.declaredNumberOfPlayersInGame=numberOfPlayersInGame;
-        Board.setInstance(numberOfPlayersInGame);
     }
 
     //    Singleton Pattern
@@ -18,7 +17,7 @@ public class Game {
         game = new Game(declaredNumberOfPlayersInGame);
     }
 
-    public static Game getInstance() {
+    public static synchronized Game getInstance() {
         return game;
     }
 

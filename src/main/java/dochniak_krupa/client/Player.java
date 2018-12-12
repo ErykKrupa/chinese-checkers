@@ -1,7 +1,5 @@
 package dochniak_krupa.client;
 
-import javafx.scene.control.Alert;
-
 class Player {
 //	only six players can be create
 	private static Player[] players = new Player[6];
@@ -20,6 +18,40 @@ class Player {
 
 //	stores place for which players are playing now
 	private static int podium = 1;
+
+	private boolean isReadyForGame = false;
+
+	public boolean isReadyForGame() {
+		return isReadyForGame;
+	}
+
+	public void setReadyForGame(boolean readyForGame) {
+		isReadyForGame = readyForGame;
+	}
+
+	//stores actual player's turn
+	private boolean isPlayerTurnNow = true;
+
+	public boolean isPlayerTurnNow() {
+		return isPlayerTurnNow;
+	}
+
+	public void setPlayerTurnNow(boolean playerTurnNow) {
+		isPlayerTurnNow = playerTurnNow;
+	}
+
+	//Singleton
+	private static volatile Player player = null;
+	//    Singleton Pattern
+	static void setInstance(int playerNumber) {
+		player = new Player(playerNumber);
+	}
+
+	public static synchronized Player getInstance() {
+		return player;
+	}
+
+
 
 	private Player(int playerNumber) {
 		this.playerNumber = playerNumber;

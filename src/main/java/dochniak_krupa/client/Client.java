@@ -22,7 +22,7 @@ public class Client extends Application {
     private static Client client = null;
 
     //Stores a number of client received from server
-    private String clientNumber;
+    private static int clientNumber;
 
     public boolean isAbleToJoinGame;
     public boolean isHost = false;
@@ -50,7 +50,13 @@ public class Client extends Application {
             System.out.println(initialMessage);
         }
 
-        clientNumber = in.readLine();
+        int clientNumber;
+        String clientNumberString = in.readLine();
+        try{
+            clientNumber = Integer.parseInt(clientNumberString);
+        }catch (NumberFormatException e){
+            System.out.println("Unable to parse player number!");
+        }
     }
 
     //    Singleton
@@ -65,13 +71,22 @@ public class Client extends Application {
     public static void main(String[] args) throws InterruptedException{
         Client.setInstance();
         try{
+            System.out.println("Trying to connect with server");
             client.connectToServer();
         }catch (IOException e){
             System.out.println("Unable to connect with server!");
             Thread.sleep(3000);
             exit(0);
         }
-        //Launching client first window
+
+        //creating client instance
+        Player.setInstance(Client.clientNumber);
+
+        //launching thread that actualizes board after another player move
+        OtherPlayerMovementHandler otherPlayerMovementHandler = new OtherPlayerMovementHandler();
+        otherPlayerMovementHandler.start();
+
+        //launching client first window
         launch(args);
     }
 }

@@ -134,15 +134,20 @@ class GameController {
     	return gameController;
 	}
 
-	void createBots() {
+	void createBots(int numberOfBots) {
     	for (int i = 0; i < 6; i++) {
 			if (Player.getPlayer(i + 1).isInGame()) {
 				bots[i] = new Bot(i + 1);
 				botThreads[i] = new Thread(bots[i]);
-				botThreads[i].start();
 			}
 		}
-//		bots[0].terminate();
+		for (int i = 0; i < numberOfBots; i++) {
+			int rand = (int) (Math.random() * 6);
+			while (botThreads[rand] == null || botThreads[rand].isAlive()) {
+				rand = (int) (Math.random() * 6);
+			}
+			botThreads[rand].start();
+		}
 	}
 //    for tests, it's necessary to run all tests with fresh FieldController
 	void destroyInstance() {

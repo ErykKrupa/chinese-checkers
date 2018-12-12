@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.paint.Color;
@@ -18,6 +19,8 @@ public class NewGamePopupController {
 	@FXML private RadioButton players3RadioButton;
 	@FXML private RadioButton players4RadioButton;
 	@FXML private RadioButton players6RadioButton;
+
+	@FXML private TextField numberOfBots;
 
 	@FXML public void newMultiPlayerGameBtnClick() {
 		//Creating proper board instance and sending create game response
@@ -38,13 +41,9 @@ public class NewGamePopupController {
 			Board.setInstance(6);
 			//Sending action message to server
 			Client.getInstance().out.println("CREATE MULTIPLAYER 6");
-		} else {
-			Board.setInstance(6);
-			//Sending action message to server
-			Client.getInstance().out.println("CREATE MULTIPLAYER 6");
 		}
 
-		GameController.getInstance().createBots();
+		GameController.getInstance().createBots(Integer.parseInt(numberOfBots.getText()));
 
 		//Reading response message form server
 		String privilege = "";
@@ -74,6 +73,31 @@ public class NewGamePopupController {
 //		set end turn under space key
 			scene.getAccelerators().put(new KeyCodeCombination(KeyCode.SPACE),
 					()-> GameController.getInstance().endTurn());
+		}
+	}
+
+	@FXML public void incrementBotsClick() {
+		if (!(players2RadioButton.isSelected() && numberOfBots.getText().equals("2")) &&
+				!(players3RadioButton.isSelected() && numberOfBots.getText().equals("3")) &&
+				!(players4RadioButton.isSelected() && numberOfBots.getText().equals("4")) &&
+				!(players6RadioButton.isSelected() && numberOfBots.getText().equals("6"))) {
+			numberOfBots.setText(Integer.parseInt(numberOfBots.getText()) + 1 + "");
+		}
+	}
+
+	@FXML public void decrementBotsClick() {
+		if (!numberOfBots.getText().equals("0")) {
+			numberOfBots.setText(Integer.parseInt(numberOfBots.getText()) - 1 + "");
+		}
+	}
+
+	@FXML public void checkNumberOfBots() {
+		if (players2RadioButton.isSelected() && Integer.parseInt(numberOfBots.getText()) > 2) {
+			numberOfBots.setText("2");
+		} else if (players3RadioButton.isSelected() && Integer.parseInt(numberOfBots.getText()) > 3) {
+			numberOfBots.setText("3");
+		} else if (players4RadioButton.isSelected() && Integer.parseInt(numberOfBots.getText()) > 4) {
+			numberOfBots.setText("4");
 		}
 	}
 }

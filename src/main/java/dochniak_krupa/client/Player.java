@@ -1,5 +1,6 @@
 package dochniak_krupa.client;
 
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 
 class Player {
@@ -62,9 +63,9 @@ class Player {
 		if (reachedTargets == 10) {
 			setInGame(false);
 			Alert alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.setTitle(podium++ + ". Place!");
+			alert.setTitle(podium++ + ". place!");
 			alert.setHeaderText(null);
-			alert.setContentText("Player " + getPlayerNumber() + " has reached his targets!");
+			alert.setContentText(toString() + " player has reached his targets!");
 			alert.showAndWait();
 //			if one players left, end the game
 			if (playersInGame == 1) {
@@ -73,6 +74,26 @@ class Player {
 				alert.showAndWait();
 				System.exit(0);
 			}
+		}
+	}
+
+	public String toString() throws IllegalArgumentException {
+		switch(playerNumber)
+		{
+			case 1:
+				return "Red";
+			case 2:
+				return "Orange";
+			case 3:
+				return "Green";
+			case 4:
+				return "Teal";
+			case 5:
+				return "Blue";
+			case 6:
+				return "Black";
+			default:
+				throw new IllegalArgumentException("Player number must be in range 0-6");
 		}
 	}
 

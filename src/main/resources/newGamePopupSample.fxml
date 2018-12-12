@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -16,12 +17,7 @@
          </font>
       </Label>
       <Separator layoutX="14.0" layoutY="74.0" prefHeight="0.0" prefWidth="270.0" />
-      <Button layoutX="109.0" layoutY="319.0" mnemonicParsing="false" onMouseClicked="#newMultiPlayerGameBtnClick" prefHeight="43.0" prefWidth="80.0" text="START">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <RadioButton fx:id="players2RadioButton" layoutX="96.0" layoutY="97.0" mnemonicParsing="false" selected="true" text="2 Players">
+      <RadioButton fx:id="players2RadioButton" layoutX="96.0" layoutY="97.0" mnemonicParsing="false" onMouseClicked="#checkNumberOfBots" selected="true" text="2 Players">
         <toggleGroup>
           <ToggleGroup fx:id="playersNumberToggleGroup" />
         </toggleGroup>
@@ -29,20 +25,37 @@
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="players3RadioButton" layoutX="96.0" layoutY="137.0" mnemonicParsing="false" text="3 Players" toggleGroup="$playersNumberToggleGroup">
+      <RadioButton fx:id="players3RadioButton" layoutX="96.0" layoutY="127.0" mnemonicParsing="false" onMouseClicked="#checkNumberOfBots" text="3 Players" toggleGroup="$playersNumberToggleGroup">
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="players4RadioButton" layoutX="96.0" layoutY="177.0" mnemonicParsing="false" text="4 Players" toggleGroup="$playersNumberToggleGroup">
+      <RadioButton fx:id="players4RadioButton" layoutX="96.0" layoutY="157.0" mnemonicParsing="false" onMouseClicked="#checkNumberOfBots" text="4 Players" toggleGroup="$playersNumberToggleGroup">
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="players6RadioButton" layoutX="96.0" layoutY="217.0" mnemonicParsing="false" text="6 Players" toggleGroup="$playersNumberToggleGroup">
+      <RadioButton fx:id="players6RadioButton" layoutX="96.0" layoutY="187.0" mnemonicParsing="false" text="6 Players" toggleGroup="$playersNumberToggleGroup">
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
+      <Label layoutX="91.0" layoutY="255.0" text="Bots: ">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="numberOfBots" alignment="CENTER" editable="false" layoutX="136.0" layoutY="250.0" prefHeight="30.0" prefWidth="29.0" text="0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <Button layoutX="177.0" layoutY="240.0" mnemonicParsing="false" onMouseClicked="#incrementBotsClick" prefHeight="25.0" prefWidth="25.0" text="+" textAlignment="CENTER" />
+      <Button layoutX="177.0" layoutY="265.0" mnemonicParsing="false" onMouseClicked="#decrementBotsClick" prefHeight="25.0" prefWidth="25.0" text="-" textAlignment="CENTER" />
+      <Button layoutX="109.0" layoutY="319.0" mnemonicParsing="false" onMouseClicked="#newMultiPlayerGameBtnClick" prefHeight="43.0" prefWidth="80.0" text="START">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

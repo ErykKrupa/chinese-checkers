@@ -10,7 +10,7 @@ class Bot implements Runnable{
 	private Field[] bases = new Field[10];
 	ArrayList<ArrayList<Field>> paths = new ArrayList<>();
 	int reachedBases = 0;
-	private volatile boolean isRunning = true;
+	private volatile boolean running = false;
 	Bot (int playerNumber) {
 		this.playerNumber = playerNumber;
 		int pawsIterator = 0;
@@ -144,7 +144,7 @@ class Bot implements Runnable{
 		ArrayList<Field> theBestMove = findTheBestMove();
 		for (Field step : theBestMove) {
 			try {
-				Thread.sleep(300);
+				Thread.sleep(500);
 			} catch (InterruptedException ignored) {}
 			GameController.getInstance().handleFieldClick(step);
 		}
@@ -162,9 +162,10 @@ class Bot implements Runnable{
 
 	@Override
 	public void run() {
-		while (isRunning) {
+		running = true;
+		while (running) {
 			try {
-				Thread.sleep(10);
+				Thread.sleep(300);
 			} catch (InterruptedException ignored) {}
 			if (GameController.getInstance().playerTurn == playerNumber) {
 				executeMovement();
@@ -177,6 +178,6 @@ class Bot implements Runnable{
 	}
 
 	public void terminate() {
-		isRunning = false;
+		running = false;
 	}
 }

@@ -10,6 +10,8 @@ public class PlayerHandler extends Thread {
 
     //client number sending to client after connection
     private int clientNumber;
+
+    //player number of client in game
     private int playerNumber;
 
     //	  starting position of pawn
@@ -55,15 +57,13 @@ public class PlayerHandler extends Thread {
 
                 switch (command) {
                     case "CREATE MULTIPLAYER 2": {
-
                         if (Game.getInstance() == null) {
                             Game.setInstance(2);
                             Board.setInstance(2);
                             Game.getInstance().currNumOfPlayers++;
                             Game.getInstance().setIsClientInGame(clientNumber,true);
-                            Player.getPlayer(1).setClientNumber(clientNumber);
                             playerNumber = 1;
-
+                            //sending game create permission to it's host
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
                             output.println("CREATE GAME PRIVILEGE REVOKED");
@@ -76,9 +76,8 @@ public class PlayerHandler extends Thread {
                             Board.setInstance(3);
                             Game.getInstance().currNumOfPlayers++;
                             Game.getInstance().setIsClientInGame(clientNumber,true);
-                            Player.getPlayer(1).setClientNumber(clientNumber);
                             playerNumber = 1;
-
+                            //sending game create permission to it's host
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
                             output.println("CREATE GAME PRIVILEGE REVOKED");
@@ -90,10 +89,8 @@ public class PlayerHandler extends Thread {
                             Game.setInstance(4);
                             Board.setInstance(4);
                             Game.getInstance().setIsClientInGame(clientNumber,true);
-
-                            Player.getPlayer(2).setClientNumber(clientNumber);
                             playerNumber = 2;
-
+                            //sending game create permission to it's host
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
                             output.println("CREATE GAME PRIVILEGE REVOKED");
@@ -108,10 +105,8 @@ public class PlayerHandler extends Thread {
                             Board.setInstance(6);
                             Game.getInstance().currNumOfPlayers++;
                             Game.getInstance().setIsClientInGame(clientNumber,true);
-
-                            Player.getPlayer(1).setClientNumber(clientNumber);
                             playerNumber = 1;
-
+                            //sending game create permission to it's host
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
                             output.println("CREATE GAME PRIVILEGE REVOKED");
@@ -119,68 +114,43 @@ public class PlayerHandler extends Thread {
                     }
                     break;
                     case "JOIN GAME": {
-                        if (Game.getInstance() != null
-                                && Game.getInstance().currNumOfPlayers < Game.getInstance().declaredNumberOfPlayersInGame) {
-                            Game.getInstance().setIsClientInGame(clientNumber,true);
+                        Game g = Game.getInstance();
+                        if (g != null && g.currNumOfPlayers < g.declaredNumberOfPlayersInGame) {
+                            g.setIsClientInGame(clientNumber,true);
+
+                            //sending privilege for game joining to client
                             output.println("JOIN GAME PRIVILEGE GRANTED");
 
-                            if(Game.getInstance().declaredNumberOfPlayersInGame==2) {
-                                Player.getPlayer(4).setClientNumber(clientNumber);
-                                playerNumber = 4;
-                            }else if(Game.getInstance().declaredNumberOfPlayersInGame==3){
-                                switch(Game.getInstance().currNumOfPlayers){
-                                    case 1: {
-                                        Player.getPlayer(3).setClientNumber(clientNumber);
-                                        playerNumber = 3;
-                                    } break;
-
-                                    case 2: {
-                                        Player.getPlayer(5).setClientNumber(clientNumber);
-                                        playerNumber = 5;
-                                    } break;
-                                }
-                            }else if(Game.getInstance().declaredNumberOfPlayersInGame==4){
-                                switch(Game.getInstance().currNumOfPlayers){
-                                    case 1: {
-                                        Player.getPlayer(3).setClientNumber(clientNumber);
-                                        playerNumber = 3;
-                                    } break;
-
-                                    case 2: {
-                                        Player.getPlayer(5).setClientNumber(clientNumber);
-                                        playerNumber = 5;
-                                    } break;
-
-                                    case 3: {
-                                        Player.getPlayer(6).setClientNumber(clientNumber);
-                                        playerNumber = 6;
-                                    } break;
-                                }
-
-                            }else if(Game.getInstance().declaredNumberOfPlayersInGame==6){
-                                int playerNum = Game.getInstance().currNumOfPlayers+1;
-                                Player.getPlayer(playerNum).setClientNumber(playerNum);
-                                playerNumber = playerNum;
+                            switch(g.declaredNumberOfPlayersInGame) {
+                                case 2: playerNumber = 4; break;
+                                case 3: {
+                                    switch (g.currNumOfPlayers) {
+                                        case 1: playerNumber = 3; break;
+                                        case 2: playerNumber = 5; break;
+                                    }
+                                } break;
+                                case 4: {
+                                    switch (g.currNumOfPlayers) {
+                                        case 1: playerNumber = 3; break;
+                                        case 2: playerNumber = 5; break;
+                                        case 3: playerNumber = 6; break;
+                                    }
+                                } break;
+                                case 6: playerNumber = g.currNumOfPlayers + 1; break;
                             }
 
-                            Game.getInstance().currNumOfPlayers++;
+                            g.currNumOfPlayers++;
 
                             //Sending to client type of game
-                            output.println(Game.getInstance().declaredNumberOfPlayersInGame);
+                            output.println(g.declaredNumberOfPlayersInGame);
                         } else {
                             output.println("JOIN GAME PRIVILEGE REVOKED");
                             output.println("0");
                         }
                     }
                     break;
-                    case "DO MOVE": {
-                        playerMoveHandler();
-                    }
-                    break;
-                    case "END TURN": {
-                        endTurn();
-                    }
-                    break;
+                    case "DO MOVE": playerMoveHandler(); break;
+                    case "END TURN": endTurn(); break;
                 }
             }
         } catch (IOException e) {
@@ -188,6 +158,7 @@ public class PlayerHandler extends Thread {
         } finally {
             try {
                 input.close();
+                output.close();
             } catch (IOException e) {
                 System.out.println("Unable to close stream!");
             }
@@ -280,9 +251,14 @@ public class PlayerHandler extends Thread {
 
     //	end turn for this player
     private void endTurn() {
-        if (currentField != null && currentField.getBase() == Game.getInstance().getPlayerTurn() &&
-                startingField != null && startingField.getBase() != Game.getInstance().getPlayerTurn()) {
-            Player.getPlayer(Game.getInstance().getPlayerTurn()).reachTarget();
+        //reference just to make if statements a little bit cleaner
+        Game g = Game.getInstance();
+
+        if (currentField != null
+                && currentField.getBase() == g.getPlayerTurn()
+                && startingField != null
+                && startingField.getBase() != g.getPlayerTurn()) {
+            Player.getPlayer(g.getPlayerTurn()).reachTarget();
         }
         startingField = null;
         currentField = null;
@@ -295,25 +271,22 @@ public class PlayerHandler extends Thread {
 
 //		if player isn't in game- ignore his turn
         do {
-            if (Game.getInstance().getPlayerTurn() == 6) {
-                Game.getInstance().setPlayerTurn(1);
+            if (g.getPlayerTurn() == 6) {
+                g.setPlayerTurn(1);
             } else {
-                Game.getInstance().setPlayerTurn(Game.getInstance().getPlayerTurn()+1);
+                g.setPlayerTurn(g.getPlayerTurn()+1);
             }
-        } while (!Player.getPlayer(Game.getInstance().getPlayerTurn()).isInGame());
+        } while (!Player.getPlayer(g.getPlayerTurn()).isInGame());
 
                 //sending communicates to all clients in game
-        for(int j=0; j<Game.getInstance().currNumOfPlayers; j++) {
-            if (Game.getInstance().getPlayerTurn() == PlayerHandlers.getInstance().playerHandlersList.get(j).playerNumber) {
-                System.out.println(j);
-                PlayerHandlers.getInstance().playerHandlersList.get(j).output.println("YOUR TURN NOW");
+        for(int j=0; j<g.currNumOfPlayers; j++) {
+            if (g.getPlayerTurn() == PlayerHandlers.playerHandlersList.get(j).playerNumber) {
+                PlayerHandlers.playerHandlersList.get(j).output.println("YOUR TURN NOW");
             }
-            if (previousPlayerTurn == PlayerHandlers.getInstance().playerHandlersList.get(j).playerNumber) {
-                PlayerHandlers.getInstance().playerHandlersList.get(j).output.println("END OF YOUR TURN");
+            if (previousPlayerTurn == PlayerHandlers.playerHandlersList.get(j).playerNumber) {
+                PlayerHandlers.playerHandlersList.get(j).output.println("END OF YOUR TURN");
             }
         }
-
-
     }
 
     //	push pawn on target field
@@ -322,14 +295,13 @@ public class PlayerHandler extends Thread {
         for(int i=0; i<Game.getInstance().currNumOfPlayers; i++) {
             if(Game.getInstance().getIsClientInGame(i+1)) {
                 //sending communicates to all clients in game
-                PlayerHandlers.getInstance().playerHandlersList.get(i).output.println("GO");
-                PlayerHandlers.getInstance().playerHandlersList.get(i).output.println(targetField.getX());
-                PlayerHandlers.getInstance().playerHandlersList.get(i).output.println(targetField.getY());
-                PlayerHandlers.getInstance().playerHandlersList.get(i).output.println(currentField.getX());
-                PlayerHandlers.getInstance().playerHandlersList.get(i).output.println(currentField.getY());
+                PlayerHandlers.playerHandlersList.get(i).output.println("GO");
+                PlayerHandlers.playerHandlersList.get(i).output.println(targetField.getX());
+                PlayerHandlers.playerHandlersList.get(i).output.println(targetField.getY());
+                PlayerHandlers.playerHandlersList.get(i).output.println(currentField.getX());
+                PlayerHandlers.playerHandlersList.get(i).output.println(currentField.getY());
             }
         }
-
 
         //server-side Board update
         targetField.setPawn(currentField.getPawn());

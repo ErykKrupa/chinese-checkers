@@ -14,7 +14,6 @@ import static java.lang.System.exit;
 
 public class Client extends Application {
 
-    Socket socket;
     BufferedReader in;
     PrintWriter out;
 
@@ -37,7 +36,7 @@ public class Client extends Application {
 
     //Handling server connection and setting input and output buffers
     private void connectToServer() throws IOException{
-        socket = new Socket("",9090);
+        Socket socket = new Socket("",9090);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(),true);
 

@@ -4,12 +4,11 @@ public class Game {
 
     int declaredNumberOfPlayersInGame;
     int currNumOfPlayers=0;
-    private volatile int playerTurn;//
-    private volatile boolean[] isClientInGame;
-    private volatile boolean turnChanged = false;
+    private int playerTurn;
+    private boolean[] isClientInGame;
 
     //Singleton
-    private static volatile Game game;
+    private static  Game game;
 
     private Game(int numberOfPlayersInGame){
         this.declaredNumberOfPlayersInGame=numberOfPlayersInGame;
@@ -23,36 +22,28 @@ public class Game {
     }
 
     //    Singleton Pattern
-    static synchronized void setInstance(int declaredNumberOfPlayersInGame) {
+    static void setInstance(int declaredNumberOfPlayersInGame) {
         game = new Game(declaredNumberOfPlayersInGame);
     }
 
-    public static synchronized Game getInstance() {
+    static Game getInstance() {
         return game;
     }
 
-    public synchronized int getPlayerTurn() {
+    int getPlayerTurn() {
         return playerTurn;
     }
 
-    public synchronized void setPlayerTurn(int playerTurn) {
+    void setPlayerTurn(int playerTurn) {
         this.playerTurn = playerTurn;
     }
 
-    public synchronized boolean getIsClientInGame(int i) {
+    boolean getIsClientInGame(int i) {
         return isClientInGame[i-1];
     }
 
-    public synchronized void setIsClientInGame(int i, boolean isClientInGame) {
+    void setIsClientInGame(int i, boolean isClientInGame) {
         this.isClientInGame[i-1] = isClientInGame;
-    }
-
-    public synchronized boolean isTurnChanged() {
-        return turnChanged;
-    }
-
-    public synchronized void setTurnChanged(boolean turnChanged) {
-        this.turnChanged = turnChanged;
     }
 
     public int getDeclaredNumberOfPlayersInGame() {

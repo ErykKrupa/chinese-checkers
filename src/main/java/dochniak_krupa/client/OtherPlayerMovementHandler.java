@@ -10,8 +10,7 @@ public class OtherPlayerMovementHandler extends Thread{
             try {
                 while (true) {
                     if(Player.getInstance().isReadyForGame()) {
-                        String command = "";
-                        command = Client.getInstance().in.readLine();
+                        String command = Client.getInstance().in.readLine();
 
                         switch (command) {
                             //getting info from server that now is your turn

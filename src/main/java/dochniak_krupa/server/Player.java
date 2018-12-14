@@ -10,8 +10,6 @@ class Player {
     //	true if player is in game actually
     private boolean inGame = false;
 
-    private int clientNumber;
-
     //	increments when player reaches his base
     private int reachedTargets = 0;
 
@@ -56,14 +54,6 @@ class Player {
             setInGame(false);
             //TODO won game message
         }
-    }
-
-    public int getClientNumber() {
-        return clientNumber;
-    }
-
-    public void setClientNumber(int clientNumber) {
-        this.clientNumber = clientNumber;
     }
 
     int getPlayerNumber() {

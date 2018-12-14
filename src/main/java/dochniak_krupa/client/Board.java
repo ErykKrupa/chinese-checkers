@@ -5,7 +5,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
-public class Board extends GridPane
+class Board extends GridPane
 {
 //    for Singleton Pattern
     private static Board board = null;

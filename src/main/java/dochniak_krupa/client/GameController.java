@@ -1,7 +1,5 @@
 package dochniak_krupa.client;
 
-import java.io.IOException;
-
 class GameController {
 
 //    for Singleton Pattern
@@ -21,6 +19,7 @@ class GameController {
 			Client.getInstance().out.println(field.getX());
 			Client.getInstance().out.println(field.getY());
 
+			/*
 			String returnedMessage = "";
 			try {
 				returnedMessage = Client.getInstance().in.readLine();
@@ -46,11 +45,10 @@ class GameController {
 					System.out.println("Error");
 				}
 				break;
-			}
+			}*/
 		}
     }
 
-	//creating singleton because OtherPlayerMovementHandler class uses goActionPerformedMethod()
 	static GameController getInstance() {
     	if (gameController == null) {
 			gameController = new GameController();
@@ -64,10 +62,11 @@ class GameController {
 	}
 
 	void endTurn(){
-    	Client.getInstance().out.println("END TURN");
+		if(Player.getInstance().isPlayerTurnNow())
+    		Client.getInstance().out.println("END TURN");
 	}
 
-	//actualizing pawn positions on board
+	/*//actualizing pawn positions on board
 	static void goActionPerform(){
     	//reading targetField x, targetField y, currentField x, currentField y
 		String sx1="",sy1="",sx2="",sy2="";
@@ -96,6 +95,6 @@ class GameController {
 			targetField.setPawn(currentField.getPawn());
 			currentField.setPawn(0);
 		}
-	}
+	}*/
 
 }

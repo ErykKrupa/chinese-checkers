@@ -70,7 +70,6 @@ public class NewGamePopupController {
 			MenuController.newGamePopupStage.hide();
 
 			//tests
-			//System.out.println("Tutaj");
 			Player.getInstance().setPlayerTurnNow(true);
 
 			//player was connected successfully

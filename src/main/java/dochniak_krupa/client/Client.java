@@ -24,9 +24,6 @@ public class Client extends Application {
     //Stores a number of client received from server
     private static int clientNumber;
 
-    public boolean isAbleToJoinGame;
-    public boolean isHost = false;
-
     static Stage menuStage = new Stage();
 //    sets and shows menu window
     public void start(Stage primaryStage) throws Exception {

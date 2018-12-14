@@ -6,9 +6,10 @@ import java.net.Socket;
 public class PlayerHandler extends Thread {
     private Socket socket;
     private BufferedReader input;
-    PrintWriter output;
+    private PrintWriter output;
 
-    //player number sending to client after connection
+    //client number sending to client after connection
+    private int clientNumber;
     private int playerNumber;
 
     //	  starting position of pawn
@@ -26,9 +27,9 @@ public class PlayerHandler extends Thread {
     //    true, if pawn has already jumped in this turn
     private boolean jumped = false;
 
-    PlayerHandler(Socket socket, int playerNumber) {
+    PlayerHandler(Socket socket, int clientNumber) {
         this.socket = socket;
-        this.playerNumber = playerNumber;
+        this.clientNumber = clientNumber;
     }
 
     public void run() {
@@ -39,9 +40,9 @@ public class PlayerHandler extends Thread {
 
             //Sending initial message to the client
             output.println("Welcome to the Chinese Checkers server!");
-            output.println("You are the player number: " + playerNumber);
+            output.println("You are the client number: " + clientNumber);
             //Sending client number
-            output.println(playerNumber);
+            output.println(clientNumber);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,8 +51,7 @@ public class PlayerHandler extends Thread {
         //Reacting to client response
         try {
             while (true) {
-                String command = "";
-                command = input.readLine();
+                String command =  input.readLine();
 
                 switch (command) {
                     case "CREATE MULTIPLAYER 2": {
@@ -60,7 +60,10 @@ public class PlayerHandler extends Thread {
                             Game.setInstance(2);
                             Board.setInstance(2);
                             Game.getInstance().currNumOfPlayers++;
-                            Game.getInstance().setIsPlayerInGame(playerNumber,true);
+                            Game.getInstance().setIsClientInGame(clientNumber,true);
+                            Player.getPlayer(1).setClientNumber(clientNumber);
+                            playerNumber = 1;
+
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
                             output.println("CREATE GAME PRIVILEGE REVOKED");
@@ -72,7 +75,10 @@ public class PlayerHandler extends Thread {
                             Game.setInstance(3);
                             Board.setInstance(3);
                             Game.getInstance().currNumOfPlayers++;
-                            Game.getInstance().setIsPlayerInGame(playerNumber,true);
+                            Game.getInstance().setIsClientInGame(clientNumber,true);
+                            Player.getPlayer(1).setClientNumber(clientNumber);
+                            playerNumber = 1;
+
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
                             output.println("CREATE GAME PRIVILEGE REVOKED");
@@ -83,12 +89,17 @@ public class PlayerHandler extends Thread {
                         if (Game.getInstance() == null) {
                             Game.setInstance(4);
                             Board.setInstance(4);
-                            Game.getInstance().currNumOfPlayers++;
-                            Game.getInstance().setIsPlayerInGame(playerNumber,true);
+                            Game.getInstance().setIsClientInGame(clientNumber,true);
+
+                            Player.getPlayer(2).setClientNumber(clientNumber);
+                            playerNumber = 2;
+
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
                             output.println("CREATE GAME PRIVILEGE REVOKED");
                         }
+
+                        Game.getInstance().currNumOfPlayers++;
                     }
                     break;
                     case "CREATE MULTIPLAYER 6": {
@@ -96,7 +107,11 @@ public class PlayerHandler extends Thread {
                             Game.setInstance(6);
                             Board.setInstance(6);
                             Game.getInstance().currNumOfPlayers++;
-                            Game.getInstance().setIsPlayerInGame(playerNumber,true);
+                            Game.getInstance().setIsClientInGame(clientNumber,true);
+
+                            Player.getPlayer(1).setClientNumber(clientNumber);
+                            playerNumber = 1;
+
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
                             output.println("CREATE GAME PRIVILEGE REVOKED");
@@ -106,9 +121,49 @@ public class PlayerHandler extends Thread {
                     case "JOIN GAME": {
                         if (Game.getInstance() != null
                                 && Game.getInstance().currNumOfPlayers < Game.getInstance().declaredNumberOfPlayersInGame) {
-                            Game.getInstance().currNumOfPlayers++;
-                            Game.getInstance().setIsPlayerInGame(playerNumber,true);
+                            Game.getInstance().setIsClientInGame(clientNumber,true);
                             output.println("JOIN GAME PRIVILEGE GRANTED");
+
+                            if(Game.getInstance().declaredNumberOfPlayersInGame==2) {
+                                Player.getPlayer(4).setClientNumber(clientNumber);
+                                playerNumber = 4;
+                            }else if(Game.getInstance().declaredNumberOfPlayersInGame==3){
+                                switch(Game.getInstance().currNumOfPlayers){
+                                    case 1: {
+                                        Player.getPlayer(3).setClientNumber(clientNumber);
+                                        playerNumber = 3;
+                                    } break;
+
+                                    case 2: {
+                                        Player.getPlayer(5).setClientNumber(clientNumber);
+                                        playerNumber = 5;
+                                    } break;
+                                }
+                            }else if(Game.getInstance().declaredNumberOfPlayersInGame==4){
+                                switch(Game.getInstance().currNumOfPlayers){
+                                    case 1: {
+                                        Player.getPlayer(3).setClientNumber(clientNumber);
+                                        playerNumber = 3;
+                                    } break;
+
+                                    case 2: {
+                                        Player.getPlayer(5).setClientNumber(clientNumber);
+                                        playerNumber = 5;
+                                    } break;
+
+                                    case 3: {
+                                        Player.getPlayer(6).setClientNumber(clientNumber);
+                                        playerNumber = 6;
+                                    } break;
+                                }
+
+                            }else if(Game.getInstance().declaredNumberOfPlayersInGame==6){
+                                int playerNum = Game.getInstance().currNumOfPlayers+1;
+                                Player.getPlayer(playerNum).setClientNumber(playerNum);
+                                playerNumber = playerNum;
+                            }
+
+                            Game.getInstance().currNumOfPlayers++;
 
                             //Sending to client type of game
                             output.println(Game.getInstance().declaredNumberOfPlayersInGame);
@@ -174,7 +229,6 @@ public class PlayerHandler extends Thread {
                 //check if it is starting field of current pawn
                 if (targetField == startingField) {
                     go();
-                    System.out.println("WENT!!!!!!!!!!!!!!!!!");//
                     System.out.println("Return");
                     went = false;
                     jumped = false;
@@ -236,7 +290,8 @@ public class PlayerHandler extends Thread {
         jumped = false;
         went = false;
         System.out.println("End turn");
-        System.out.println(Game.getInstance().getPlayerTurn());//
+
+        int previousPlayerTurn = Game.getInstance().getPlayerTurn();
 
 //		if player isn't in game- ignore his turn
         do {
@@ -245,32 +300,36 @@ public class PlayerHandler extends Thread {
             } else {
                 Game.getInstance().setPlayerTurn(Game.getInstance().getPlayerTurn()+1);
             }
-        } while (!Game.getInstance().getIsPlayerInGame(Game.getInstance().getPlayerTurn()));
-        Game.getInstance().setTurnChanged(true);
-        System.out.println(Game.getInstance().getPlayerTurn());//
+        } while (!Player.getPlayer(Game.getInstance().getPlayerTurn()).isInGame());
+
+                //sending communicates to all clients in game
+        for(int j=0; j<Game.getInstance().currNumOfPlayers; j++) {
+            if (Game.getInstance().getPlayerTurn() == PlayerHandlers.getInstance().playerHandlersList.get(j).playerNumber) {
+                System.out.println(j);
+                PlayerHandlers.getInstance().playerHandlersList.get(j).output.println("YOUR TURN NOW");
+            }
+            if (previousPlayerTurn == PlayerHandlers.getInstance().playerHandlersList.get(j).playerNumber) {
+                PlayerHandlers.getInstance().playerHandlersList.get(j).output.println("END OF YOUR TURN");
+            }
+        }
+
+
     }
 
     //	push pawn on target field
     private void go() {
-        //saving coordinates that must be sent to all connected client
-        //except the one which has it's turn now
-        Board b = Board.getInstance();
-        b.setWasModified(true);
-        b.setTargetX(targetField.getX());
-        b.setTargetY(targetField.getY());
-        b.setCurrentX(currentField.getX());
-        b.setCurrentY(currentField.getY());
 
-        //sending communicate to client which has it's turn now
-        output.println("GO");
-        //sending target field x
-        output.println(targetField.getX());
-        //sending target field y
-        output.println(targetField.getY());
-        //sending current field x
-        output.println(currentField.getX());
-        //sending current field y
-        output.println(currentField.getY());
+        for(int i=0; i<Game.getInstance().currNumOfPlayers; i++) {
+            if(Game.getInstance().getIsClientInGame(i+1)) {
+                //sending communicates to all clients in game
+                PlayerHandlers.getInstance().playerHandlersList.get(i).output.println("GO");
+                PlayerHandlers.getInstance().playerHandlersList.get(i).output.println(targetField.getX());
+                PlayerHandlers.getInstance().playerHandlersList.get(i).output.println(targetField.getY());
+                PlayerHandlers.getInstance().playerHandlersList.get(i).output.println(currentField.getX());
+                PlayerHandlers.getInstance().playerHandlersList.get(i).output.println(currentField.getY());
+            }
+        }
+
 
         //server-side Board update
         targetField.setPawn(currentField.getPawn());

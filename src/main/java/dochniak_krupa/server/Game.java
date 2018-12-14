@@ -4,7 +4,7 @@ public class Game {
 
     int declaredNumberOfPlayersInGame;
     int currNumOfPlayers=0;
-    private volatile int playerTurn=0;//-1 ma być
+    private volatile int playerTurn;//-1 ma być
     private volatile boolean[] isPlayerInGame;
     private volatile boolean turnChanged = false;
 
@@ -14,6 +14,7 @@ public class Game {
     private Game(int numberOfPlayersInGame){
         this.declaredNumberOfPlayersInGame=numberOfPlayersInGame;
         this.isPlayerInGame = new boolean[6];
+        this.setPlayerTurn(1);
         for(int i=0; i<5; i++)
             isPlayerInGame[i] = false;
     }
@@ -32,16 +33,16 @@ public class Game {
     }
 
     public synchronized void setPlayerTurn(int playerTurn) {
-        playerTurn = playerTurn;
+        this.playerTurn = playerTurn;
     }
 
     //if < 6
     public synchronized boolean getIsPlayerInGame(int i) {
-        return isPlayerInGame[i];
+        return isPlayerInGame[i-1];
     }
 
     public synchronized void setIsPlayerInGame(int i, boolean isPlayerInGame) {
-        this.isPlayerInGame[i] = isPlayerInGame;
+        this.isPlayerInGame[i-1] = isPlayerInGame;
     }
 
     public synchronized boolean isTurnChanged() {
@@ -51,4 +52,5 @@ public class Game {
     public synchronized void setTurnChanged(boolean turnChanged) {
         this.turnChanged = turnChanged;
     }
+
 }

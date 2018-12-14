@@ -12,33 +12,41 @@ class GameController {
 
 //    method on mouse click for fields
     void handleFieldClick(Field field) {
+    	//sends coordinates only if it is this client turn now
+		if(Player.getInstance().isPlayerTurnNow()) {
+			//Sending move handling request to server
+			Client.getInstance().out.println("DO MOVE");
 
-    	//Sending move handling request to server
-    	Client.getInstance().out.println("DO MOVE");
+			//Sending X and Y coordinates to server
+			Client.getInstance().out.println(field.getX());
+			Client.getInstance().out.println(field.getY());
 
-    	//Sending X and Y coordinates to server
-		Client.getInstance().out.println(field.getX());
-		Client.getInstance().out.println(field.getY());
+			String returnedMessage = "";
+			try {
+				returnedMessage = Client.getInstance().in.readLine();
+			} catch (IOException e) {
+				System.out.println("Unable to read message!");
+			}
 
-		String returnedMessage = "";
-		try{
-			returnedMessage = Client.getInstance().in.readLine();
-		}catch (IOException e){
-			System.out.println("Unable to read message!");
-		}
+			System.out.println(returnedMessage);
 
-		System.out.println(returnedMessage);
-
-		//interpreting action command received from server
-		switch (returnedMessage){
-			case "PAWN NOT CHOSEN":{
-				System.out.println("Didn't choose pawn");
-			} break;
-			case "GO": GameController.goActionPerform(); break;
-			case "CHOSEN": System.out.println("CHOSEN"); break;
-			default:{
-				System.out.println("Error");
-			} break;
+			//interpreting action command received from server
+			switch (returnedMessage) {
+				case "PAWN NOT CHOSEN": {
+					System.out.println("Didn't choose pawn");
+				}
+				break;
+				case "GO":
+					GameController.goActionPerform();
+					break;
+				case "CHOSEN":
+					System.out.println("CHOSEN");
+					break;
+				default: {
+					System.out.println("Error");
+				}
+				break;
+			}
 		}
     }
 

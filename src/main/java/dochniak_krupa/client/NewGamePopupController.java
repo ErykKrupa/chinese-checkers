@@ -69,12 +69,12 @@ public class NewGamePopupController {
 			boardStage.show();
 			MenuController.newGamePopupStage.hide();
 
-			//player was connected successfully
-			Player.getInstance().setReadyForGame(true);
-
 			//tests
 			//System.out.println("Tutaj");
 			Player.getInstance().setPlayerTurnNow(true);
+
+			//player was connected successfully
+			Player.getInstance().setReadyForGame(true);
 
 //		set end turn under space key
 			scene.getAccelerators().put(new KeyCodeCombination(KeyCode.SPACE), ()-> GameController.getInstance().endTurn());

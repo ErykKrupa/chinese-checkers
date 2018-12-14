@@ -4,10 +4,12 @@ import java.io.*;
 import java.net.Socket;
 
 public class PlayerHandler extends Thread {
-    Socket socket;
-    BufferedReader input;
+    private Socket socket;
+    private BufferedReader input;
     PrintWriter output;
-    int number;
+
+    //player number sending to client after connection
+    private int playerNumber;
 
     //	  starting position of pawn
     private Field startingField = null;
@@ -24,11 +26,9 @@ public class PlayerHandler extends Thread {
     //    true, if pawn has already jumped in this turn
     private boolean jumped = false;
 
-    int playerTurn = 1;
-
-    PlayerHandler(Socket socket, int number) {
+    PlayerHandler(Socket socket, int playerNumber) {
         this.socket = socket;
-        this.number = number;
+        this.playerNumber = playerNumber;
     }
 
     public void run() {
@@ -39,9 +39,9 @@ public class PlayerHandler extends Thread {
 
             //Sending initial message to the client
             output.println("Welcome to the Chinese Checkers server!");
-            output.println("You are the player number: " + number);
+            output.println("You are the player number: " + playerNumber);
             //Sending client number
-            output.println(number);
+            output.println(playerNumber);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -60,7 +60,7 @@ public class PlayerHandler extends Thread {
                             Game.setInstance(2);
                             Board.setInstance(2);
                             Game.getInstance().currNumOfPlayers++;
-                            Game.getInstance().setIsPlayerInGame(0,true);
+                            Game.getInstance().setIsPlayerInGame(playerNumber,true);
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
                             output.println("CREATE GAME PRIVILEGE REVOKED");
@@ -72,6 +72,7 @@ public class PlayerHandler extends Thread {
                             Game.setInstance(3);
                             Board.setInstance(3);
                             Game.getInstance().currNumOfPlayers++;
+                            Game.getInstance().setIsPlayerInGame(playerNumber,true);
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
                             output.println("CREATE GAME PRIVILEGE REVOKED");
@@ -83,6 +84,7 @@ public class PlayerHandler extends Thread {
                             Game.setInstance(4);
                             Board.setInstance(4);
                             Game.getInstance().currNumOfPlayers++;
+                            Game.getInstance().setIsPlayerInGame(playerNumber,true);
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
                             output.println("CREATE GAME PRIVILEGE REVOKED");
@@ -94,6 +96,7 @@ public class PlayerHandler extends Thread {
                             Game.setInstance(6);
                             Board.setInstance(6);
                             Game.getInstance().currNumOfPlayers++;
+                            Game.getInstance().setIsPlayerInGame(playerNumber,true);
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
                             output.println("CREATE GAME PRIVILEGE REVOKED");
@@ -101,9 +104,10 @@ public class PlayerHandler extends Thread {
                     }
                     break;
                     case "JOIN GAME": {
-                        if (Game.getInstance() != null && Game.getInstance().currNumOfPlayers < Game.getInstance().declaredNumberOfPlayersInGame) {
+                        if (Game.getInstance() != null
+                                && Game.getInstance().currNumOfPlayers < Game.getInstance().declaredNumberOfPlayersInGame) {
                             Game.getInstance().currNumOfPlayers++;
-                            Game.getInstance().setIsPlayerInGame(1,true);
+                            Game.getInstance().setIsPlayerInGame(playerNumber,true);
                             output.println("JOIN GAME PRIVILEGE GRANTED");
 
                             //Sending to client type of game
@@ -170,6 +174,7 @@ public class PlayerHandler extends Thread {
                 //check if it is starting field of current pawn
                 if (targetField == startingField) {
                     go();
+                    System.out.println("WENT!!!!!!!!!!!!!!!!!");//
                     System.out.println("Return");
                     went = false;
                     jumped = false;
@@ -205,8 +210,8 @@ public class PlayerHandler extends Thread {
                 //player can choose only his pawn and only,
                 //when he didn't choose pawn in this turn yet,
                 //or didn't make a move
-                if (field.getPawn() == playerTurn &&
-                        (startingField == null || startingField.getPawn() == playerTurn)) {
+                if (field.getPawn() == playerNumber &&
+                        (startingField == null || startingField.getPawn() == Game.getInstance().getPlayerTurn())) {
                     startingField = field;
                     currentField = field;
                     System.out.println("Chose " + currentField.getPawn());
@@ -220,10 +225,10 @@ public class PlayerHandler extends Thread {
     }
 
     //	end turn for this player
-    void endTurn() {
-        if (currentField != null && currentField.getBase() == playerTurn &&
-                startingField != null && startingField.getBase() != playerTurn) {
-            Player.getPlayer(playerTurn).reachTarget();
+    private void endTurn() {
+        if (currentField != null && currentField.getBase() == Game.getInstance().getPlayerTurn() &&
+                startingField != null && startingField.getBase() != Game.getInstance().getPlayerTurn()) {
+            Player.getPlayer(Game.getInstance().getPlayerTurn()).reachTarget();
         }
         startingField = null;
         currentField = null;
@@ -231,14 +236,18 @@ public class PlayerHandler extends Thread {
         jumped = false;
         went = false;
         System.out.println("End turn");
+        System.out.println(Game.getInstance().getPlayerTurn());//
+
 //		if player isn't in game- ignore his turn
         do {
-            if (playerTurn == 6) {
-                playerTurn = 1;
+            if (Game.getInstance().getPlayerTurn() == 6) {
+                Game.getInstance().setPlayerTurn(1);
             } else {
-                playerTurn++;
+                Game.getInstance().setPlayerTurn(Game.getInstance().getPlayerTurn()+1);
             }
-        } while (!(Player.getPlayer(playerTurn).isInGame()));
+        } while (!Game.getInstance().getIsPlayerInGame(Game.getInstance().getPlayerTurn()));
+        Game.getInstance().setTurnChanged(true);
+        System.out.println(Game.getInstance().getPlayerTurn());//
     }
 
     //	push pawn on target field

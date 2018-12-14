@@ -63,11 +63,11 @@ public class MenuController {
             boardStage.setResizable(false);
             boardStage.show();
 
-            //player was connected successfully
-            Player.getInstance().setReadyForGame(true);
-
             //tests
             Player.getInstance().setPlayerTurnNow(false);
+
+            //player was connected successfully
+            Player.getInstance().setReadyForGame(true);
         }
     }
 

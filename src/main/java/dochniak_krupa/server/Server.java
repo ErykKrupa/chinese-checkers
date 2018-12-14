@@ -12,7 +12,7 @@ public class Server {
 
         //Starting thread that sends to every client all needed coordinates for client-side Board update
         BoardChangeInfoSender BCIS = new BoardChangeInfoSender();
-        BCIS.start();
+        //BCIS.start();
 
         //Try-with-resources statement, so in the reason of that
         // we don't have to close listener

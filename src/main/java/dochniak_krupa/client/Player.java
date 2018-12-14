@@ -30,7 +30,7 @@ class Player {
 	}
 
 	//stores actual player's turn
-	private volatile boolean isPlayerTurnNow = true;
+	private volatile boolean isPlayerTurnNow = false;
 
 	public synchronized boolean isPlayerTurnNow() {
 		return isPlayerTurnNow;

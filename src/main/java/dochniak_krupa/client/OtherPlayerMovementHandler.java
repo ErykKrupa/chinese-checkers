@@ -9,7 +9,7 @@ public class OtherPlayerMovementHandler extends Thread{
         public void run(){
             try {
                 while (true) {
-                    System.out.println(Player.getInstance().isPlayerTurnNow());//
+                    //System.out.println(Player.getInstance().isPlayerTurnNow());//
                     if(!Player.getInstance().isPlayerTurnNow() && Player.getInstance().isReadyForGame()) {
                         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                         String command = "";
@@ -18,6 +18,7 @@ public class OtherPlayerMovementHandler extends Thread{
                         switch (command) {
                             case "OTHER PLAYER MOVED": {
                                 //board update
+                                System.out.println("AKCJA JETS");
                                 GameController.goActionPerform();
                             }
                             break;

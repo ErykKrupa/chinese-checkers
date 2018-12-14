@@ -9,7 +9,9 @@ public class OtherPlayerMovementHandler extends Thread{
         public void run(){
             try {
                 while (true) {
+                    System.out.println(Player.getInstance().isPlayerTurnNow());//
                     if(!Player.getInstance().isPlayerTurnNow() && Player.getInstance().isReadyForGame()) {
+                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                         String command = "";
                         command = Client.getInstance().in.readLine();
 
@@ -19,6 +21,10 @@ public class OtherPlayerMovementHandler extends Thread{
                                 GameController.goActionPerform();
                             }
                             break;
+                            //getting info from server that now is your turn
+                            case  "YOUR TURN": {
+                                Player.getInstance().setPlayerTurnNow(true);
+                            } break;
                         }
                     }
                 }

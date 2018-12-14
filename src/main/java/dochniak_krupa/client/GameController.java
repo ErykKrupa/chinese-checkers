@@ -27,6 +27,8 @@ class GameController {
 			System.out.println("Unable to read message!");
 		}
 
+		System.out.println(returnedMessage);
+
 		//interpreting action command received from server
 		switch (returnedMessage){
 			case "PAWN NOT CHOSEN":{

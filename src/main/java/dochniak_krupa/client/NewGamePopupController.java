@@ -73,6 +73,7 @@ public class NewGamePopupController {
 			Player.getInstance().setReadyForGame(true);
 
 			//tests
+			//System.out.println("Tutaj");
 			Player.getInstance().setPlayerTurnNow(true);
 
 //		set end turn under space key

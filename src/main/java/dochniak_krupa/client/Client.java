@@ -50,7 +50,7 @@ public class Client extends Application {
             System.out.println(initialMessage);
         }
 
-        int clientNumber;
+
         String clientNumberString = in.readLine();
         try{
             clientNumber = Integer.parseInt(clientNumberString);

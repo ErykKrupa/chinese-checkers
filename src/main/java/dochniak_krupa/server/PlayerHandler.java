@@ -24,8 +24,6 @@ public class PlayerHandler extends Thread {
     //    true, if pawn has already jumped in this turn
     private boolean jumped = false;
 
-    //	  player turn counter
-    //int playerTurn = (int) (Math.random() * 6 + 1);
     int playerTurn = 1;
 
     PlayerHandler(Socket socket, int number) {
@@ -62,6 +60,7 @@ public class PlayerHandler extends Thread {
                             Game.setInstance(2);
                             Board.setInstance(2);
                             Game.getInstance().currNumOfPlayers++;
+                            Game.getInstance().setIsPlayerInGame(0,true);
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
                             output.println("CREATE GAME PRIVILEGE REVOKED");
@@ -104,6 +103,7 @@ public class PlayerHandler extends Thread {
                     case "JOIN GAME": {
                         if (Game.getInstance() != null && Game.getInstance().currNumOfPlayers < Game.getInstance().declaredNumberOfPlayersInGame) {
                             Game.getInstance().currNumOfPlayers++;
+                            Game.getInstance().setIsPlayerInGame(1,true);
                             output.println("JOIN GAME PRIVILEGE GRANTED");
 
                             //Sending to client type of game

@@ -30,27 +30,26 @@ class Player {
 	}
 
 	//stores actual player's turn
-	private boolean isPlayerTurnNow = true;
+	private volatile boolean isPlayerTurnNow = true;
 
-	public boolean isPlayerTurnNow() {
+	public synchronized boolean isPlayerTurnNow() {
 		return isPlayerTurnNow;
 	}
 
-	public void setPlayerTurnNow(boolean playerTurnNow) {
+	public synchronized void setPlayerTurnNow(boolean playerTurnNow) {
 		isPlayerTurnNow = playerTurnNow;
 	}
 
 	//Singleton
 	private static volatile Player player = null;
 	//    Singleton Pattern
-	static void setInstance(int playerNumber) {
+	static synchronized void setInstance(int playerNumber) {
 		player = new Player(playerNumber);
 	}
 
 	public static synchronized Player getInstance() {
 		return player;
 	}
-
 
 
 	private Player(int playerNumber) {

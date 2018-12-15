@@ -175,7 +175,7 @@ import java.util.ArrayList;
 			try {
 				Thread.sleep(250); //less than 5 milliseconds can generate graphic artifact
 			} catch (InterruptedException ignored) {}
-			if (GameController.getInstance().getPlayerTurn() == playerNumber) {
+			if (Game.getInstance().getPlayerTurn() == playerNumber) {
 				executeMovement();
 				if (reachedBases == 10) {
 					terminate();

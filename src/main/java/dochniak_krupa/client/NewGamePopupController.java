@@ -25,69 +25,80 @@ public class NewGamePopupController {
 	@FXML private TextField numberOfBots;
 
 	@FXML public void newMultiPlayerGameBtnClick() {
-
-		//Creating proper board instance and sending create game response
-		// with specific number of players to server
-		if (players2RadioButton.isSelected()) {
-			Board.setInstance(2);
-			//Sending action message to server
-			Client.getInstance().out.println("CREATE MULTIPLAYER 2");
-		} else if (players3RadioButton.isSelected()) {
-			Board.setInstance(3);
-			//Sending action message to server
-			Client.getInstance().out.println("CREATE MULTIPLAYER 3");
-		} else if (players4RadioButton.isSelected()) {
-			Board.setInstance(4);
-			//Sending action message to server
-			Client.getInstance().out.println("CREATE MULTIPLAYER 4");
-		} else if (players6RadioButton.isSelected()) {
-			Board.setInstance(6);
-			//Sending action message to server
-			Client.getInstance().out.println("CREATE MULTIPLAYER 6");
+		Client.getInstance().out.println("DOES GAME EXIST");
+		String s = "";
+		try{
+			s = Client.getInstance().in.readLine();
+		}catch (IOException e){
+			e.printStackTrace();
 		}
 
-		//GameController.getInstance().createBots(Integer.parseInt(numberOfBots.getText()));
+		if(s.equals("GAME DOESNT EXIST")) {
+			//Creating proper board instance and sending create game response
+			// with specific number of players to server
+			if (players2RadioButton.isSelected()) {
+				Board.setInstance(2);
+				//Sending action message to server
+				Client.getInstance().out.println("CREATE MULTIPLAYER 2");
+			} else if (players3RadioButton.isSelected()) {
+				Board.setInstance(3);
+				//Sending action message to server
+				Client.getInstance().out.println("CREATE MULTIPLAYER 3");
+			} else if (players4RadioButton.isSelected()) {
+				Board.setInstance(4);
+				//Sending action message to server
+				Client.getInstance().out.println("CREATE MULTIPLAYER 4");
+			} else if (players6RadioButton.isSelected()) {
+				Board.setInstance(6);
+				//Sending action message to server
+				Client.getInstance().out.println("CREATE MULTIPLAYER 6");
+			}
 
-		//Reading response message form server
-		String privilege = "";
-		try {
-			privilege = Client.getInstance().in.readLine();
-		} catch (IOException e) {
-			System.out.println("Unable to read line");
-		}
+			//GameController.getInstance().createBots(Integer.parseInt(numberOfBots.getText()));
 
-		//Initializing board window after checking privileges for that
-		if (privilege.equals("CREATE GAME PRIVILEGE GRANTED")) {
-			//		end turn for confidence that first player who will get turn is in the game
-			//GameController.getInstance().endTurn();
-			Board.getInstance().setAlignment(Pos.CENTER);
-			Scene scene = new Scene(Board.getInstance(), 750, 800);
+			//Reading response message form server
+			String privilege = "";
+			try {
+				privilege = Client.getInstance().in.readLine();
+			} catch (IOException e) {
+				System.out.println("Unable to read line");
+			}
+
+			//Initializing board window after checking privileges for that
+			if (privilege.equals("CREATE GAME PRIVILEGE GRANTED")) {
+				//		end turn for confidence that first player who will get turn is in the game
+				//GameController.getInstance().endTurn();
+				Board.getInstance().setAlignment(Pos.CENTER);
+				Scene scene = new Scene(Board.getInstance(), 750, 800);
 
 //		why doesn't it work?
-			scene.setFill(Color.web("#99ffff7f")); //translucent light blue
+				scene.setFill(Color.web("#99ffff7f")); //translucent light blue
 
-			GameController.boardStage.setScene(scene);
-			GameController.boardStage.setTitle("Chinese Checkers");
-			GameController.boardStage.setResizable(false);
-			GameController.boardStage.show();
-			MenuController.newGamePopupStage.hide();
+				GameController.boardStage.setScene(scene);
+				GameController.boardStage.setTitle("Chinese Checkers");
+				GameController.boardStage.setResizable(false);
+				GameController.boardStage.show();
+				MenuController.newGamePopupStage.hide();
 
-			GameController.boardStage.setOnCloseRequest(e -> {
-				Client.menuStage.show();
-				Client.getInstance().out.println("HOST EXITED THE GAME");
-			});
+				GameController.boardStage.setOnCloseRequest(e -> {
+					Client.menuStage.show();
+					Client.getInstance().out.println("HOST EXITED THE GAME");
+				});
 
-			Client.getInstance().out.println("GAME WITH BOTS");
-			Client.getInstance().out.println(numberOfBots.getText());
+				Client.getInstance().out.println("GAME WITH BOTS");
+				Client.getInstance().out.println(numberOfBots.getText());
 
-			//false till all players will connect
-			Player.getInstance().setPlayerTurnNow(false);
+				//false till all players will connect
+				Player.getInstance().setPlayerTurnNow(false);
 
-			//player was connected successfully
-			Player.getInstance().setReadyForGame(true);
+				//player was connected successfully
+				Player.getInstance().setReadyForGame(true);
 
 //		set end turn under space key
-			scene.getAccelerators().put(new KeyCodeCombination(KeyCode.SPACE), () -> GameController.getInstance().endTurn());
+				scene.getAccelerators().put(new KeyCodeCombination(KeyCode.SPACE), () -> GameController.getInstance().endTurn());
+			}
+		}else if(s.equals("GAME ALREADY EXISTS")){
+			System.out.println("Game already exists");
 		}
 	}
 

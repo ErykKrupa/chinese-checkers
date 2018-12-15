@@ -12,21 +12,21 @@ class Board extends GridPane
 
     private Field[][] fields = new Field[25][17];
 
-    private Board(int playersNumber) {
+    private Board(int numberOfPlayers) {
 //        sets players according to playersNumber
-        if (playersNumber == 2) {
+        if (numberOfPlayers == 2) {
             Player.getPlayer(1).setInGame(true);
             Player.getPlayer(4).setInGame(true);
-        } else if (playersNumber == 3) {
+        } else if (numberOfPlayers == 3) {
             Player.getPlayer(1).setInGame(true);
             Player.getPlayer(3).setInGame(true);
             Player.getPlayer(5).setInGame(true);
-        }  else if (playersNumber == 4) {
+        }  else if (numberOfPlayers == 4) {
             Player.getPlayer(2).setInGame(true);
             Player.getPlayer(3).setInGame(true);
             Player.getPlayer(5).setInGame(true);
             Player.getPlayer(6).setInGame(true);
-        } else if (playersNumber == 6) {
+        } else if (numberOfPlayers == 6) {
             for (int i = 1; i <= 6; i++) {
                 Player.getPlayer(i).setInGame(true);
             }
@@ -95,8 +95,8 @@ class Board extends GridPane
     }
 
 //    Singleton Pattern
-    static void setInstance(int playerNumber) {
-        board = new Board(playerNumber);
+    static void setInstance(int numberOfPlayers) {
+        board = new Board(numberOfPlayers);
     }
 
     static Board getInstance() {
@@ -106,7 +106,7 @@ class Board extends GridPane
     static void deleteInstance(){board = null;}
 
 //    get object of field at given position
-    public Field getField(int x, int y) {
+    Field getField(int x, int y) {
         return fields[x][y];
     }
 }

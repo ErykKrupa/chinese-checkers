@@ -13,7 +13,7 @@ class BoardTest {
 //        for running tests with JavaFX components and controls
 		JFXPanel fxPanel = new JFXPanel();
         Board.setInstance(6);
-        while (GameController.getInstance().playerTurn != 1) {
+        while (GameController.getInstance().getPlayerTurn() != 1) {
             GameController.getInstance().endTurn();
         }
     }

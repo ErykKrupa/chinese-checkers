@@ -103,6 +103,8 @@ class Board extends GridPane
         return board;
     }
 
+    static void deleteInstance(){board = null;}
+
 //    get object of field at given position
     public Field getField(int x, int y) {
         return fields[x][y];

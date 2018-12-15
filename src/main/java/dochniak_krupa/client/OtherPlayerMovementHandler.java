@@ -1,5 +1,7 @@
 package dochniak_krupa.client;
 
+import javafx.application.Platform;
+
 import java.io.IOException;
 
 //Thread which checks if board was modified by other player.
@@ -14,7 +16,7 @@ public class OtherPlayerMovementHandler extends Thread{
 
                         switch (command) {
                             //getting info from server that now is your turn
-                            case  "YOUR TURN": {
+                            case  "START GAME": {
                                 Player.getInstance().setPlayerTurnNow(true);
                             } break;
                             case "PAWN NOT CHOSEN": {
@@ -34,6 +36,26 @@ public class OtherPlayerMovementHandler extends Thread{
                             case "END OF YOUR TURN":{
                                 System.out.println("Your turn've ended");
                                 Player.getInstance().setPlayerTurnNow(false);
+                            } break;
+                            case "HOST EXITED":{
+                                Player.getInstance().setPlayerTurnNow(false);
+                                Player.getInstance().setReadyForGame(false);
+                                Board.deleteInstance();
+                                Platform.runLater(()->{
+                                    GameController.boardStage.close();
+                                    Client.menuStage.show();
+                                });
+                                System.out.println("GOT BACK TO MENU, GAME'VE ENDED");
+                            } break;
+                            case "YOU EXITED":{
+                                Player.getInstance().setPlayerTurnNow(false);
+                                Player.getInstance().setReadyForGame(false);
+                                Board.deleteInstance();
+                                Platform.runLater(()->{
+                                    GameController.boardStage.close();
+                                    Client.menuStage.show();
+                                });
+                                System.out.println("YOU'VE LEFT THE GAME");
                             } break;
                             default: {
                                 System.out.println("Error");

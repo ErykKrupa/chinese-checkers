@@ -78,6 +78,7 @@ public class Board {
         return board;
     }
 
+    void deleteInstance(){board = null;}
     //    get object of field at given position
     Field getField(int x, int y) {
         return fields[x][y];

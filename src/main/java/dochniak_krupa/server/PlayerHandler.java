@@ -8,6 +8,9 @@ public class PlayerHandler extends Thread {
     private BufferedReader input;
     private PrintWriter output;
 
+    private boolean isHost;
+    private boolean isInGame;
+
     //client number sending to client after connection
     private int clientNumber;
 
@@ -63,6 +66,7 @@ public class PlayerHandler extends Thread {
                             Game.getInstance().currNumOfPlayers++;
                             Game.getInstance().setIsClientInGame(clientNumber,true);
                             playerNumber = 1;
+                            isHost=true;
                             //sending game create permission to it's host
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
@@ -77,6 +81,7 @@ public class PlayerHandler extends Thread {
                             Game.getInstance().currNumOfPlayers++;
                             Game.getInstance().setIsClientInGame(clientNumber,true);
                             playerNumber = 1;
+                            isHost=true;
                             //sending game create permission to it's host
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
@@ -90,6 +95,7 @@ public class PlayerHandler extends Thread {
                             Board.setInstance(4);
                             Game.getInstance().setIsClientInGame(clientNumber,true);
                             playerNumber = 2;
+                            isHost=true;
                             //sending game create permission to it's host
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
@@ -106,6 +112,7 @@ public class PlayerHandler extends Thread {
                             Game.getInstance().currNumOfPlayers++;
                             Game.getInstance().setIsClientInGame(clientNumber,true);
                             playerNumber = 1;
+                            isHost=true;
                             //sending game create permission to it's host
                             output.println("CREATE GAME PRIVILEGE GRANTED");
                         } else {
@@ -136,10 +143,23 @@ public class PlayerHandler extends Thread {
                                         case 3: playerNumber = 6; break;
                                     }
                                 } break;
-                                case 6: playerNumber = g.currNumOfPlayers + 1; break;
+                                case 6:{
+                                    playerNumber = g.currNumOfPlayers + 1;
+                                } break;
                             }
 
                             g.currNumOfPlayers++;
+
+                            //Game starts, host's turn
+                            if(g.currNumOfPlayers==g.declaredNumberOfPlayersInGame){
+                                for(int j=0; j<g.currNumOfPlayers; j++) {
+                                    if (PlayerHandlers.playerHandlersList.get(j).isHost) {
+                                        PlayerHandlers.playerHandlersList.get(j).output.println("START GAME");
+                                        break;
+                                    }
+                                }
+                            }
+                                PlayerHandlers.playerHandlersList.get(0).output.println("START GAME");
 
                             //Sending to client type of game
                             output.println(g.declaredNumberOfPlayersInGame);
@@ -151,6 +171,8 @@ public class PlayerHandler extends Thread {
                     break;
                     case "DO MOVE": playerMoveHandler(); break;
                     case "END TURN": endTurn(); break;
+                    case "CLIENT EXITED THE GAME": onClientExitActionPerform(); break;
+                    case "HOST EXITED THE GAME": onHostExitActionPerform(); break;
                 }
             }
         } catch (IOException e) {
@@ -249,6 +271,23 @@ public class PlayerHandler extends Thread {
         }
     }
 
+    private void onClientExitActionPerform(){
+        isInGame = false;
+        Game.getInstance().setIsClientInGame(clientNumber,false);
+        output.println("YOU EXITED");
+    }
+
+    private void onHostExitActionPerform(){
+        for(int i=0; i<Game.getInstance().currNumOfPlayers; i++) {
+            if(Game.getInstance().getIsClientInGame(i+1)) {
+                //sending communicates to all clients in game
+                PlayerHandlers.playerHandlersList.get(i).output.println("HOST EXITED");
+            }
+        }
+        Game.getInstance().deleteInstance();
+        Board.getInstance().deleteInstance();
+    }
+
     //	end turn for this player
     private void endTurn() {
         //reference just to make if statements a little bit cleaner
@@ -292,7 +331,7 @@ public class PlayerHandler extends Thread {
     //	push pawn on target field
     private void go() {
 
-        for(int i=0; i<Game.getInstance().currNumOfPlayers; i++) {
+        for(int i=0; i<Game.getInstance().declaredNumberOfPlayersInGame; i++) {
             if(Game.getInstance().getIsClientInGame(i+1)) {
                 //sending communicates to all clients in game
                 PlayerHandlers.playerHandlersList.get(i).output.println("GO");

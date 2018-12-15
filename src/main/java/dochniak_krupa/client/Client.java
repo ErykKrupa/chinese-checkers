@@ -71,7 +71,6 @@ public class Client extends Application {
             client.connectToServer();
         }catch (IOException e){
             System.out.println("Unable to connect with server!");
-            Thread.sleep(3000);
             exit(0);
         }
 

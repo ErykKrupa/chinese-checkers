@@ -1,9 +1,12 @@
 package dochniak_krupa.client;
 
+import javafx.stage.Stage;
+
 class GameController {
 
 //    for Singleton Pattern
     private static GameController gameController = null;
+	static Stage boardStage = new Stage();
 
 //    for Singleton Pattern
     private GameController() {}
@@ -35,6 +38,6 @@ class GameController {
 
 	void endTurn(){
 		if(Player.getInstance().isPlayerTurnNow())
-    		Client.getInstance().out.println("END TURN");
+			Client.getInstance().out.println("END TURN");
 	}
 }

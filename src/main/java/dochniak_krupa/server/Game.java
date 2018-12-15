@@ -6,6 +6,7 @@ public class Game {
     int currNumOfPlayers=0;
     private int playerTurn;
     private boolean[] isClientInGame;
+    private boolean areAllPlayersConnected;
 
     //Singleton
     private static  Game game;
@@ -53,4 +54,6 @@ public class Game {
     public void setDeclaredNumberOfPlayersInGame(int declaredNumberOfPlayersInGame) {
         this.declaredNumberOfPlayersInGame = declaredNumberOfPlayersInGame;
     }
+
+    void deleteInstance(){game = null;}
 }

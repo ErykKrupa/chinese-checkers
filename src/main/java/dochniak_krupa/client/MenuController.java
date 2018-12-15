@@ -55,13 +55,18 @@ public class MenuController {
 
         //Initializing board window after checking privileges for that
         if(privilege.equals("JOIN GAME PRIVILEGE GRANTED") && typeOfGame!=0) {
-            Stage boardStage = new Stage();
             Scene scene = new Scene(Board.getInstance(), 800, 800);
             scene.setFill(Color.web("#99ffff7f"));
-            boardStage.setScene(scene);
-            boardStage.setTitle("Chinese Checkers - Menu");
-            boardStage.setResizable(false);
-            boardStage.show();
+            GameController.boardStage.setScene(scene);
+            GameController.boardStage.setTitle("Chinese Checkers - Menu");
+            GameController.boardStage.setResizable(false);
+            GameController.boardStage.show();
+
+            Client.menuStage.hide();
+            GameController.boardStage.setOnCloseRequest(e -> {
+                Client.menuStage.show();
+                Client.getInstance().out.println("CLIENT EXITED THE GAME");
+            });
 
             //tests
             Player.getInstance().setPlayerTurnNow(false);

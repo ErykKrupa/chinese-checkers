@@ -1,5 +1,7 @@
 package dochniak_krupa.client;
 
+import dochniak_krupa.server.Game;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,8 +10,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
+import java.beans.EventHandler;
 import java.io.IOException;
+import java.lang.reflect.GenericArrayType;
 
 public class NewGamePopupController {
 
@@ -62,15 +67,19 @@ public class NewGamePopupController {
 //		why doesn't it work?
 			scene.setFill(Color.web("#99ffff7f")); //translucent light blue
 
-			Stage boardStage = new Stage();
-			boardStage.setScene(scene);
-			boardStage.setTitle("Chinese Checkers");
-			boardStage.setResizable(false);
-			boardStage.show();
+			GameController.boardStage.setScene(scene);
+			GameController.boardStage.setTitle("Chinese Checkers");
+			GameController.boardStage.setResizable(false);
+			GameController.boardStage.show();
 			MenuController.newGamePopupStage.hide();
 
-			//tests
-			Player.getInstance().setPlayerTurnNow(true);
+			GameController.boardStage.setOnCloseRequest(e -> {
+				Client.menuStage.show();
+				Client.getInstance().out.println("HOST EXITED THE GAME");
+			});
+
+			//false till all players will connect
+			Player.getInstance().setPlayerTurnNow(false);
 
 			//player was connected successfully
 			Player.getInstance().setReadyForGame(true);

@@ -65,7 +65,7 @@ public class OtherPlayerMovementHandler extends Thread{
                     }
                 }
             } catch (IOException e) {
-                System.out.println("Unable to read line!");
+                e.printStackTrace();
             } finally {
                 try {
                     Client.getInstance().in.close();

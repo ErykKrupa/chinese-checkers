@@ -6,6 +6,7 @@ public class Game {
     int currNumOfPlayers=0;
     private int playerTurn;
     private boolean[] isClientInGame;
+    static volatile int currentNumberOfBots;
     private boolean areAllPlayersConnected;
 
     //Singleton

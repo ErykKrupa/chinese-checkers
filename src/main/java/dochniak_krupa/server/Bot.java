@@ -4,7 +4,7 @@ import javafx.application.Platform;
 
 import java.util.ArrayList;
 
-class Bot implements Runnable{
+/*class Bot implements Runnable{
 	private final int playerNumber; // bot needs to know which player represents
 	private Field[] pawns = new Field[10]; // stores info about pawns of bot
 	private Field[] bases = new Field[10]; // stores info about bases of bot
@@ -18,7 +18,7 @@ class Bot implements Runnable{
 		int pawsIterator = 0;
 		for (int i = 0; i < 25; i++) {
 			for (int j = 0; j < 17; j++) {
-				Field field = Board.getInstance().getField(i, j);
+                Field field = Board.getInstance().getField(i, j);
 				if (field != null) {
 					if (field.getPawn() == playerNumber) {
 						pawns[pawsIterator++] = field;
@@ -52,7 +52,7 @@ class Bot implements Runnable{
 	}
 
 	//	counts distance in single no-jump movement
-	private int distance(dochniak_krupa.client.Field currentField, dochniak_krupa.client.Field targetField) {
+	private int distance(Field currentField, Field targetField) {
 		int distanceX = Math.abs(currentField.getX() - targetField.getX());
 		int distanceY = Math.abs(currentField.getY() - targetField.getY());
 		if (distanceY > distanceX) {
@@ -63,20 +63,20 @@ class Bot implements Runnable{
 	}
 
 	//	checks all paths to neighbouring fields (no need to jump)
-	private void checkNeighbouringFields(dochniak_krupa.client.Field startingField) {
+	private void checkNeighbouringFields(Field startingField) {
 		for (int j = -1; j <= 1; j++) {
 			for (int i = -1; i <= 1; i+=2) {
 				if (startingField.getY() + j < 0 || 16 < startingField.getY() + j) {
 					return;
 				}
-				dochniak_krupa.client.Field targetField = null;
+				Field targetField = null;
 				if (j == 0 && (0 <= startingField.getX() + (2 * i) && startingField.getX() + (2 * i) <= 24)) {
 					targetField = Board.getInstance().getField(startingField.getX() + (2 * i), startingField.getY() + j);
 				} else if (j != 0 && 0 <= startingField.getX() + i && startingField.getX() + i <= 24) {
-					targetField = dochniak_krupa.client.Board.getInstance().getField(startingField.getX() + i, startingField.getY() + j);
+					targetField = Board.getInstance().getField(startingField.getX() + i, startingField.getY() + j);
 				}
 				if (targetField != null && targetField.getPawn() == 0) {
-					ArrayList<dochniak_krupa.client.Field> path = new ArrayList<>();
+					ArrayList<Field> path = new ArrayList<>();
 					path.add(startingField);
 					path.add(targetField);
 					paths.add(path);
@@ -86,7 +86,7 @@ class Bot implements Runnable{
 	}
 
 	//	checks all paths to distant fields where there is a need to jump one or more time (by recursion)
-	private void checkDistantFields(dochniak_krupa.client.Field field, int deltaX, int deltaY, ArrayList<dochniak_krupa.client.Field> oldPath) {
+	private void checkDistantFields(Field field, int deltaX, int deltaY, ArrayList<Field> oldPath) {
 		if (field.getX() + 2 * deltaX < 0 || 24 < field.getX() + 2 * deltaX ||
 				field.getY() + 2 * deltaY < 0 || 16 < field.getY() + 2 * deltaY) {
 			return;
@@ -94,14 +94,14 @@ class Bot implements Runnable{
 		Field obstacleField = Board.getInstance().getField(field.getX() + deltaX, field.getY() + deltaY);
 		Field targetField = Board.getInstance().getField(field.getX() + 2 * deltaX, field.getY() + 2 * deltaY);
 		boolean isTargetOnTheOldPath = false;
-		for (dochniak_krupa.client.Field step : oldPath) {
+		for (Field step : oldPath) {
 			if (targetField == step) {
 				isTargetOnTheOldPath = true;
 			}
 		}
 		if (!isTargetOnTheOldPath && ((deltaX == 0 && deltaY == 0) ||
 				(targetField != null && obstacleField.getPawn() != 0 && targetField.getPawn() == 0))) {
-			ArrayList<dochniak_krupa.client.Field> newPath = new ArrayList<>(oldPath);
+			ArrayList<Field> newPath = new ArrayList<>(oldPath);
 			newPath.add(targetField);
 			paths.add(newPath);
 			checkDistantFields(targetField, 1, 1, newPath);
@@ -191,4 +191,4 @@ class Bot implements Runnable{
 	public void terminate() {
 		running = false;
 	}
-}
+}*/

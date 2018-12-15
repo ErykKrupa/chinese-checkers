@@ -1,6 +1,7 @@
 package dochniak_krupa.client;
 
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
@@ -15,11 +16,22 @@ public class MenuController {
 
 //    sets and shows window for selection number of players
     public void newMultiPlayerGameBtnClick() throws Exception{
+        Client.getInstance().out.println("DOES GAME EXIST");
+        String s = "";
+        try{
+            s = Client.getInstance().in.readLine();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        if(s.equals("GAME DOESNT EXIST")){
         Parent root = FXMLLoader.load(getClass().getResource("/newGamePopupSample.fxml"));
         newGamePopupStage.setTitle("Game settings");
         newGamePopupStage.setScene(new Scene(root, 300, 400));
         newGamePopupStage.show();
         Client.menuStage.hide();
+        }else if(s.equals("GAME ALREADY EXISTS")){
+            System.out.println("Game already exists");
+        }
     }
 
     public void joinGameBtnClick(){
@@ -55,7 +67,8 @@ public class MenuController {
 
         //Initializing board window after checking privileges for that
         if(privilege.equals("JOIN GAME PRIVILEGE GRANTED") && typeOfGame!=0) {
-            Scene scene = new Scene(Board.getInstance(), 800, 800);
+            Board.getInstance().setAlignment(Pos.CENTER);
+            Scene scene = new Scene(Board.getInstance(), 750, 800);
             scene.setFill(Color.web("#99ffff7f"));
             GameController.boardStage.setScene(scene);
             GameController.boardStage.setTitle("Chinese Checkers - Menu");

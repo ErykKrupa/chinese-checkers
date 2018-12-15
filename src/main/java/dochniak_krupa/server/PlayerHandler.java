@@ -2,6 +2,7 @@ package dochniak_krupa.server;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class PlayerHandler extends Thread {
     private Socket socket;
@@ -10,6 +11,8 @@ public class PlayerHandler extends Thread {
 
     private boolean isHost;
     private boolean isInGame;
+
+    //private ArrayList<Bot> bots = new ArrayList<>();
 
     //client number sending to client after connection
     private int clientNumber;
@@ -69,6 +72,7 @@ public class PlayerHandler extends Thread {
                             isHost=true;
                             //sending game create permission to it's host
                             output.println("CREATE GAME PRIVILEGE GRANTED");
+
                         } else {
                             output.println("CREATE GAME PRIVILEGE REVOKED");
                         }
@@ -169,10 +173,19 @@ public class PlayerHandler extends Thread {
                         }
                     }
                     break;
+                    case "GAME WITH BOTS": {
+                        prepareBots();
+                    } break;
                     case "DO MOVE": playerMoveHandler(); break;
                     case "END TURN": endTurn(); break;
                     case "CLIENT EXITED THE GAME": onClientExitActionPerform(); break;
                     case "HOST EXITED THE GAME": onHostExitActionPerform(); break;
+                    case "DOES GAME EXIST": {
+                        if(Game.getInstance()==null)
+                            output.println("GAME DOESNT EXIST");
+                        else
+                            output.println("GAME ALREADY EXISTS");
+                    } break;
                 }
             }
         } catch (IOException e) {
@@ -185,7 +198,6 @@ public class PlayerHandler extends Thread {
                 System.out.println("Unable to close stream!");
             }
         }
-
     }
 
     private void playerMoveHandler() {
@@ -267,6 +279,17 @@ public class PlayerHandler extends Thread {
                     System.out.println("I can't choose that");
                     output.println("CANT CHOSE");
                 }
+            }
+        }
+    }
+
+    private void prepareBots(){
+        if(Game.getInstance() != null){
+            try {
+                String s = input.readLine();
+                Game.currentNumberOfBots = Integer.parseInt(s);
+            }catch (IOException e){
+                System.out.println("Unable to read!");
             }
         }
     }

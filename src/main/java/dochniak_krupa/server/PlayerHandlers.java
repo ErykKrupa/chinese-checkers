@@ -2,7 +2,8 @@ package dochniak_krupa.server;
 
 import java.util.ArrayList;
 
-public class PlayerHandlers {
+class PlayerHandlers {
+
     private PlayerHandlers(){}
 
     //ArrayList that stores all playerHandler objects.

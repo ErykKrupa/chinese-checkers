@@ -1,7 +1,7 @@
 package dochniak_krupa.client;
 
-import dochniak_krupa.server.Game;
-import javafx.application.Platform;
+
+
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,12 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-
-import java.beans.EventHandler;
 import java.io.IOException;
-import java.lang.reflect.GenericArrayType;
+
 
 public class NewGamePopupController {
 
@@ -29,6 +25,7 @@ public class NewGamePopupController {
 	@FXML private TextField numberOfBots;
 
 	@FXML public void newMultiPlayerGameBtnClick() {
+
 		//Creating proper board instance and sending create game response
 		// with specific number of players to server
 		if (players2RadioButton.isSelected()) {
@@ -53,9 +50,9 @@ public class NewGamePopupController {
 
 		//Reading response message form server
 		String privilege = "";
-		try{
+		try {
 			privilege = Client.getInstance().in.readLine();
-		}catch (IOException e){
+		} catch (IOException e) {
 			System.out.println("Unable to read line");
 		}
 
@@ -80,6 +77,9 @@ public class NewGamePopupController {
 				Client.getInstance().out.println("HOST EXITED THE GAME");
 			});
 
+			Client.getInstance().out.println("GAME WITH BOTS");
+			Client.getInstance().out.println(numberOfBots.getText());
+
 			//false till all players will connect
 			Player.getInstance().setPlayerTurnNow(false);
 
@@ -87,7 +87,7 @@ public class NewGamePopupController {
 			Player.getInstance().setReadyForGame(true);
 
 //		set end turn under space key
-			scene.getAccelerators().put(new KeyCodeCombination(KeyCode.SPACE), ()-> GameController.getInstance().endTurn());
+			scene.getAccelerators().put(new KeyCodeCombination(KeyCode.SPACE), () -> GameController.getInstance().endTurn());
 		}
 	}
 

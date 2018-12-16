@@ -24,14 +24,14 @@ class Board extends GridPane
         }
 
         //Sending request for board built by server
-        Client.getInstance().out.println("FIELD SET");
+        ServerConnection.getInstance().out.println("SET BOARD");
 
         //Interpreting server response
         for (int i = 0; i < 25; i++) {
             for (int j = 0; j < 17; j++) {
                 try {
-                    String s = Client.getInstance().in.readLine();
-                    String b = Client.getInstance().in.readLine();
+                    String s = ServerConnection.getInstance().in.readLine();
+                    String b = ServerConnection.getInstance().in.readLine();
                     if(!s.equals("no") && !b.equals("no")){
                         int si = Integer.parseInt(s);
                         int sb = Integer.parseInt(b);

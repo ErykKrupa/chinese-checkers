@@ -16,10 +16,10 @@ public class MenuController {
 
 //    sets and shows window for selection number of players
     public void newMultiPlayerGameBtnClick() throws Exception{
-        Client.getInstance().out.println("DOES GAME EXIST");
+        ServerConnection.getInstance().out.println("DOES GAME EXIST");
         String s = "";
         try{
-            s = Client.getInstance().in.readLine();
+            s = ServerConnection.getInstance().in.readLine();
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -37,12 +37,12 @@ public class MenuController {
     public void joinGameBtnClick(){
 
         //Sending performed action command to server
-        Client.getInstance().out.println("JOIN GAME");
+        ServerConnection.getInstance().out.println("JOIN GAME");
 
         //Receiving server response
         String privilege = "";
         try{
-            privilege = Client.getInstance().in.readLine();
+            privilege = ServerConnection.getInstance().in.readLine();
         }catch (IOException e){
             System.out.println("Błąd");
         }
@@ -52,7 +52,7 @@ public class MenuController {
         String typeOfGameStr;
         int typeOfGame = 0;
         try{
-            typeOfGameStr = Client.getInstance().in.readLine();
+            typeOfGameStr = ServerConnection.getInstance().in.readLine();
             if(!typeOfGameStr.equals("0"))
             typeOfGame = Integer.parseInt(typeOfGameStr);
         }catch (IOException e){
@@ -78,7 +78,7 @@ public class MenuController {
             Client.menuStage.hide();
             GameController.boardStage.setOnCloseRequest(e -> {
                 Client.menuStage.show();
-                Client.getInstance().out.println("CLIENT EXITED THE GAME");
+                ServerConnection.getInstance().out.println("CLIENT EXITED THE GAME");
             });
 
             //tests

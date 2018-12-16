@@ -1,7 +1,5 @@
 package dochniak_krupa.client;
 
-
-
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -25,10 +23,10 @@ public class NewGamePopupController {
 	@FXML private TextField numberOfBots;
 
 	@FXML public void newMultiPlayerGameBtnClick() {
-		Client.getInstance().out.println("DOES GAME EXIST");
+		ServerConnection.getInstance().out.println("DOES GAME EXIST");
 		String s = "";
 		try{
-			s = Client.getInstance().in.readLine();
+			s = ServerConnection.getInstance().in.readLine();
 		}catch (IOException e){
 			e.printStackTrace();
 		}
@@ -37,21 +35,17 @@ public class NewGamePopupController {
 			//Creating proper board instance and sending create game response
 			// with specific number of players to server
 			if (players2RadioButton.isSelected()) {
-//				Board.setInstance(2);
 				//Sending action message to server
-				Client.getInstance().out.println("CREATE MULTIPLAYER 2");
+				ServerConnection.getInstance().out.println("CREATE MULTIPLAYER 2");
 			} else if (players3RadioButton.isSelected()) {
-				Board.setInstance();
 				//Sending action message to server
-				Client.getInstance().out.println("CREATE MULTIPLAYER 3");
+				ServerConnection.getInstance().out.println("CREATE MULTIPLAYER 3");
 			} else if (players4RadioButton.isSelected()) {
-				Board.setInstance();
 				//Sending action message to server
-				Client.getInstance().out.println("CREATE MULTIPLAYER 4");
+				ServerConnection.getInstance().out.println("CREATE MULTIPLAYER 4");
 			} else if (players6RadioButton.isSelected()) {
-				Board.setInstance();
 				//Sending action message to server
-				Client.getInstance().out.println("CREATE MULTIPLAYER 6");
+				ServerConnection.getInstance().out.println("CREATE MULTIPLAYER 6");
 			}
 
 			//GameController.getInstance().createBots(Integer.parseInt(numberOfBots.getText()));
@@ -59,17 +53,15 @@ public class NewGamePopupController {
 			//Reading response message form server
 			String privilege = "";
 			try {
-				privilege = Client.getInstance().in.readLine();
+				privilege = ServerConnection.getInstance().in.readLine();
 			} catch (IOException e) {
 				System.out.println("Unable to read line");
 			}
 
 			//Initializing board window after checking privileges for that
 			if (privilege.equals("CREATE GAME PRIVILEGE GRANTED")) {
-				//		end turn for confidence that first player who will get turn is in the game
-				//GameController.getInstance().endTurn();
 
-				Board.setInstance(); //
+				Board.setInstance();
 				Board.getInstance().setAlignment(Pos.CENTER);
 				Scene scene = new Scene(Board.getInstance(), 750, 800);
 
@@ -84,11 +76,11 @@ public class NewGamePopupController {
 
 				GameController.boardStage.setOnCloseRequest(e -> {
 					Client.menuStage.show();
-					Client.getInstance().out.println("HOST EXITED THE GAME");
+					ServerConnection.getInstance().out.println("HOST EXITED THE GAME");
 				});
 
-				Client.getInstance().out.println("GAME WITH BOTS");
-				Client.getInstance().out.println(numberOfBots.getText());
+				ServerConnection.getInstance().out.println("GAME WITH BOTS");
+				ServerConnection.getInstance().out.println(numberOfBots.getText());
 
 				//false till all players will connect
 				Player.getInstance().setPlayerTurnNow(false);

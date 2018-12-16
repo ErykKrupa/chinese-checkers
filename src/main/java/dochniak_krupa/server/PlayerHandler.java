@@ -184,7 +184,7 @@ public class PlayerHandler extends Thread {
                     case "END TURN": endTurn(); break;
                     case "CLIENT EXITED THE GAME": onClientExitActionPerform(); break;
                     case "HOST EXITED THE GAME": onHostExitActionPerform(); break;
-                    case "FIELD SET": fieldSet(); break;
+                    case "SET BOARD": setClientBoard(); break;
                     case "DOES GAME EXIST": {
                         if(Game.getInstance()==null)
                             output.println("GAME DOESNT EXIST");
@@ -204,7 +204,7 @@ public class PlayerHandler extends Thread {
             }
         }
     }
-    private void fieldSet(){
+    private void setClientBoard(){
         for (int i = 0; i < 25; i++) {
             for (int j = 0; j < 17; j++) {
                 if(Board.getInstance().getField(i,j)!=null){

@@ -14,15 +14,6 @@ import static java.lang.System.exit;
 
 public class Client extends Application {
 
-    BufferedReader in;
-    PrintWriter out;
-
-    //Singleton
-    private static Client client = null;
-
-    //Stores a number of client received from server
-    private static int clientNumber;
-
     static Stage menuStage = new Stage();
 //    sets and shows menu window
     public void start(Stage primaryStage) throws Exception {
@@ -34,48 +25,18 @@ public class Client extends Application {
         menuStage.show();
     }
 
-    //Handling server connection and setting input and output buffers
-    private void connectToServer() throws IOException{
-        Socket socket = new Socket("",9090);
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream(),true);
-
-        //Printing server initial message
-        for(int i=0; i<2; i++){
-            String initialMessage = in.readLine();
-            System.out.println(initialMessage);
-        }
-
-
-        String clientNumberString = in.readLine();
-        try{
-            clientNumber = Integer.parseInt(clientNumberString);
-        }catch (NumberFormatException e){
-            System.out.println("Unable to parse player number!");
-        }
-    }
-
-    //    Singleton
-    private static void setInstance() {
-        client = new Client();
-    }
-
-    public static Client getInstance() {
-        return client;
-    }
-
-    public static void main(String[] args) throws InterruptedException{
-        Client.setInstance();
+    public static void main(String[] args){
+        ServerConnection.setInstance();
         try{
             System.out.println("Trying to connect with server");
-            client.connectToServer();
+            ServerConnection.getInstance().connectToServer();
         }catch (IOException e){
             System.out.println("Unable to connect with server!");
             exit(0);
         }
 
         //creating client instance
-        Player.setInstance(Client.clientNumber);
+        Player.setInstance(ServerConnection.clientNumber);
 
         //launching thread that actualizes board after another player move
         OtherPlayerMovementHandler otherPlayerMovementHandler = new OtherPlayerMovementHandler();

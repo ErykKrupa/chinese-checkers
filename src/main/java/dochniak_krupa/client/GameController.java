@@ -16,11 +16,11 @@ class GameController {
 		//sends coordinates only if it is this client turn now
 		if(Player.getInstance().isPlayerTurnNow()) {
 			//Sending move handling request to server
-			Client.getInstance().out.println("DO MOVE");
+			ServerConnection.getInstance().out.println("DO MOVE");
 
 			//Sending X and Y coordinates to server
-			Client.getInstance().out.println(field.getX());
-			Client.getInstance().out.println(field.getY());
+			ServerConnection.getInstance().out.println(field.getX());
+			ServerConnection.getInstance().out.println(field.getY());
 		}
 	}
 
@@ -38,6 +38,6 @@ class GameController {
 
 	void endTurn(){
 		if(Player.getInstance().isPlayerTurnNow())
-			Client.getInstance().out.println("END TURN");
+			ServerConnection.getInstance().out.println("END TURN");
 	}
 }

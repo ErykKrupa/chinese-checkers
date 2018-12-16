@@ -1,8 +1,11 @@
 package dochniak_krupa.server;
 
+import java.util.ArrayList;
+
 class Player {
     //	only six players can be create
     private static Player[] players = new Player[6];
+    static volatile ArrayList<Bot> bots = new ArrayList<>();
 
     //	increments when a new player enters the game
     private static int playersInGame = 0;

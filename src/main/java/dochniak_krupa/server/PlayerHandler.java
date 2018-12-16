@@ -2,7 +2,6 @@ package dochniak_krupa.server;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class PlayerHandler extends Thread {
     private Socket socket;
@@ -10,8 +9,6 @@ public class PlayerHandler extends Thread {
     private PrintWriter output;
 
     private boolean isHost;
-
-    private ArrayList<Bot> bots = new ArrayList<>();
 
     //client number sending to client after connection
     private int clientNumber;
@@ -292,6 +289,7 @@ public class PlayerHandler extends Thread {
         Game.getInstance().setIsClientInGame(clientNumber,false);
         output.println("YOU EXITED");
         Bot b = new Bot(playerNumber,this);
+        Player.bots.add(b);
         Thread t = new Thread(b);
         t.start();
     }
@@ -303,6 +301,11 @@ public class PlayerHandler extends Thread {
                 PlayerHandlers.playerHandlersList.get(i).output.println("HOST EXITED");
             }
         }
+        for(Bot bot:Player.bots){
+            bot.terminate();
+        }
+        Player.bots.clear();
+
         Game.getInstance().deleteInstance();
         Board.getInstance().deleteInstance();
     }

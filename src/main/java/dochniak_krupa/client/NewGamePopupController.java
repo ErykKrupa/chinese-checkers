@@ -37,19 +37,19 @@ public class NewGamePopupController {
 			//Creating proper board instance and sending create game response
 			// with specific number of players to server
 			if (players2RadioButton.isSelected()) {
-				Board.setInstance(2);
+//				Board.setInstance(2);
 				//Sending action message to server
 				Client.getInstance().out.println("CREATE MULTIPLAYER 2");
 			} else if (players3RadioButton.isSelected()) {
-				Board.setInstance(3);
+				Board.setInstance();
 				//Sending action message to server
 				Client.getInstance().out.println("CREATE MULTIPLAYER 3");
 			} else if (players4RadioButton.isSelected()) {
-				Board.setInstance(4);
+				Board.setInstance();
 				//Sending action message to server
 				Client.getInstance().out.println("CREATE MULTIPLAYER 4");
 			} else if (players6RadioButton.isSelected()) {
-				Board.setInstance(6);
+				Board.setInstance();
 				//Sending action message to server
 				Client.getInstance().out.println("CREATE MULTIPLAYER 6");
 			}
@@ -68,6 +68,8 @@ public class NewGamePopupController {
 			if (privilege.equals("CREATE GAME PRIVILEGE GRANTED")) {
 				//		end turn for confidence that first player who will get turn is in the game
 				//GameController.getInstance().endTurn();
+
+				Board.setInstance(); //
 				Board.getInstance().setAlignment(Pos.CENTER);
 				Scene scene = new Scene(Board.getInstance(), 750, 800);
 

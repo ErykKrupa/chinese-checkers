@@ -2,7 +2,7 @@ package dochniak_krupa.server;
 
 public class Board {
     //    for Singleton Pattern
-    private static Board board = null;
+    private volatile static Board board = null;
 
     private Field[][] fields = new Field[25][17];
 
@@ -70,11 +70,11 @@ public class Board {
     }
 
     //    Singleton Pattern
-    static void setInstance(int playerNumber) {
+    static synchronized void setInstance(int playerNumber) {
         board = new Board(playerNumber);
     }
 
-    public static Board getInstance() {
+    public synchronized static Board getInstance() {
         return board;
     }
 

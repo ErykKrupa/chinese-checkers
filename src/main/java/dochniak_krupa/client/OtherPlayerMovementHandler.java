@@ -75,6 +75,27 @@ public class OtherPlayerMovementHandler extends Thread{
             }
         }
 
+    private void boardSet(){
+         try {
+             for (int i = 0; i < 25; i++) {
+                 for (int j = 0; j < 17; j++) {
+                     String s = Client.getInstance().in.readLine();
+                     String b = Client.getInstance().in.readLine();
+
+                     if(!s.equals("no") && !b.equals("no")){
+                     int si = Integer.parseInt(s);
+                     int sb = Integer.parseInt(b);
+
+                     Board.getInstance().getField(i,j).setPawn(si);
+                     Board.getInstance().getField(i,j).setBase(sb);}
+                 }
+             }
+
+         }catch (IOException e){
+             System.out.println("CHJI");
+         }
+    }
+
     private void goActionPerform() {
         //reading targetField x, targetField y, currentField x, currentField y
         String sx1 = "", sy1 = "", sx2 = "", sy2 = "";

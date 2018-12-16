@@ -15,7 +15,7 @@ public class Field extends Circle
 //    represents which player has to reach this field for win the game
 //    1-6 mean player's 1-6 base
 //    0 means no base on this field, it is neutral, central part of the board
-    private final int base;
+    private int base;
 
 //    position x and y on the board
     private final int x, y;
@@ -52,6 +52,7 @@ public class Field extends Circle
     int getBase() {
         return base;
     }
+    void setBase(int b){base=b;}
 
 //    return color basing on given number,
 //    each player has own color, grey represents neutral fields

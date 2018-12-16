@@ -56,36 +56,6 @@ class Player {
 		this.playerNumber = playerNumber;
 	}
 
-	//	returns player with given number
-	static Player getPlayer(int playerNumber) {
-		if (players[playerNumber - 1] == null) {
-			players[playerNumber - 1] = new Player(playerNumber);
-		}
-		return players[playerNumber -1];
-	}
-
-	//	delete all players, for tests
-	static void flushPlayers() {
-		for (Player player : players) {
-			player = null;
-		}
-	}
-
-	boolean isInGame() {
-		return inGame;
-	}
-
-	void setInGame(boolean inGame) {
-		if (!this.inGame && inGame) {
-			playersInGame++;
-		} else if (this.inGame && !inGame) {
-			playersInGame--;
-		}
-		System.out.println("Players: " + playersInGame);
-		this.inGame = inGame;
-	}
-
-
 	public String toString() throws IllegalArgumentException {
 		switch(playerNumber)
 		{
@@ -104,9 +74,5 @@ class Player {
 			default:
 				throw new IllegalArgumentException("Player number must be in range 0-6");
 		}
-	}
-
-	int getPlayerNumber() {
-		return playerNumber;
 	}
 }

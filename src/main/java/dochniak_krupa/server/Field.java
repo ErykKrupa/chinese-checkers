@@ -4,7 +4,7 @@ public class Field {
     //    current pawn standing on the field
     //    1-6 mean player's 1-6 pawn
     //    0 means no pawn on this field
-    private int pawn;
+    private volatile int pawn;
 
     //    represents which player has to reach this field for win the game
     //    1-6 mean player's 1-6 base
@@ -25,7 +25,7 @@ public class Field {
         this.pawn = pawn;
     }
 
-    int getPawn() {
+    synchronized int getPawn() {
         return pawn;
     }
 
@@ -37,7 +37,7 @@ public class Field {
         return y;
     }
 
-    int getBase() {
+    synchronized int getBase() {
         return base;
     }
 }

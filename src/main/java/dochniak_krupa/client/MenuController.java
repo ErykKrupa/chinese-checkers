@@ -62,7 +62,7 @@ public class MenuController {
         }
 
         //Setting proper board instance
-        if(typeOfGame!=0) Board.setInstance(typeOfGame);
+        if(typeOfGame!=0) Board.setInstance();
         else System.out.println("Unable to join game");
 
         //Initializing board window after checking privileges for that

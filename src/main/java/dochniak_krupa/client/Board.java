@@ -5,6 +5,8 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
+import java.io.IOException;
+
 class Board extends GridPane
 {
 //    for Singleton Pattern
@@ -12,28 +14,7 @@ class Board extends GridPane
 
     private Field[][] fields = new Field[25][17];
 
-    private Board(int numberOfPlayers) {
-//        sets players according to playersNumber
-        if (numberOfPlayers == 2) {
-            Player.getPlayer(1).setInGame(true);
-            Player.getPlayer(4).setInGame(true);
-        } else if (numberOfPlayers == 3) {
-            Player.getPlayer(1).setInGame(true);
-            Player.getPlayer(3).setInGame(true);
-            Player.getPlayer(5).setInGame(true);
-        }  else if (numberOfPlayers == 4) {
-            Player.getPlayer(2).setInGame(true);
-            Player.getPlayer(3).setInGame(true);
-            Player.getPlayer(5).setInGame(true);
-            Player.getPlayer(6).setInGame(true);
-        } else if (numberOfPlayers == 6) {
-            for (int i = 1; i <= 6; i++) {
-                Player.getPlayer(i).setInGame(true);
-            }
-        } else {
-            throw new IllegalArgumentException("Players number must equals to 2, 3, 4 or 6.");
-        }
-
+    private Board() {
 //        getConstraints make suitable free space between fields
         for (int i = 0; i < 17; i++) {
             this.getRowConstraints().add(new RowConstraints(46));
@@ -42,50 +23,28 @@ class Board extends GridPane
             this.getColumnConstraints().add(new ColumnConstraints(28));
         }
 
-//        TL;DR: this algorithm creates fields and pawns on the boards
-//        don't waste time for analyse it
+        //Sending request for board built by server
+        Client.getInstance().out.println("FIELD SET");
+
+        //Interpreting server response
         for (int i = 0; i < 25; i++) {
             for (int j = 0; j < 17; j++) {
-                if ((j + i) % 2 == 0) {
-                    if (j <= 3 && 12 - j <= i && i <= 12 + j) {
-                        fields[i][j] = new Field(Player.getPlayer(4).isInGame() ? 4 : 0, i, j);
-                        fields[i][j].setPawn(Player.getPlayer(1).isInGame() ? 1 : 0);
-                    } else if (4 <= j && j <= 8 && -4 + j <= i && i <= 28 - j) {
-                        if (i - j >= 14){
-                            fields[i][j] = new Field(Player.getPlayer(5).isInGame() ? 5 : 0, i, j);
-                            fields[i][j].setPawn(Player.getPlayer(2).isInGame() ? 2 : 0);
-                        } else if (i + j <= 10) {
-                            fields[i][j] = new Field(Player.getPlayer(3).isInGame() ? 3 : 0, i, j);
-                            fields[i][j].setPawn(Player.getPlayer(6).isInGame() ? 6 : 0);
-                        } else {
-                            fields[i][j] = new Field(0, i, j);
-                        }
-                    } else if (9 <= j && j <= 12 && 12 - j <= i && i <= 12 + j) {
-                        if (i + j >= 30) {
-                            fields[i][j] = new Field(Player.getPlayer(6).isInGame() ? 6 : 0, i, j);
-                            fields[i][j].setPawn(Player.getPlayer(3).isInGame() ? 3 : 0);
-                        } else if (j - i >= 6) {
-                            fields[i][j] = new Field(Player.getPlayer(2).isInGame() ? 2 : 0, i, j);
-                            fields[i][j].setPawn(Player.getPlayer(5).isInGame() ? 5 : 0);
-                        } else {
-                            fields[i][j] = new Field(0, i, j);
-                        }
-                    } else if (13 <= j && -4 + j <= i && i <= 28 - j) {
-                        fields[i][j] = new Field(Player.getPlayer(1).isInGame() ? 1 : 0, i, j);
-                        fields[i][j].setPawn(Player.getPlayer(4).isInGame() ? 4 : 0);
-                    } else {
-                        continue;
+                try {
+                    String s = Client.getInstance().in.readLine();
+                    String b = Client.getInstance().in.readLine();
+                    if(!s.equals("no") && !b.equals("no")){
+                        int si = Integer.parseInt(s);
+                        int sb = Integer.parseInt(b);
+                        fields[i][j] = new Field(sb,i,j);
+                        fields[i][j].setPawn(si);
+                        GridPane.setConstraints(fields[i][j], i, j);
+                        this.getChildren().add(fields[i][j]);
                     }
-                } else {
-                    continue;
+                }catch (IOException e){
+                    System.out.println("Read line err");
                 }
-//                add prepared fields to pane
-                GridPane.setConstraints(fields[i][j], i, j);
-                this.getChildren().add(fields[i][j]);
-
             }
         }
-
 //        end turn button and action for it
         Button endTurnBtn = new Button("End Turn");
         endTurnBtn.setMinSize(90, 40);
@@ -95,8 +54,8 @@ class Board extends GridPane
     }
 
 //    Singleton Pattern
-    static void setInstance(int numberOfPlayers) {
-        board = new Board(numberOfPlayers);
+    static void setInstance() {
+        board = new Board();
     }
 
     static Board getInstance() {

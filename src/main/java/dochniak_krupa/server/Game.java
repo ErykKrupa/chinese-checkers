@@ -4,7 +4,7 @@ public class Game {
 
     int declaredNumberOfPlayersInGame;
     int currNumOfPlayers=0;
-    private int playerTurn;
+    volatile private int playerTurn;
     private boolean[] isClientInGame;
     static volatile int currentNumberOfBots;
     private boolean areAllPlayersConnected;
@@ -24,19 +24,19 @@ public class Game {
     }
 
     //    Singleton Pattern
-    static void setInstance(int declaredNumberOfPlayersInGame) {
+    static synchronized void setInstance(int declaredNumberOfPlayersInGame) {
         game = new Game(declaredNumberOfPlayersInGame);
     }
 
-    static Game getInstance() {
+    static synchronized Game getInstance() {
         return game;
     }
 
-    int getPlayerTurn() {
+    synchronized int getPlayerTurn() {
         return playerTurn;
     }
 
-    void setPlayerTurn(int playerTurn) {
+    synchronized void setPlayerTurn(int playerTurn) {
         this.playerTurn = playerTurn;
     }
 

@@ -4,16 +4,19 @@ import javafx.application.Platform;
 
 import java.util.ArrayList;
 
-/*class Bot implements Runnable{
+class Bot implements Runnable{
 	private final int playerNumber; // bot needs to know which player represents
 	private Field[] pawns = new Field[10]; // stores info about pawns of bot
 	private Field[] bases = new Field[10]; // stores info about bases of bot
 	private ArrayList<ArrayList<Field>> paths = new ArrayList<>(); // stores all possible paths to movement
 	private int reachedBases = 0; // bot needs to know how many bases reached, because have to finish his works in in a timely manner
 	private volatile boolean running = false; // true if bot is running
+    PlayerHandler playerHandler;
 
 	//	gathers info about his pawns and bases
-	Bot (int playerNumber) {
+	Bot (int playerNumber, PlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+		System.out.println(Game.getInstance().getPlayerTurn());//
 		this.playerNumber = playerNumber;
 		int pawsIterator = 0;
 		for (int i = 0; i < 25; i++) {
@@ -153,7 +156,7 @@ import java.util.ArrayList;
 			try {
 				Thread.sleep(200);
 			} catch (InterruptedException ignored) {}
-			GameController.getInstance().handleFieldClick(step);
+			playerHandler.playerMoveHandler(step);
 		}
 		if (theBestMove.size() > 0) {
 			for (int i = 0; i < 10; i++) {
@@ -179,9 +182,9 @@ import java.util.ArrayList;
 				executeMovement();
 				if (reachedBases == 10) {
 					terminate();
-					Platform.runLater(() ->	GameController.getInstance().endTurn());
+					Platform.runLater(() ->	playerHandler.endTurn());
 				} else {
-					GameController.getInstance().endTurn();
+					playerHandler.endTurn();
 				}
 			}
 		}
@@ -191,4 +194,4 @@ import java.util.ArrayList;
 	public void terminate() {
 		running = false;
 	}
-}*/
+}

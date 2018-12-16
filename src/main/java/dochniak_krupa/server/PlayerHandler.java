@@ -10,8 +10,6 @@ public class PlayerHandler extends Thread {
     private PrintWriter output;
 
     private boolean isHost;
-    private boolean isInGame;
-
 
     private ArrayList<Bot> bots = new ArrayList<>();
 
@@ -19,9 +17,9 @@ public class PlayerHandler extends Thread {
     private int clientNumber;
 
     //player number of client in game
-    int playerNumber;
+    private int playerNumber;
 
-    int hostPlayerNumber;
+    private int hostPlayerNumber;
 
     //	  starting position of pawn
     private Field startingField = null;
@@ -212,11 +210,17 @@ public class PlayerHandler extends Thread {
     private void prepareBots(){
         if(Game.getInstance() != null){
             try {
-                System.out.println("player num1: "+ playerNumber);//
                 String s = input.readLine();
                 Game.currentNumberOfBots = Integer.parseInt(s);
                 Game g = Game.getInstance();
                 Bot b = null;
+
+                /*if(Game.getInstance().declaredNumberOfPlayersInGame == Game.currentNumberOfBots){
+                    hostPlayerNumber=-1;
+                    isHost=false;
+                    b = new Bot(1,this);
+                }*/
+
                 for(int i=0; i<Game.currentNumberOfBots; i++) {
 
                     switch (g.declaredNumberOfPlayersInGame) {
@@ -285,7 +289,6 @@ public class PlayerHandler extends Thread {
     }
 
     private void onClientExitActionPerform(){
-        isInGame = false;
         Game.getInstance().setIsClientInGame(clientNumber,false);
         output.println("YOU EXITED");
         Bot b = new Bot(playerNumber,this);
@@ -322,25 +325,25 @@ public class PlayerHandler extends Thread {
         int x = -1, y = -1;
         int wnull=0;
         if(field==null){
-           wnull=1;
+            wnull=1;
 
-        String sx = "";
-        String sy = "";
+            String sx = "";
+            String sy = "";
 
-        try {
-            sx = input.readLine();
-            sy = input.readLine();
-        } catch (IOException e) {
-            System.out.println("Unable to read line");
-        }
+            try {
+                sx = input.readLine();
+                sy = input.readLine();
+            } catch (IOException e) {
+                System.out.println("Unable to read line");
+            }
 
 
-        try {
-            x = Integer.parseInt(sx);
-            y = Integer.parseInt(sy);
-        } catch (NumberFormatException e) {
-            System.out.println("NFException");
-        }
+            try {
+                x = Integer.parseInt(sx);
+                y = Integer.parseInt(sy);
+            } catch (NumberFormatException e) {
+                System.out.println("NFException");
+            }
         }else{
             x=field.getX();
             y=field.getY();
@@ -438,15 +441,6 @@ public class PlayerHandler extends Thread {
             }
         } while (!Player.getPlayer(g.getPlayerTurn()).isInGame());
 
-        /*if(g.getPlayerTurn() == 1){
-            playerNumber = 1;
-            //sending to host
-            PlayerHandlers.playerHandlersList.get(0).output.println("END OF YOUR TURN");}
-        else if(g.getPlayerTurn() == 4 && g.getIsPlayerBot(g.getPlayerTurn())){
-            playerNumber = 4;
-            //sending to host
-            PlayerHandlers.playerHandlersList.get(0).output.println("YOUR TURN NOW");
-        }*/
         if(g.getIsPlayerBot(g.getPlayerTurn())){
             for(int j=0; j<PlayerHandlers.playerHandlersList.size(); j++) {
                 if (PlayerHandlers.playerHandlersList.get(j).isHost) {
@@ -467,12 +461,14 @@ public class PlayerHandler extends Thread {
 
         //sending communicates to all clients in game
         for(int j=0; j<PlayerHandlers.playerHandlersList.size(); j++) {
-            if (g.getPlayerTurn() == PlayerHandlers.playerHandlersList.get(j).playerNumber) {
-                PlayerHandlers.playerHandlersList.get(j).output.println("YOUR TURN NOW");
-            }
-            if (previousPlayerTurn == PlayerHandlers.playerHandlersList.get(j).playerNumber) {
-                PlayerHandlers.playerHandlersList.get(j).output.println("END OF YOUR TURN");
-            }
+            if(!g.getIsPlayerBot(g.getPlayerTurn()))
+                if (g.getPlayerTurn() == PlayerHandlers.playerHandlersList.get(j).playerNumber) {
+                    PlayerHandlers.playerHandlersList.get(j).output.println("YOUR TURN NOW");
+                }
+            if(!g.getIsPlayerBot(previousPlayerTurn))
+                if (previousPlayerTurn == PlayerHandlers.playerHandlersList.get(j).playerNumber) {
+                    PlayerHandlers.playerHandlersList.get(j).output.println("END OF YOUR TURN");
+                }
         }
     }
 

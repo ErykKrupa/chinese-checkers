@@ -306,6 +306,7 @@ public class PlayerHandler extends Thread {
         }
         Player.bots.clear();
 
+        for(int i=0; i<Player.players.length; i++) Player.players[i].setInGame(false);
         Game.getInstance().deleteInstance();
         Board.getInstance().deleteInstance();
     }

@@ -28,18 +28,18 @@ public class Field extends Circle
         setRadius(23);
         setStrokeWidth(4);
         setStroke(getColor(playerNumber));
-        setOnMouseClicked(t -> GameController.getInstance().handleFieldClick(this));
+        setOnMouseClicked(t -> GameController.handleFieldClick(this));
     }
 
-    public int getX() {
+    int getX() {
         return x;
     }
 
-    public int getY() {
+    int getY() {
         return y;
     }
 
-    public int getPawn() {
+    int getPawn() {
         return pawn;
     }
 
@@ -52,7 +52,6 @@ public class Field extends Circle
     int getBase() {
         return base;
     }
-    void setBase(int b){base=b;}
 
 //    return color basing on given number,
 //    each player has own color, grey represents neutral fields

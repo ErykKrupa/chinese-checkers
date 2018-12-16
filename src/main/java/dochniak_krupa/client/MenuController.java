@@ -24,11 +24,11 @@ public class MenuController {
             e.printStackTrace();
         }
         if(s.equals("GAME DOESNT EXIST")){
-        Parent root = FXMLLoader.load(getClass().getResource("/newGamePopupSample.fxml"));
-        newGamePopupStage.setTitle("Game settings");
-        newGamePopupStage.setScene(new Scene(root, 300, 400));
-        newGamePopupStage.show();
-        Client.menuStage.hide();
+            Parent root = FXMLLoader.load(getClass().getResource("/newGamePopupSample.fxml"));
+            newGamePopupStage.setTitle("Game settings");
+            newGamePopupStage.setScene(new Scene(root, 300, 400));
+            newGamePopupStage.show();
+            Client.menuStage.hide();
         }else if(s.equals("GAME ALREADY EXISTS")){
             System.out.println("Game already exists");
         }

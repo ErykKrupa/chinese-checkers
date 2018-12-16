@@ -14,11 +14,12 @@ import static java.lang.System.exit;
 
 public class Client extends Application {
 
-    static Stage menuStage = new Stage();
+    static Stage menuStage;
 //    sets and shows menu window
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/menuSample.fxml"));
 //        color doesn't work
+        menuStage = new Stage();
         menuStage.setScene(new Scene(root, 600, 400, Color.WHITE));
         menuStage.setTitle("Chinese Checkers - Menu");
         menuStage.setResizable(false);

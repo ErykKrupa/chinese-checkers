@@ -9,7 +9,7 @@ import java.io.IOException;
 
 class Board extends GridPane
 {
-//    for Singleton Pattern
+//  Singleton Pattern
     private static Board board = null;
 
     private Field[][] fields = new Field[25][17];
@@ -48,7 +48,7 @@ class Board extends GridPane
 //        end turn button and action for it
         Button endTurnBtn = new Button("End Turn");
         endTurnBtn.setMinSize(90, 40);
-        endTurnBtn.setOnAction(t -> GameController.getInstance().endTurn());
+        endTurnBtn.setOnAction(t -> GameController.endTurn());
         GridPane.setConstraints(endTurnBtn, 19, 15);
         this.getChildren().add(endTurnBtn);
     }

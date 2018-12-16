@@ -89,7 +89,7 @@ public class NewGamePopupController {
 				Player.getInstance().setReadyForGame(true);
 
 //		set end turn under space key
-				scene.getAccelerators().put(new KeyCodeCombination(KeyCode.SPACE), () -> GameController.getInstance().endTurn());
+				scene.getAccelerators().put(new KeyCodeCombination(KeyCode.SPACE), GameController::endTurn);
 			}
 		}else if(s.equals("GAME ALREADY EXISTS")){
 			System.out.println("Game already exists");

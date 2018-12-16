@@ -11,13 +11,14 @@ class Bot implements Runnable{
 	private ArrayList<ArrayList<Field>> paths = new ArrayList<>(); // stores all possible paths to movement
 	private int reachedBases = 0; // bot needs to know how many bases reached, because have to finish his works in in a timely manner
 	private volatile boolean running = false; // true if bot is running
-    PlayerHandler playerHandler;
+    private PlayerHandler playerHandler;
 
 	//	gathers info about his pawns and bases
 	Bot (int playerNumber, PlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 		System.out.println(Game.getInstance().getPlayerTurn());//
 		this.playerNumber = playerNumber;
+		//this.playerHandler.playerNumber = playerNumber;
 		int pawsIterator = 0;
 		for (int i = 0; i < 25; i++) {
 			for (int j = 0; j < 17; j++) {

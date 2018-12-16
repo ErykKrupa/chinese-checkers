@@ -19,7 +19,9 @@ public class PlayerHandler extends Thread {
     private int clientNumber;
 
     //player number of client in game
-    private int playerNumber;
+    int playerNumber;
+
+    int hostPlayerNumber;
 
     //	  starting position of pawn
     private Field startingField = null;
@@ -39,10 +41,6 @@ public class PlayerHandler extends Thread {
     PlayerHandler(Socket socket, int clientNumber) {
         this.socket = socket;
         this.clientNumber = clientNumber;
-    }
-
-    PlayerHandler(){
-
     }
 
     public void run() {
@@ -74,6 +72,7 @@ public class PlayerHandler extends Thread {
                             Game.getInstance().currNumOfPlayers++;
                             Game.getInstance().setIsClientInGame(clientNumber,true);
                             playerNumber = 1;
+                            hostPlayerNumber = 1;
                             isHost=true;
                             //sending game create permission to it's host
                             output.println("CREATE GAME PRIVILEGE GRANTED");
@@ -90,6 +89,7 @@ public class PlayerHandler extends Thread {
                             Game.getInstance().currNumOfPlayers++;
                             Game.getInstance().setIsClientInGame(clientNumber,true);
                             playerNumber = 1;
+                            hostPlayerNumber = 1;
                             isHost=true;
                             //sending game create permission to it's host
                             output.println("CREATE GAME PRIVILEGE GRANTED");
@@ -104,6 +104,7 @@ public class PlayerHandler extends Thread {
                             Board.setInstance(4);
                             Game.getInstance().setIsClientInGame(clientNumber,true);
                             playerNumber = 2;
+                            hostPlayerNumber = 2;
                             isHost=true;
                             //sending game create permission to it's host
                             output.println("CREATE GAME PRIVILEGE GRANTED");
@@ -121,6 +122,7 @@ public class PlayerHandler extends Thread {
                             Game.getInstance().currNumOfPlayers++;
                             Game.getInstance().setIsClientInGame(clientNumber,true);
                             playerNumber = 1;
+                            hostPlayerNumber = 1;
                             isHost=true;
                             //sending game create permission to it's host
                             output.println("CREATE GAME PRIVILEGE GRANTED");
@@ -136,6 +138,7 @@ public class PlayerHandler extends Thread {
 
                             //sending privilege for game joining to client
                             output.println("JOIN GAME PRIVILEGE GRANTED");
+                            hostPlayerNumber = 1;
 
                             switch(g.declaredNumberOfPlayersInGame) {
                                 case 2: playerNumber = 4; break;
@@ -146,6 +149,7 @@ public class PlayerHandler extends Thread {
                                     }
                                 } break;
                                 case 4: {
+                                    hostPlayerNumber=4;
                                     switch (g.currNumOfPlayers) {
                                         case 1: playerNumber = 3; break;
                                         case 2: playerNumber = 5; break;
@@ -161,14 +165,13 @@ public class PlayerHandler extends Thread {
 
                             //Game starts, host's turn
                             if(g.currNumOfPlayers==g.declaredNumberOfPlayersInGame){
-                                for(int j=0; j<g.currNumOfPlayers; j++) {
+                                for(int j=0; j<PlayerHandlers.playerHandlersList.size(); j++) {
                                     if (PlayerHandlers.playerHandlersList.get(j).isHost) {
                                         PlayerHandlers.playerHandlersList.get(j).output.println("START GAME");
                                         break;
                                     }
                                 }
                             }
-                            PlayerHandlers.playerHandlersList.get(0).output.println("START GAME");
 
                             //Sending to client type of game
                             output.println(g.declaredNumberOfPlayersInGame);
@@ -209,8 +212,72 @@ public class PlayerHandler extends Thread {
     private void prepareBots(){
         if(Game.getInstance() != null){
             try {
+                System.out.println("player num1: "+ playerNumber);//
                 String s = input.readLine();
                 Game.currentNumberOfBots = Integer.parseInt(s);
+                Game g = Game.getInstance();
+                Bot b = null;
+                for(int i=0; i<Game.currentNumberOfBots; i++) {
+
+                    switch (g.declaredNumberOfPlayersInGame) {
+                        case 2: {
+                            b = new Bot(4, this);
+                            Game.getInstance().setIsPlayerBot(4, true);
+                        }break;
+                        case 3: {
+                            switch (Game.getInstance().currNumOfPlayers) {
+                                case 1: {
+                                    b = new Bot(3, this);
+                                    Game.getInstance().setIsPlayerBot(3,true);
+                                }break;
+                                case 2: {
+                                    b = new Bot(5, this);
+                                    Game.getInstance().setIsPlayerBot(5, true);
+                                }break;
+                            }
+                        }
+                        break;
+                        case 4: {
+                            switch (g.currNumOfPlayers) {
+                                case 1: {
+                                    b = new Bot(3, this);
+                                    Game.getInstance().setIsPlayerBot(3, true);
+                                }break;
+                                case 2: {
+                                    b = new Bot(5, this);
+                                    Game.getInstance().setIsPlayerBot(5, true);
+                                } break;
+                                case 3: {
+                                    b = new Bot(6, this);
+                                    Game.getInstance().setIsPlayerBot(6, true);
+                                } break;
+                            }
+                        }
+                        break;
+                        case 6: {
+                            int n = Game.getInstance().currNumOfPlayers + 1;
+                            b = new Bot(n, this);
+                            Game.getInstance().setIsPlayerBot(n,true);
+                        } break;
+                    }
+                    if (b != null) {
+                        Thread t = new Thread(b);
+                        t.start();
+                    }
+                    Game.getInstance().currNumOfPlayers++;
+                    //Game starts, host's turn
+                    if(g.currNumOfPlayers==g.declaredNumberOfPlayersInGame){
+                        for(int j=0; j<PlayerHandlers.playerHandlersList.size(); j++) {
+                            if (PlayerHandlers.playerHandlersList.get(j).isHost) {
+                                PlayerHandlers.playerHandlersList.get(j).output.println("START GAME");
+                                System.out.println("player num: "+ playerNumber);//
+                                System.out.println(g.getPlayerTurn());//
+                                break;
+                            }
+                        }
+                    }
+                }
+
             }catch (IOException e){
                 System.out.println("Unable to read!");
             }
@@ -371,8 +438,35 @@ public class PlayerHandler extends Thread {
             }
         } while (!Player.getPlayer(g.getPlayerTurn()).isInGame());
 
-                //sending communicates to all clients in game
-        for(int j=0; j<g.currNumOfPlayers; j++) {
+        /*if(g.getPlayerTurn() == 1){
+            playerNumber = 1;
+            //sending to host
+            PlayerHandlers.playerHandlersList.get(0).output.println("END OF YOUR TURN");}
+        else if(g.getPlayerTurn() == 4 && g.getIsPlayerBot(g.getPlayerTurn())){
+            playerNumber = 4;
+            //sending to host
+            PlayerHandlers.playerHandlersList.get(0).output.println("YOUR TURN NOW");
+        }*/
+        if(g.getIsPlayerBot(g.getPlayerTurn())){
+            for(int j=0; j<PlayerHandlers.playerHandlersList.size(); j++) {
+                if (PlayerHandlers.playerHandlersList.get(j).isHost) {
+                    PlayerHandlers.playerHandlersList.get(j).output.println("END OF YOUR TURN");
+                    PlayerHandlers.playerHandlersList.get(j).playerNumber = g.getPlayerTurn();
+                    break;
+                }
+            }
+        }else if(hostPlayerNumber==g.getPlayerTurn()){
+            for(int j=0; j<PlayerHandlers.playerHandlersList.size(); j++) {
+                if (PlayerHandlers.playerHandlersList.get(j).isHost) {
+                    PlayerHandlers.playerHandlersList.get(j).output.println("YOUR TURN NOW");
+                    PlayerHandlers.playerHandlersList.get(j).playerNumber = g.getPlayerTurn();
+                    break;
+                }
+            }
+        }
+
+        //sending communicates to all clients in game
+        for(int j=0; j<PlayerHandlers.playerHandlersList.size(); j++) {
             if (g.getPlayerTurn() == PlayerHandlers.playerHandlersList.get(j).playerNumber) {
                 PlayerHandlers.playerHandlersList.get(j).output.println("YOUR TURN NOW");
             }

@@ -6,6 +6,7 @@ public class Game {
     int currNumOfPlayers=0;
     volatile private int playerTurn;
     private boolean[] isClientInGame;
+    private boolean[] isPlayerBot;
     static volatile int currentNumberOfBots;
     private boolean areAllPlayersConnected;
 
@@ -15,6 +16,7 @@ public class Game {
     private Game(int numberOfPlayersInGame){
         this.declaredNumberOfPlayersInGame=numberOfPlayersInGame;
         this.isClientInGame = new boolean[6];
+        this.isPlayerBot = new boolean[6];
         if(numberOfPlayersInGame == 4)
             this.setPlayerTurn(2);
         else
@@ -54,6 +56,14 @@ public class Game {
 
     public void setDeclaredNumberOfPlayersInGame(int declaredNumberOfPlayersInGame) {
         this.declaredNumberOfPlayersInGame = declaredNumberOfPlayersInGame;
+    }
+
+    public boolean getIsPlayerBot(int i) {
+        return isPlayerBot[i-1];
+    }
+
+    public void setIsPlayerBot(int i, boolean b) {
+        this.isPlayerBot[i-1] = b;
     }
 
     void deleteInstance(){game = null;}

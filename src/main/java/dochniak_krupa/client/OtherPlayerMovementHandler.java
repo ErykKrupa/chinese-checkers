@@ -58,7 +58,7 @@ public class OtherPlayerMovementHandler extends Thread{
                                 System.out.println("YOU'VE LEFT THE GAME");
                             } break;
                             default: {
-                                System.out.println("Error");
+                                System.out.println(command);
                             }
                             break;
                         }

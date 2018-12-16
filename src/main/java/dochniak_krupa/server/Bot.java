@@ -179,20 +179,21 @@ class Bot implements Runnable{
 			try {
 				Thread.sleep(250); //less than 5 milliseconds can generate graphic artifact
 			} catch (InterruptedException ignored) {}
-			if (Game.getInstance().getPlayerTurn() == playerNumber) {
-				executeMovement();
-				if (reachedBases == 10) {
-					terminate();
-					Platform.runLater(() ->	playerHandler.endTurn());
-				} else {
-					playerHandler.endTurn();
-				}
+			if(Game.getInstance()!=null)
+				if (Game.getInstance().getPlayerTurn() == playerNumber) {
+					executeMovement();
+					if (reachedBases == 10) {
+						terminate();
+						Platform.runLater(() ->	playerHandler.endTurn());
+					} else {
+						playerHandler.endTurn();
+					}
 			}
 		}
 	}
 
 	//	terminate thread
-	public void terminate() {
+	void terminate() {
 		running = false;
 	}
 }

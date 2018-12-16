@@ -223,16 +223,19 @@ public class PlayerHandler extends Thread {
                     switch (g.declaredNumberOfPlayersInGame) {
                         case 2: {
                             b = new Bot(4, this);
+                            Player.bots.add(b);
                             Game.getInstance().setIsPlayerBot(4, true);
                         }break;
                         case 3: {
                             switch (Game.getInstance().currNumOfPlayers) {
                                 case 1: {
                                     b = new Bot(3, this);
+                                    Player.bots.add(b);
                                     Game.getInstance().setIsPlayerBot(3,true);
                                 }break;
                                 case 2: {
                                     b = new Bot(5, this);
+                                    Player.bots.add(b);
                                     Game.getInstance().setIsPlayerBot(5, true);
                                 }break;
                             }
@@ -242,14 +245,17 @@ public class PlayerHandler extends Thread {
                             switch (g.currNumOfPlayers) {
                                 case 1: {
                                     b = new Bot(3, this);
+                                    Player.bots.add(b);
                                     Game.getInstance().setIsPlayerBot(3, true);
                                 }break;
                                 case 2: {
                                     b = new Bot(5, this);
+                                    Player.bots.add(b);
                                     Game.getInstance().setIsPlayerBot(5, true);
                                 } break;
                                 case 3: {
                                     b = new Bot(6, this);
+                                    Player.bots.add(b);
                                     Game.getInstance().setIsPlayerBot(6, true);
                                 } break;
                             }
@@ -258,6 +264,7 @@ public class PlayerHandler extends Thread {
                         case 6: {
                             int n = Game.getInstance().currNumOfPlayers + 1;
                             b = new Bot(n, this);
+                            Player.bots.add(b);
                             Game.getInstance().setIsPlayerBot(n,true);
                         } break;
                     }
@@ -271,8 +278,6 @@ public class PlayerHandler extends Thread {
                         for(int j=0; j<PlayerHandlers.playerHandlersList.size(); j++) {
                             if (PlayerHandlers.playerHandlersList.get(j).isHost) {
                                 PlayerHandlers.playerHandlersList.get(j).output.println("START GAME");
-                                System.out.println("player num: "+ playerNumber);//
-                                System.out.println(g.getPlayerTurn());//
                                 break;
                             }
                         }
@@ -295,16 +300,17 @@ public class PlayerHandler extends Thread {
     }
 
     private void onHostExitActionPerform(){
+        for(Bot bot:Player.bots){
+            bot.terminate();
+        }
+        Player.bots.clear();
+        
         for(int i=0; i<Game.getInstance().currNumOfPlayers; i++) {
             if(Game.getInstance().getIsClientInGame(i+1)) {
                 //sending communicates to all clients in game
                 PlayerHandlers.playerHandlersList.get(i).output.println("HOST EXITED");
             }
         }
-        for(Bot bot:Player.bots){
-            bot.terminate();
-        }
-        Player.bots.clear();
 
         for(int i=0; i<Player.players.length; i++) Player.players[i].setInGame(false);
         Game.getInstance().deleteInstance();

@@ -7,25 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.*;
-import java.net.Socket;
-
-import static java.lang.System.exit;
-
 public class Client extends Application {
-
-    Socket socket;
-    BufferedReader in;
-    PrintWriter out;
-
-    //Singleton
-    private static Client client = null;
-
-    //Stores a number of client received from server
-    private String clientNumber;
-
-    public boolean isAbleToJoinGame;
-    public boolean isHost = false;
 
     static Stage menuStage = new Stage();
 //    sets and shows menu window
@@ -38,39 +20,7 @@ public class Client extends Application {
         menuStage.show();
     }
 
-    //Handling server connection and setting input and output buffers
-    private void connectToServer() throws IOException{
-        socket = new Socket("",9091);
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream(),true);
-
-        //Printing server initial message
-        for(int i=0; i<2; i++){
-            String initialMessage = in.readLine();
-            System.out.println(initialMessage);
-        }
-
-        clientNumber = in.readLine();
-    }
-
-    //    Singleton
-    private static void setInstance() {
-        client = new Client();
-    }
-
-    public static Client getInstance() {
-        return client;
-    }
-
-    public static void main(String[] args) throws InterruptedException{
-        Client.setInstance();
-        try{
-            client.connectToServer();
-        }catch (IOException e){
-            System.out.println("Unable to connect with server!");
-            Thread.sleep(3000);
-            exit(0);
-        }
+    public static void main(String[] args) throws InterruptedException {
         //Launching client first window
         launch(args);
     }
